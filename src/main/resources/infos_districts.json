@@ -1,0 +1,117 @@
+[
+    {
+        "color":"religion",
+        "value":1,
+        "cost":1,
+        "nb":3
+    },
+    {
+        "color":"religion",
+        "value":2,
+        "cost":2,
+        "nb":4
+    },
+    {
+        "color":"religion",
+        "value":3,
+        "cost":3,
+        "nb":3
+    },
+    {
+        "color":"religion",
+        "value":5,
+        "cost":5,
+        "nb":2
+    },
+    {
+        "color":"noblesse",
+        "value":3,
+        "cost":3,
+        "nb":5,
+        "nom":"Manoir"
+    },
+    {
+        "color":"noblesse",
+        "value":4,
+        "cost":4,
+        "nb":4,
+        "nom":"Chateau"
+    },
+    {
+        "color":"noblesse",
+        "value":5,
+        "cost":5,
+        "nb":2,
+        "nom":"Palais"
+    },
+    {
+        
+        "color":"commerce",
+        "value":1,
+        "cost":1,
+        "nb":5
+    },
+    {
+        
+        "color":"commerce",
+        "value":2,
+        "cost":2,
+        "nb":3
+    },
+    {
+        
+        "color":"commerce",
+        "value":2,
+        "cost":2,
+        "nb":4
+    },
+    {
+        
+        "color":"commerce",
+        "value":3,
+        "cost":3,
+        "nb":3
+    },
+    {
+        
+        "color":"commerce",
+        "value":4,
+        "cost":4,
+        "nb":3
+    },
+    {
+        
+        "color":"commerce",
+        "value":5,
+        "cost":5,
+        "nb":2
+    },
+    {
+        
+        "color":"soldatesque",
+        "value":1,
+        "cost":1,
+        "nb":3
+    },
+    {
+        
+        "color":"soldatesque",
+        "value":2,
+        "cost":2,
+        "nb":3
+    },
+    {
+        
+        "color":"soldatesque",
+        "value":3,
+        "cost":3,
+        "nb":3
+    },
+    {
+        
+        "color":"soldatesque",
+        "value":5,
+        "cost":5,
+        "nb":2
+    }
+]

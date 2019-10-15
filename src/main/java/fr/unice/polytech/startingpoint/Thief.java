@@ -8,7 +8,7 @@ public class Thief extends Role {
 
     void action(Role c){
         if(c.getPlayer()!=null){
-            c.giveMoneyTo(this);
+            //player.giveMoneyTo(this);
         }
     }
 }

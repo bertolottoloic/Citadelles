@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint;
 
 public class Wizzard extends Role{
 
-    Wizzard(String player){
+    Wizzard(Player player){
         super(player,3);
     }
 

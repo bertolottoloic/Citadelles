@@ -7,7 +7,7 @@ class Turn{
         this.player=p;
         this.role=p.character;
         player.addMoney(2);
-        //role.action();
+        role.action();
         //player.build();
     }
 }

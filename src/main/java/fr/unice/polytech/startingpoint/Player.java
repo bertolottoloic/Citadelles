@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
 	private final int id;
-	private Role character;
+	Role character;
 	private int gold;
 	private Hand hand;
 	private ArrayList<District> city;
@@ -12,7 +12,6 @@ public class Player {
 	Player(int id){
 		this.id = id;
 		gold = 2;
-		character = new Role();
 		hand = new Hand();
 		city = new ArrayList<>();
 	}

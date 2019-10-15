@@ -10,10 +10,8 @@ public class Main {
     }
 
     public static void main(String... args) throws FileNotFoundException,IOException{
-        System.out.println(System.getProperties().get("user.dir"));
-
-        Deck d=new Deck();
-        System.out.println(d.getList());
+        Player p1= new Player(1);
+        Game game=new Game(p1);
         
     }
 

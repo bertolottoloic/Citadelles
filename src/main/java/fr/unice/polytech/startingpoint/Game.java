@@ -5,7 +5,7 @@ import java.util.HashMap;
 
  class Game {
     private ArrayList<Player> players;
-    static Boolean game=false;
+    static Boolean gameOver=false;
     private Deck deck;
     private HashMap<Player,Integer> points;
 
@@ -20,7 +20,7 @@ import java.util.HashMap;
         dealCards(4);
         dealGolds(2);
 
-        while(game){
+        while(gameOver){
             Round round=new Round(this.players);
         }
         this.points=new HashMap<Player, Integer>();
@@ -30,7 +30,8 @@ import java.util.HashMap;
 
     }
 
-    Boolean getGame(){ return this.game;}
+    Boolean getGame(){ return this.gameOver;}
+    HashMap<Player,Integer> getPoints(){return this.points;}
     ArrayList<Player> getPlayers(){ return this.players;}
 
     void dealCards(int n){

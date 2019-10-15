@@ -11,7 +11,7 @@ abstract class Role {
         this.position = position;
     }
 
-    String getPlayer(){
+    Player getPlayer(){
         return this.player;
     }
 

@@ -6,6 +6,7 @@ public class Warlord extends Role {
         super(player,8);
     }
 
-    void action(Role c){
+    void action(Player target,District toDestroy){
+        target.deleteDistrictFromHand(toDestroy);
     }
 }

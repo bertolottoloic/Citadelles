@@ -48,6 +48,10 @@ public class Player {
 	void addMoney(int amount) {
 		gold+= amount;
 	}
+
+	public void deleteDistrictFromHand(District toDelete){
+		hand.deleteDistrict(toDelete);
+	}
 	
 	@Override
 	public String toString() {

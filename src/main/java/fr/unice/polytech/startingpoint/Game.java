@@ -38,7 +38,7 @@ import java.util.HashMap;
     void dealCards(int n){
         for(Player p : players){
             for(int i=0;i<n;i++){
-                p.pickNewDistrict(deck.withdraw());
+                p.pickNewDistrict(Assets.TheDeck.withdraw());
             }
         }
     }
@@ -67,6 +67,5 @@ import java.util.HashMap;
          }
          return scores;
     }
-
 
 }

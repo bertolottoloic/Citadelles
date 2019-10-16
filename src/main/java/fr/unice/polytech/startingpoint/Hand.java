@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Hand {
 	private ArrayList<District> myDistricts;
@@ -19,6 +20,16 @@ public class Hand {
 	
 	void removeDistrict(District formerDis){
 		myDistricts.remove(formerDis);
+	}
+
+	public void deleteDistrict(District toDelete){
+		Iterator<District> it =myDistricts.iterator();
+
+		while(it.hasNext()){
+			if(toDelete.equals(it.next())){
+				it.remove();
+			}
+		}
 	}
 	
 }

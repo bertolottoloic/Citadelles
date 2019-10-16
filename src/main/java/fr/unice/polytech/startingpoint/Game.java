@@ -11,6 +11,7 @@ import java.util.HashMap;
 
      Game(Player ... players){
         this.players=new ArrayList<Player>();
+        
         for (Player p : players){
             this.players.add(p);
         }

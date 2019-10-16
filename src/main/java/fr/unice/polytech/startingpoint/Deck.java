@@ -46,6 +46,8 @@ class Deck{
     public ArrayList<District> getList() {
         return list;
     }
+
+    
     public void shuffle(){
         Collections.shuffle(list);
     }
@@ -92,6 +94,8 @@ class Deck{
         @return 
             Un district
 
+            La méthode peut renvoyer null si il n'y avait plus de District dans 
+            le deck. Il faut donc vérifier la valeur de retour
         
      * 
      */
@@ -128,6 +132,8 @@ class Deck{
     public int lenght(){
         return list.size();
     }
+
+
 
 
 

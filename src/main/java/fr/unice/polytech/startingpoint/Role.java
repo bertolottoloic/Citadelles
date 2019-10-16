@@ -31,5 +31,5 @@ abstract class Role {
         this.player.addToTheCity(d);
     }
 
-    abstract void action(Role...c);
+    //abstract void action(Role...c);
 }

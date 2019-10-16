@@ -3,7 +3,7 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 
-import static fr.unice.polytech.startingpoint.Game.game;
+import static fr.unice.polytech.startingpoint.Game.gameOver;
 
 public class Round {
     private ArrayList<Player> players;
@@ -30,7 +30,7 @@ public class Round {
         for(Player p : players){
             Turn turn= new Turn(p);
         }
-        game = true;
+        gameOver = true;
     }
 
 

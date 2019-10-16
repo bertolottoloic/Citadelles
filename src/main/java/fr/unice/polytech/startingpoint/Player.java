@@ -19,6 +19,8 @@ public class Player {
 	public int getGold() {
 		return gold;
 	}
+
+	public Hand getHand(){return hand;}
 	
 	public int getId() {
 		return id;

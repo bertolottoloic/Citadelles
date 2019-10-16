@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint;
 
-public class Wizzard extends Role{
+public class Wizard extends Role{
 
-    Wizzard(Player player){
+    Wizard(Player player){
         super(player,3);
     }
 

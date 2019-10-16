@@ -7,10 +7,12 @@ import static fr.unice.polytech.startingpoint.Game.gameOver;
 
 public class Round {
     private ArrayList<Player> players;
+    private Deck deck;
     static int numberRound=0;
 
-    public Round(ArrayList<Player> p){
+    public Round(ArrayList<Player> p, Deck deck){
         this.players=p;
+        this.deck=deck;
         numberRound++;
         dealRoles(players);
         playTurns(players);
@@ -21,9 +23,7 @@ public class Round {
     ArrayList<Player> getPlayers(){ return this.players;}
 
     void dealRoles(ArrayList<Player> players){
-        for(Player p : players){
-            p.character= new Murderer(p);
-        }
+        dealRole dr=new dealRole(players);
     }
 
     void playTurns(ArrayList<Player> players){

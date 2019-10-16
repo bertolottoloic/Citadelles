@@ -22,7 +22,7 @@ import java.util.HashMap;
         dealGolds(2);
 
         while(gameOver){
-            Round round=new Round(this.players);
+            Round round=new Round(this.players,deck);
         }
         this.points=new HashMap<Player, Integer>();
         for(Player p : players){

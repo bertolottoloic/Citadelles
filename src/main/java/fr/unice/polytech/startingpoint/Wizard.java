@@ -6,7 +6,8 @@ public class Wizard extends Role{
         super(3);
     }
 
-    void action(Player c){
+    void action(Player player){
+        //this.player.exchangeHands(player);
     }
 
     @Override

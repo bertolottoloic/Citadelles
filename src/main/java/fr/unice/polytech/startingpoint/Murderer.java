@@ -1,14 +1,15 @@
 package fr.unice.polytech.startingpoint;
 
 class Murderer extends Role {
-    //Player player;
 
     Murderer(){
         super(1);
     }
 
     void action(Role c){
-        //c.player=null;
+        if(!c.equals(Assets.TheMurderer)){
+            c.isMurdered();
+        }
     }
 
     @Override

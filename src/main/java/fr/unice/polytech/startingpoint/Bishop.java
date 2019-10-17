@@ -1,5 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Bishop extends Role{
 
     Bishop(){
@@ -14,4 +18,14 @@ public class Bishop extends Role{
         // TODO Auto-generated method stub
 
     }
+    void districtBenefits(){
+        Set<District> st = new HashSet<District>(player.getCity());
+        int bonusGold = Collections.frequency(player.getCity(), "religion");
+        if(bonusGold > 0){
+            numberGold+=bonusGold;
+        } else {
+            numberGold = 0;
+        }
+    }
+
 }

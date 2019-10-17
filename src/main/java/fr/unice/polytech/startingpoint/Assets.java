@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint;
 
+
 public class Assets {
     public static final Deck TheDeck=new Deck();
     public static final Bank TheBank=new Bank();
@@ -12,6 +13,10 @@ public class Assets {
     public static final Merchant TheMerchant=new Merchant();
     public static final Architect TheArchitect=new Architect();
     public static final Warlord TheWarlord=new Warlord();
+
+    void reInitializeRoles(){
+        
+    }
 
 	
 }

@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+/*package fr.unice.polytech.startingpoint;
 
 class Turn{
     Player player;
@@ -12,4 +12,4 @@ class Turn{
         //role.action();
         //player.build();
     }
-}
+}*/

@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+/*package fr.unice.polytech.startingpoint;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,4 +80,4 @@ public class RoleTest {
         assertEquals(1,warlord.getNumberDistrict());
         assertEquals(2,warlord.getNumberGold());
     }
-}
+}*/

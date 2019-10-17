@@ -4,10 +4,18 @@ import java.util.ArrayList;
 
 public class Player {
 	private final int id;
-	Role character;
+	private Role character;
 	private int gold;
 	private Hand hand;
 	private ArrayList<District> city;
+
+	/*Attributs qui permettront à l'IA de désigner ses cibles*/
+	private Role targetToKill;
+	private Role targetToRob;
+	private Player targetToDestroyDistrict;
+	private District districtToDestroy;
+	private Player targetToExchangeHandWith;
+	
 	
 	Player(int id){
 		this.id = id;
@@ -50,7 +58,8 @@ public class Player {
 	}
 
 	public void deleteDistrictFromHand(District toDelete){
-		hand.deleteDistrict(toDelete);
+		if(character.equals(Assets.TheBishop))
+		hand.removeDistrict(toDelete);
 	}
 	
 	@Override
@@ -60,5 +69,54 @@ public class Player {
 			+ "Current role: " + character +"\n"
 			+ "Amount of gold: " + gold + "\n"
 			+ "City :" + city +"\n";
+	}
+
+	public Role getTargetToKill() {
+		return targetToKill;
+	}
+
+	public void setTargetToKill(Role targetToKill) {
+		this.targetToKill = targetToKill;
+	}
+
+	public Role getTargetToRob() {
+		return targetToRob;
+	}
+
+	public void setTargetToRob(Role targetToRob) {
+		this.targetToRob = targetToRob;
+	}
+
+	public Player getTargetToDestroyDistrict() {
+		return targetToDestroyDistrict;
+	}
+
+	public void setTargetToDestroyDistrict(Player targetToDestroyDistrict) {
+		this.targetToDestroyDistrict = targetToDestroyDistrict;
+	}
+
+	public District getDistrictToDestroy() {
+		return districtToDestroy;
+	}
+
+	public void setDistrictToDestroy(District districtToDestroy) {
+		this.districtToDestroy = districtToDestroy;
+	}
+
+	public Player getTargetToExchangeHandWith() {
+		return targetToExchangeHandWith;
+	}
+
+	public void setTargetToExchangeHandWith(Player targetToExchangeHandWith) {
+		this.targetToExchangeHandWith = targetToExchangeHandWith;
+	}
+
+	public Role getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(Role character) {
+		this.character = character;
+		character.setPlayer(this);
 	}
 }

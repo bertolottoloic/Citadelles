@@ -1,9 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-public class Hand {
+public class Hand{
 	private ArrayList<District> myDistricts;
 	
 	Hand(){
@@ -20,16 +18,11 @@ public class Hand {
 	
 	void removeDistrict(District formerDis){
 		myDistricts.remove(formerDis);
+		/*Remettre le district dans le deck
+				*/
+		Assets.TheDeck.putbackOne(formerDis);
 	}
 
-	public void deleteDistrict(District toDelete){
-		Iterator<District> it =myDistricts.iterator();
-
-		while(it.hasNext()){
-			if(toDelete.equals(it.next())){
-				it.remove();
-			}
-		}
-	}
+	
 	
 }

@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint;
 
+
 abstract class Role {
     protected Player player;
-    protected int position;
+    protected final int position;
     protected int numberDistrict = 1;
     protected int numberGold = 2;
 
-    Role(Player player, int position) {
-        this.player = player;
-        this.position = position;
+    Role(int position) {
+        this.position=position;
     }
 
     Player getPlayer(){
@@ -31,5 +31,12 @@ abstract class Role {
         this.player.addToTheCity(d);
     }
 
-    //abstract void action(Role...c);
+    abstract void useSpecialPower();
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    
+
 }

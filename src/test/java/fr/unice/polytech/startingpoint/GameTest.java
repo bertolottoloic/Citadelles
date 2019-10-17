@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+/*package fr.unice.polytech.startingpoint;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,4 +29,4 @@ class GameTest {
         game.dealCards(4);
         assertEquals(8, p.getHand().getMyDistricts().size());
     }
-}
+}*/

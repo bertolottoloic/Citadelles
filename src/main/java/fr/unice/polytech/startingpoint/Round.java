@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+/*package fr.unice.polytech.startingpoint;
 
 
 import java.util.ArrayList;
@@ -7,12 +7,10 @@ import static fr.unice.polytech.startingpoint.Game.gameOver;
 
 public class Round {
     private ArrayList<Player> players;
-    private Deck deck;
     static int numberRound=0;
 
     public Round(ArrayList<Player> p, Deck deck){
         this.players=p;
-        this.deck=deck;
         numberRound++;
         dealRoles(players);
         playTurns(players);
@@ -35,4 +33,4 @@ public class Round {
 
 
 
-}
+}*/

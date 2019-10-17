@@ -5,9 +5,10 @@ abstract class Role {
     protected int position;
     protected int numberDistrict = 1;
     protected int numberGold = 2;
+    protected boolean isStolen = false;
+    protected boolean isMurdered = false;
 
-    Role(Player player, int position) {
-        this.player = player;
+    Role(int position) {
         this.position = position;
     }
 
@@ -25,6 +26,25 @@ abstract class Role {
 
     int getNumberGold(){
         return this.numberGold;
+    }
+
+    void setPlayer(Player player){
+        this.player = player;
+    }
+
+    void isStolen(){
+        this.isStolen = true;
+    }
+    void isMurdered(){
+        this.isMurdered = true;
+    }
+
+    boolean hasBeenMurdered(){
+        return this.isMurdered;
+    }
+
+    boolean hasBeenStolen(){
+        return this.isStolen;
     }
 
     void buildDistrict(District d){

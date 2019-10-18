@@ -1,15 +1,13 @@
-/*package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint;
 
 class Turn{
     Player player;
     Role role;
-    Deck deck;
-    Turn(Player p,Deck deck){
+    Turn(Player p){
         this.player=p;
-        this.deck=deck;
-        this.role=p.character;
+        this.role=p.getCharacter();
         player.addMoney(2);
         //role.action();
         //player.build();
     }
-}*/
+}

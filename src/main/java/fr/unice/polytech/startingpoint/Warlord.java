@@ -4,6 +4,7 @@ public class Warlord extends Role {
 
     Warlord(){
         super(8);
+        this.setColor("soldatesque");
     }
 
     void action(Player target,District toDestroy){

@@ -4,7 +4,8 @@ public class Architect extends Role {
 
     Architect(){
         super(7);
-        this.numberDistrict+=2;
+        this.numberDistrictBuildable+=2;
+        this.numberDistrictPickable+=2;
     }
 
     void action(Role c){

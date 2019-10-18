@@ -13,7 +13,9 @@ class Bank{
         return currNbCoins;
     }
 
-    
+    public boolean canWithdraw(int desiredAmount){
+        return !(currNbCoins<desiredAmount);
+    }
     public boolean withdraw(int nb){
 
         if(currNbCoins<nb){

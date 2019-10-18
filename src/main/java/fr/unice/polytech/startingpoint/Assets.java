@@ -14,9 +14,6 @@ public class Assets {
     public static final Architect TheArchitect=new Architect();
     public static final Warlord TheWarlord=new Warlord();
 
-    void reInitializeRoles(){
-        
-    }
 
 	
 }

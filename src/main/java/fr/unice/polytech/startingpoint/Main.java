@@ -13,20 +13,15 @@ public class Main {
         Player p1=new Player(1);
         Player p2=new Player(2);
         p1.setCharacter(Assets.TheMurderer);
+
         p2.setCharacter(Assets.TheThief);
+        p1.playTurn();
         p1.setTargetToKill(Assets.TheThief);
         p1.getCharacter().useSpecialPower();
-        System.out.println(p2.getCharacter().hasBeenMurdered());
+        p2.playTurn();
         
         Assets.TheThief.reInitialize();
         Assets.TheMurderer.reInitialize();
-
-       
-        
-
-
-        
-        
         
     }
 

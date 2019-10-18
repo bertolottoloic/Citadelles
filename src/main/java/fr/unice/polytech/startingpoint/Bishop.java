@@ -8,6 +8,7 @@ public class Bishop extends Role{
 
     Bishop(){
         super(5);
+        this.setColor("religion");
     }
 
     void action(Role c){
@@ -18,14 +19,6 @@ public class Bishop extends Role{
         // TODO Auto-generated method stub
 
     }
-    void districtBenefits(){
-        Set<District> st = new HashSet<District>(player.getCity());
-        int bonusGold = Collections.frequency(player.getCity(), "religion");
-        if(bonusGold > 0){
-            numberGold+=bonusGold;
-        } else {
-            numberGold = 0;
-        }
-    }
+    
 
 }

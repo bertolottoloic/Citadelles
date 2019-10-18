@@ -10,13 +10,14 @@ public class King extends Role{
 
     King(){
         super(4);
+        this.setColor("noblesse");
     }
 
     void action(Crown c){
         c.goesTo(this.player);
     }
 
-    void districtBenefits(){
+    /*void districtBenefits(){
         Set<District> st = new HashSet<District>(player.getCity());
         int bonusGold = Collections.frequency(player.getCity(), "noblesse");
         if(bonusGold > 0){
@@ -24,7 +25,7 @@ public class King extends Role{
         } else {
             numberGold = 0;
         }
-    }
+    }*/
 
     @Override
     void useSpecialPower() {

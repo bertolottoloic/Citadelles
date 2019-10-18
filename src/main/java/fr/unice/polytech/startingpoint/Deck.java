@@ -33,6 +33,19 @@ class Deck{
         return null;
     }
 
+    /*Avant d'appeler cette méthode il faut appeler 
+    la méthode lenght de Deck pour vérifier si l'opération est possible
+    On suppose ici que il reste au moins nb Districts dans Deck
+    */
+    public ArrayList<District> withdrawMany(int nb){
+        ArrayList<District> taken=new ArrayList<>();
+        while(nb>0){
+            taken.add(list.remove(0));
+            nb--;
+        }
+        return taken;
+    }
+
     /**
      * @param d
      *      un district

@@ -1,4 +1,4 @@
-/*package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint;
 
 
 import java.util.ArrayList;
@@ -33,4 +33,4 @@ public class Round {
 
 
 
-}*/
+}

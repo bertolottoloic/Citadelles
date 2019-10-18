@@ -9,6 +9,7 @@ class Murderer extends Role {
     void action(Role c){
         if(!c.equals(Assets.TheMurderer)){
             c.isMurdered();
+            System.out.println(toString()+" ( joueur numero "+ player.getId()+" )"+"tue le "+c.toString());
         }
     }
 
@@ -17,5 +18,7 @@ class Murderer extends Role {
         this.action(this.player.getTargetToKill());
 
     }
+
+    
 
 }

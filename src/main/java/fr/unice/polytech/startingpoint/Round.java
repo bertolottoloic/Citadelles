@@ -35,7 +35,7 @@ public class Round {
 
 
     void dealRoles(ArrayList<Player> players){
-        dealRole dr=new dealRole(players);
+        DealRoles dr=new DealRoles(players);
     }
 
     void playTurns(ArrayList<Player> players){

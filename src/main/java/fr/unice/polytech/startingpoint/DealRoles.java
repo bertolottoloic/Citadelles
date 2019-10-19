@@ -3,11 +3,11 @@ package fr.unice.polytech.startingpoint;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class dealRole{
+class DealRoles{
     private ArrayList<Role> roles;
     private ArrayList<Role> visible;
     private Role hidden;
-    dealRole(ArrayList<Player> player){
+    DealRoles(ArrayList<Player> player){
         this.roles=new ArrayList<Role>();
         this.visible=new ArrayList<Role>();
         this.roles.add(Assets.TheArchitect);

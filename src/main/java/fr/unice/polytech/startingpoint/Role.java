@@ -130,18 +130,18 @@ abstract class Role {
         this.player = player;
     }
 
-    void isStolen(){
+    void stolen(){
         this.isStolen = true;
     }
-    void isMurdered(){
+    void murdered(){
         this.isMurdered = true;
     }
 
-    boolean hasBeenMurdered(){
+    boolean isMurdered(){
         return this.isMurdered;
     }
 
-    boolean hasBeenStolen(){
+    boolean isStolen(){
         return this.isStolen;
     }
 

@@ -7,8 +7,8 @@ class Murderer extends Role {
     }
 
     void action(Role c){
-        if(!c.equals(Assets.TheMurderer)){
-            c.isMurdered();
+        if(!(c instanceof Murderer)){
+            c.murdered();
             System.out.println(toString()+" ( joueur numero "+ player.getId()+" )"+"tue le "+c.toString());
         }
     }

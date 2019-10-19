@@ -8,8 +8,8 @@ public class Thief extends Role {
     }
 
     void action(Role c){
-        if(!c.hasBeenMurdered() && !(c.equals(Assets.TheMurderer)) && !(c.equals(Assets.TheThief))){
-            c.isStolen();
+        if(!c.isMurdered() && !(c instanceof Murderer) && !(c instanceof Thief)){
+            c.stolen();
         }
     }
 

@@ -141,11 +141,11 @@ public class Player {
 		//collect rentMoney
 		//use special power of Role if any
 
-		if(character.hasBeenMurdered()){
+		if(character.isMurdered()){
 			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
 			return; //on sort de la fonction sans plus rien faire
 		}
-		else if(character.hasBeenStolen()){
+		else if(character.isStolen()){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
 			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
 			gold=0;//plus d'argent apres le vol

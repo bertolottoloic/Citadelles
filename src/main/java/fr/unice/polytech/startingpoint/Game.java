@@ -5,7 +5,7 @@ import java.util.HashMap;
 
  class Game {
     private ArrayList<Player> players;
-    static Boolean gameOver=false;
+    static Boolean gameOver=true;
     private Deck deck;
     private HashMap<Player,Integer> points;
 

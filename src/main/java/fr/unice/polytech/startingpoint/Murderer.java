@@ -13,6 +13,10 @@ class Murderer extends Role {
         }
     }
 
+    void isMurdered(){
+        this.isMurdered = false;
+    }
+
     @Override
     void useSpecialPower() {
         this.action(this.player.getTargetToKill());

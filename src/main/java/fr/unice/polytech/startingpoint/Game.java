@@ -4,25 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
  class Game {
-    private ArrayList<Player> players;
+    private ArrayList<Player> players=new ArrayList<Player>();
     static Boolean gameOver=true;
-    private Deck deck;
     private HashMap<Player,Integer> points;
 
      Game(Player ... players){
-        this.players=new ArrayList<Player>();
         
         for (Player p : players){
             this.players.add(p);
         }
 
-        this.deck=new Deck();
-
         dealCards(4);
         dealGolds(2);
 
         while(gameOver){
-            Round round=new Round(this.players,deck);
+            Round round=new Round(this.players,Assets.TheDeck);
         }
         this.points=new HashMap<Player, Integer>();
         for(Player p : players){

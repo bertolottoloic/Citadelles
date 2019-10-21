@@ -21,7 +21,6 @@ public class Player {
 	
 	Player(int id){
 		this.id = id;
-		gold = 2;
 		hand = new Hand();
 		city = new ArrayList<>();
 	}
@@ -132,6 +131,14 @@ public class Player {
 		character.setPlayer(this);
 	}
 
+	/**
+	 * Pour qu'on puisse utiliser HashMap<Player,Integer>
+	 */
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return id;
+	}
 	
 
 	public void playTurn(){

@@ -34,8 +34,8 @@ class DistrictsInput{
                 }
 
             });
-            
-        } catch (Exception e) {
+
+} catch (Exception e) {
             //TODO: handle exception
         }
 

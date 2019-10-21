@@ -10,13 +10,8 @@ class DealRoles{
     DealRoles(ArrayList<Player> player){
         this.roles=new ArrayList<Role>();
         this.visible=new ArrayList<Role>();
-        this.roles.add(Assets.TheArchitect);
-        this.roles.add(Assets.TheBishop);
-        this.roles.add(Assets.TheMerchant);
-        this.roles.add(Assets.TheMurderer);
-        this.roles.add(Assets.TheThief);
-        this.roles.add(Assets.TheWarlord);
-        this.roles.add(Assets.TheWizard);
+        this.roles.addAll(Assets.getRoles());
+        
 
         Collections.shuffle(this.roles);
         System.out.println(this.roles);

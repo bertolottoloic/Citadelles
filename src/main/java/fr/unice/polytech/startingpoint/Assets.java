@@ -39,6 +39,10 @@ public class Assets {
 
     }
 
+    static ArrayList<Role> getRoles(){
+        return allRoles;
+    }
+
 
 	
 }

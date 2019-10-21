@@ -9,16 +9,13 @@ public class Player {
 	private Hand hand;
 	private ArrayList<District> city;
 
-	/*Attributs qui permettront à l'IA de désigner ses cibles*/
+	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	private Role targetToKill;
 	private Role targetToRob;
 	private Player targetToDestroyDistrict;
 	private District districtToDestroy;
 	private Player targetToExchangeHandWith;
 
-	
-	
-	
 	Player(int id){
 		this.id = id;
 		hand = new Hand();
@@ -40,14 +37,14 @@ public class Player {
 	}
 	
 	void pickNewDistrict(District d) {
-		hand.addDistrict(d);
+		hand.add(d);
 	}
 	
 	boolean addToTheCity(District theDistrict) {
 		if(gold - theDistrict.getCost() >= 0) {
 			gold -= theDistrict.getCost();
 			city.add(theDistrict);
-			hand.removeDistrict(theDistrict);
+			hand.remove(theDistrict);
 			return true;
 		}
 		return false;
@@ -60,26 +57,28 @@ public class Player {
 
 	public void deleteDistrictFromHand(District toDelete){
 		if(character.equals(Assets.TheBishop))
-		hand.removeDistrict(toDelete);
+		hand.remove(toDelete);
 	}
-	/** 
-	 * 
+	
+	/**
 	 * Avant d'appeler cette méthode il faut appeler 
-	*Assets.TheBank.canWithdraw(nb) et vérifier la valeur retournée
-	*par celle ci cela permet de savoir si l'argent voulue est disponible
-	**/
+	 * Assets.TheBank.canWithdraw(nb) et vérifier la valeur retournée
+	 * par celle ci cela permet de savoir si l'argent voulue est disponible
+	 */
 	public void takeCoinsFromBank(int nb){
 		Assets.TheBank.withdraw(nb);
 		System.out.println("Je retire "+character.getNumberGold()+" de la banque. ");
 		gold+=character.getNumberGold();
 	}
-	@Override
-	public String toString() {
-		return "**********\n"
-			+ "Player #" + id + "\n"
-			+ "Current role: " + character +"\n"
-			+ "Amount of gold: " + gold + "\n"
-			+ "City :" + city +"\n";
+
+	public void exchangeHands() {
+		ArrayList<District> tmpHand = new ArrayList<>();
+		tmpHand.addAll(hand);
+		hand.removeAll(hand);
+		
+		hand.addAll(targetToExchangeHandWith.hand);
+		targetToExchangeHandWith.hand.removeAll(targetToExchangeHandWith.hand);
+		targetToExchangeHandWith.hand.addAll(tmpHand);
 	}
 
 	public Role getTargetToKill() {
@@ -135,8 +134,7 @@ public class Player {
 	 * Pour qu'on puisse utiliser HashMap<Player,Integer>
 	 */
 	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
+	public int hashCode(){
 		return id;
 	}
 	
@@ -148,11 +146,11 @@ public class Player {
 		//collect rentMoney
 		//use special power of Role if any
 
-		if(character.hasBeenMurdered()){
+		if(character.isMurdered()){
 			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
 			return; //on sort de la fonction sans plus rien faire
 		}
-		else if(character.hasBeenStolen()){
+		else if(character.isStolen()){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
 			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
 			gold=0;//plus d'argent apres le vol
@@ -170,7 +168,7 @@ public class Player {
 			else{
 				if(Assets.TheDeck.lenght()>=character.getNumberDistrictPickable()){	
 					ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
-					this.hand.addDistricts(districts);
+					this.hand.addAll(districts);
 					System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
 				}
 				
@@ -179,7 +177,7 @@ public class Player {
 		else{
 			if(Assets.TheDeck.lenght()>=character.getNumberDistrictPickable()){	
 					ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
-					this.hand.addDistricts(districts);
+					this.hand.addAll(districts);
 					System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
 			}
 			else if(Assets.TheBank.canWithdraw(character.getNumberGold())){
@@ -187,8 +185,14 @@ public class Player {
 				
 			}
 		}
-
-		
-
+	}
+	
+	@Override
+	public String toString() {
+		return "**********\n"
+			+ "Player #" + id + "\n"
+			+ "Current role: " + character +"\n"
+			+ "Amount of gold: " + gold + "\n"
+			+ "City :" + city +"\n";
 	}
 }

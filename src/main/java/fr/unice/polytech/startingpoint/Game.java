@@ -2,11 +2,13 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
- class Game {
+class Game {
     private ArrayList<Player> players=new ArrayList<Player>();
     static Boolean gameOver=true;
     private HashMap<Player,Integer> points;
+    Board board;
 
      Game(Player ... players){
         
@@ -14,11 +16,8 @@ import java.util.HashMap;
             this.players.add(p);
         }
 
-        dealCards(4);
-        dealGolds(2);
-
         while(gameOver){
-            Round round=new Round(this.players,Assets.TheDeck);
+            playAllTurns();
         }
         this.points=new HashMap<Player, Integer>();
         for(Player p : players){
@@ -27,7 +26,27 @@ import java.util.HashMap;
 
     }
 
-    Boolean getGame(){ return this.gameOver;}
+    void startGame(){
+        dealCards(4);
+        dealGolds(2);
+        Board board=new Board(this.players);
+    }
+    
+
+    void playAllTurns(){
+         for(Player p : players){
+             //playTurn(p);
+         }
+    }
+
+    /*void playTurn(Player p){
+         p.start();
+         p.action();
+         p.build();
+    }*/
+
+
+    Boolean getGameOver(){ return this.gameOver;}
     HashMap<Player,Integer> getPoints(){return this.points;}
     ArrayList<Player> getPlayers(){ return this.players;}
 

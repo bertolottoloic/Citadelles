@@ -6,8 +6,17 @@ class Turn{
     Turn(Player p){
         this.player=p;
         this.role=p.getCharacter();
-        player.addMoney(2);
-        //role.action();
-        //player.build();
+        if(role.isStolen()){
+            int gold = player.getGold();
+            player.addMoney(-1*gold);
+            Player PlayerThief=Assets.TheThief.getPlayer();
+            PlayerThief.addMoney(gold);
+        }
+        if(!role.isMurdered()) {
+            //player.choice1();
+            //player.choice2();
+        }
     }
+
+
 }

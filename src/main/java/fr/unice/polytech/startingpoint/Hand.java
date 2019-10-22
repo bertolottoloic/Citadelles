@@ -14,13 +14,12 @@ public class Hand extends ArrayList<District>{
 	/**
 	 * Le district est retiré de la main et retourne dans le deck
 	 * 
+	 * et pour construire ???
+	 * 
 	 * @param District en question
 	 */
 	void remove(District formerDis){
 		this.remove(formerDis);
-		/*Remettre le district dans le deck
-				*/
-		Assets.TheDeck.putbackOne(formerDis);
 	}
 
 	

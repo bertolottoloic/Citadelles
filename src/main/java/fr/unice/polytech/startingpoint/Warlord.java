@@ -8,7 +8,7 @@ public class Warlord extends Role {
     }
 
     void action(Player target,District toDestroy){
-        target.deleteDistrictFromHand(toDestroy);
+        target.deleteDistrictFromCity(toDestroy);
     }
 
     @Override

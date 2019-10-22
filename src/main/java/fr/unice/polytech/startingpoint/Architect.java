@@ -5,15 +5,21 @@ public class Architect extends Role {
     Architect(){
         super(7);
         this.numberDistrictBuildable+=2;
-        this.numberDistrictPickable+=2;
+        
     }
 
-    void action(Role c){
+    /**
+        * Le pouvoir spécial de l'architecte c'est de pouvoir prendre 
+        *deux cartes en plus
+        */
+    void action(){
+        if(Assets.TheDeck.lenght()>=2){
+            this.player.getHand().addAll(Assets.TheDeck.withdrawMany(2));
+        }
     }
 
     @Override
     void useSpecialPower() {
-        // TODO Auto-generated method stub
-
+        this.action();
     }
 }

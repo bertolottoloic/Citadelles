@@ -6,17 +6,17 @@ public class Wizard extends Role{
         super(3);
     }
 
-    void action(Player player){
-        //this.player.exchangeHands(player);
+    void action(){
+        this.player.exchangeHands();
     }
 
     @Override
     void useSpecialPower() {
         if(this.player.getTargetToExchangeHandWith()==null){
-            //Echanger avec le Deck Assets.TheDeck
+          this.player.setHand(Assets.TheDeck.exchangeMany(this.player.getHand()));
         }
         else{
-            this.action(this.player.getTargetToExchangeHandWith());
+            this.action();
         }
         
 

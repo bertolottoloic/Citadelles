@@ -8,6 +8,7 @@ public class Player {
 	private int gold;
 	private Hand hand;
 	private ArrayList<District> city;
+	Player nextPlayer;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	private Role targetToKill;
@@ -55,9 +56,15 @@ public class Player {
 		gold+= amount;
 	}
 
-	public void deleteDistrictFromHand(District toDelete){
-		if(character.equals(Assets.TheBishop))
-		hand.remove(toDelete);
+	/**
+	 * Destruction de district dans city
+	 * @param toDelete
+	 */
+	public void deleteDistrictFromCity(District toDelete){
+		if(!character.equals(Assets.TheBishop)){
+			city.remove(toDelete);
+		}
+			
 	}
 	
 	/**
@@ -194,5 +201,18 @@ public class Player {
 			+ "Current role: " + character +"\n"
 			+ "Amount of gold: " + gold + "\n"
 			+ "City :" + city +"\n";
+	}
+
+	public Player getNextPlayer() {
+		return nextPlayer;
+	}
+
+	public void setNextPlayer(Player nextPlayer) {
+		this.nextPlayer = nextPlayer;
+	}
+
+	public void setHand(ArrayList<District> liste) {
+		this.hand.clear();
+		this.hand.addAll(liste);
 	}
 }

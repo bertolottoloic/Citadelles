@@ -11,5 +11,4 @@ public class Crown {
         this.player = p;
     }
 
-
 }

@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 class Game {
     private ArrayList<Player> players=new ArrayList<Player>();
@@ -17,6 +16,7 @@ class Game {
         }
 
         while(gameOver){
+            new DealRoles(this.players);
             playAllTurns();
         }
         this.points=new HashMap<Player, Integer>();
@@ -31,18 +31,35 @@ class Game {
         dealGolds(2);
         Board board=new Board(this.players);
     }
-    
+
 
     void playAllTurns(){
-         for(Player p : players){
-             //playTurn(p);
+         int i=0;
+         int index = players.indexOf(board.getCrown().getCrownOwner());
+         while(i<players.size()){
+             if(index==players.size()){index=0;}
+             //playTurn(players.get(index));
+             index++;
+             i++;
          }
     }
 
     /*void playTurn(Player p){
-         p.start();
-         p.action();
-         p.build();
+         Role role = p.getCharacter();
+        if(!role.isMurdered()) {
+            if(role.isStolen()){
+
+            }
+            p.start();
+            if(p.actionorBuild()==1){
+                p.action();
+                p.build();
+            }
+            else{
+                p.build();
+                p.action();
+            }
+        }
     }*/
 
 

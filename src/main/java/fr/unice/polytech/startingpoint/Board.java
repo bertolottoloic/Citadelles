@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 class Board{
-    Deck deck;
-    Bank bank;
-    ArrayList<Player> players;
-    Crown crown;
+    private Deck deck;
+    private Bank bank;
+    private ArrayList<Player> players;
+    private Crown crown;
     Board(ArrayList<Player> p){
         this.crown=new Crown();
         this.deck=new Deck();

@@ -21,10 +21,14 @@ abstract class Role {
      */
     protected boolean isMurdered = false;
     /**
-     * Nombre de districts qu'on peut prendre dans le Deck 
-     * Change pour l'Architect
+     * Nombre de districts qu'on peut consulter dans le Deck
      */
-    protected int numberDistrictPickable=2;
+    protected int numberDistrictPickable = 2;
+    /**
+     * Nombre de districts parmi les cartes du Deck consulter que le joueur peut garder
+     * Change pour l'architecte
+     */
+    protected int numberDistrictKeepable = 1;
     /**
      * Couleur du Role 
      * Penser à utiliser une enum Gem ou Color au lieu de String
@@ -64,15 +68,6 @@ abstract class Role {
 
     abstract void useSpecialPower();
 
-    public int getNumberDistrictPickable() {
-        return numberDistrictPickable;
-    }
-
-    public void setNumberDistrictPickable(int numberDistrictPickable) {
-        this.numberDistrictPickable = numberDistrictPickable;
-    }
-
-    
     /**
      * Le Role est chargé de collecter l'argent généré par les cités
      * Ainsi lorsqu'on aura plusieurs roles par Player
@@ -122,6 +117,10 @@ abstract class Role {
         return this.numberDistrictBuildable;
     }
 
+    int getNumberDistrictPickable() {
+        return numberDistrictPickable;
+    }
+
     int getNumberGold(){
         return this.numberGold;
     }
@@ -130,9 +129,14 @@ abstract class Role {
         this.player = player;
     }
 
+    public void setNumberDistrictPickable(int numberDistrictPickable) {
+        this.numberDistrictPickable = numberDistrictPickable;
+    }
+
     void stolen(){
         this.isStolen = true;
     }
+
     void murdered(){
         this.isMurdered = true;
     }

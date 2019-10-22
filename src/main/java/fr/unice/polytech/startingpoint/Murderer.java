@@ -7,10 +7,16 @@ class Murderer extends Role {
     }
 
     void action(Role c){
-        if(!(c instanceof Murderer)){
-            c.murdered();
-            System.out.println(toString()+" ( joueur numero "+ player.getId()+" )"+"tue le "+c.toString());
-        }
+        c.murdered();
+        System.out.println(toString()+" ( joueur numero "+ player.getId()+" )"+"tue le "+c.toString());
+    }
+
+    void stolen(){
+        return;
+    }
+
+    void murdered(){
+        return;
     }
 
     @Override

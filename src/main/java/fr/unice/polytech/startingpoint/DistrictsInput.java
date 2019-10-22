@@ -30,7 +30,7 @@ class DistrictsInput{
                 int n=((JSONObject)e).getInt("nb");
 
                 for(int i=0;i<n;i++){
-                    list.add(new District(((JSONObject)e).getInt("cost"),((JSONObject)e).getInt("value"),((JSONObject)e).getString("color")));
+                    list.add(new District(((JSONObject)e).getInt("cost"),((JSONObject)e).getInt("value"),((JSONObject)e).getString("color"),((JSONObject)e).getString("nom")));
                 }
 
             });

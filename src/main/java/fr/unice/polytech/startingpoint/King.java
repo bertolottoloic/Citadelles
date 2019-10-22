@@ -12,6 +12,8 @@ public class King extends Role{
         c.goesTo(this.player);
     }
 
+    
+
     @Override
     void useSpecialPower() {
         // TODO Auto-generated method stub

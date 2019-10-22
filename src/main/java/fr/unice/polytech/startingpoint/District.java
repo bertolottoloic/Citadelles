@@ -5,11 +5,15 @@ class District{
     private final int value;
     private String color; /* color aussi pourrait etre final dépend de si on implémente la carte
     "Cour des Miracles" ou de la facon dont on l'implémente*/
+    private final String nom;
+    
 
-    District(int cost,int value,String color){
+    
+    District(int cost,int value,String color,String nom){
         this.cost=cost;
         this.value=value;
         this.color=color;
+        this.nom=nom;
 
     }
 
@@ -39,5 +43,14 @@ class District{
                 "Cout: "+cost+"\n"+
                 "******************\n";
 
+    }
+
+
+    public boolean equals(District other) {
+            return  this.nom.equals(other.nom) && this.color.equals(other.color);
+    }
+
+    public String getNom() {
+        return nom;
     }
 }

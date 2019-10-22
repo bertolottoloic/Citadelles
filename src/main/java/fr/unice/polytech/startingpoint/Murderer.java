@@ -19,6 +19,8 @@ class Murderer extends Role {
         return;
     }
 
+    
+
     @Override
     void useSpecialPower() {
         this.action(this.player.getTargetToKill());

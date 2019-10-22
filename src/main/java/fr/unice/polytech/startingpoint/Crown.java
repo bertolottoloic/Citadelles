@@ -10,4 +10,5 @@ public class Crown {
     void goesTo(Player p){
         this.player = p;
     }
+
 }

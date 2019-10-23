@@ -9,6 +9,7 @@ public class Player {
 	private Hand hand;
 	private ArrayList<District> city;
 	Player nextPlayer;
+	Bot brain;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	private Role targetToKill;
@@ -17,7 +18,8 @@ public class Player {
 	private District districtToDestroy;
 	private Player targetToExchangeHandWith;
 
-	Player(int id){
+	Player(int id,Bot brain){
+		this.brain=brain;
 		this.id = id;
 		hand = new Hand();
 		city = new ArrayList<>();
@@ -37,6 +39,9 @@ public class Player {
 		return city;
 	}
 	
+	void takeCardsAtBeginning(){
+		hand.addAll(Assets.TheDeck.withdrawMany(4));//constante à retirer
+	}
 	void pickNewDistrict(District d) {
 		hand.add(d);
 	}
@@ -137,16 +142,15 @@ public class Player {
 		character.setPlayer(this);
 	}
 
-	/**
-	 * Pour qu'on puisse utiliser HashMap<Player,Integer>
-	 */
-	@Override
-	public int hashCode(){
-		return id;
+	
+	void surrenderToThief(){
+			System.out.println("Moi le joueur "+id+" j'ai été volé");
+			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
+			gold=0;//plus d'argent apres le vol
 	}
 	
 
-	public void playTurn(){
+	public void playTurn(Board board){
 		//check if murdered
 		//check if stolen
 		//pick money from Bank or pick card from Deck
@@ -158,40 +162,78 @@ public class Player {
 			return; //on sort de la fonction sans plus rien faire
 		}
 		else if(character.isStolen()){
-			System.out.println("Moi le joueur "+id+" j'ai été volé");
-			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
-			gold=0;//plus d'argent apres le vol
-
+			this.surrenderToThief();
+			
 		}
+
+		this.collectMoneyFromDistricts();
 
 		double f=Math.random();
 		System.out.println(f);
-		if(f<0.5){//on prend au hasard
+		if(brain.whatToPick()==0){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
-
-			if(Assets.TheBank.canWithdraw(character.getNumberGold())){
-				this.takeCoinsFromBank(character.getNumberGold());
-			}
-			else{
-				if(Assets.TheDeck.lenght()>=character.getNumberDistrictPickable()){	
-					ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
-					this.hand.addAll(districts);
-					System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
-				}
-				
-			}
+			
+				this.takeCoinsFromBank(character.getNumberGold());	
 		}
 		else{
-			if(Assets.TheDeck.lenght()>=character.getNumberDistrictPickable()){	
-					ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
-					this.hand.addAll(districts);
-					System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
-			}
-			else if(Assets.TheBank.canWithdraw(character.getNumberGold())){
-				this.takeCoinsFromBank(character.getNumberGold());
-				
-			}
+			
+			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
+			this.hand.addAll(districts);
+			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
 		}
+
+		if(brain.whatToDoFirst()==0){
+			specialMove();
+			action();
+
+		}else{
+			action();
+			specialMove();
+		}
+
+		
+		
+	}
+
+	private void action() {
+		District d=brain.whatToBuild(hand,gold);
+		if(d!=null){
+			addToTheCity(d);
+		}
+	}
+
+	public void specialMove() {
+
+		switch (character.toString()) {
+			case "Murderer":
+				targetToKill=brain.whoToKill();
+				break;
+
+			case "Thief":
+				targetToRob=brain.whoToSteal();
+				break;
+			case "Warlord":
+				targetToDestroyDistrict=brain.whoseCityToDestroy();
+				break;
+			
+			case "Wizard":
+				//
+				
+		
+			default:
+				break;
+
+			character.useSpecialPower();
+		}
+
+		character.useSpecialPower();
+	}
+
+	/**
+	 * Méthodes pour collecter l'argent des districts
+	 */
+	public void collectMoneyFromDistricts(){
+		character.collectRentMoney();
 	}
 	
 	@Override
@@ -214,5 +256,13 @@ public class Player {
 	public void setHand(ArrayList<District> liste) {
 		this.hand.clear();
 		this.hand.addAll(liste);
+	}
+
+	/**
+	 * Pour qu'on puisse utiliser HashMap<Player,Integer>
+	 */
+	@Override
+	public int hashCode(){
+		return id;
 	}
 }

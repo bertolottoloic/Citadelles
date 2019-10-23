@@ -157,5 +157,7 @@ abstract class Role {
         this.color = color;
     }
 
+    
+
 
 }

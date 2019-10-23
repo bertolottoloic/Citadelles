@@ -10,36 +10,40 @@ class Bot{
     }
 
     int whatToPick(){
-        return 0;
+        return random.nextInt(2);
     }
 
     int whatToDoFirst(){
-        return 0;
+        return random.nextInt(2);
     }
 
     District whatToBuild(ArrayList<District> hand, int gold){
-
+        for(District d : hand){
+            if(d.getCost()<=gold){return d;}
+        }
         return null;
     }
 
     int wantToActivate(){
-        return 0;
+        return random.nextInt(2);
     }
 
     Role whoToKill(){
-        return null;
+        return Assets.getRoles().get(random.nextInt(8));
     }
 
 
-    District whatToDestroy(){
+    District whatToDestroy(Player p){
+        if(p.getCity().size()>=1){
+            return p.getCity().get(0);}
         return null;
     }
-    Player whoseCityToDestroy(){
-        return null;
+    Player whoseCityToDestroy(ArrayList<Player> players){
+        return players.get(random.nextInt(2));
     }
 
     Role whoToSteal(){
-        return null;
+        return Assets.getRoles().get(random.nextInt(8));
     }
 
 

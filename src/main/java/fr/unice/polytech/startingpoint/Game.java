@@ -38,29 +38,11 @@ class Game {
          int index = players.indexOf(board.getCrown().getCrownOwner());
          while(i<players.size()){
              if(index==players.size()){index=0;}
-             //playTurn(players.get(index));
+             players.get(index).playTurn(board);
              index++;
              i++;
          }
     }
-
-    /*void playTurn(Player p){
-         Role role = p.getCharacter();
-        if(!role.isMurdered()) {
-            if(role.isStolen()){
-
-            }
-            p.start();
-            if(p.actionorBuild()==1){
-                p.action();
-                p.build();
-            }
-            else{
-                p.build();
-                p.action();
-            }
-        }
-    }*/
 
 
     Boolean getGameOver(){ return this.gameOver;}
@@ -70,7 +52,7 @@ class Game {
     void dealCards(int n){
         for(Player p : players){
             for(int i=0;i<n;i++){
-                p.pickNewDistrict(Assets.TheDeck.withdraw());
+                p.pickNewDistrict(board.getDeck().withdraw());
             }
         }
     }

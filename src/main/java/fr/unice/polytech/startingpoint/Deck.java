@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-
 class Deck{
     private ArrayList <District> list=new ArrayList<>();
     Deck(){

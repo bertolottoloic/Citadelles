@@ -9,6 +9,7 @@ public class Player {
 	private Hand hand;
 	private ArrayList<District> city;
 	Player nextPlayer;
+	Board board;
 	Bot brain;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
@@ -39,8 +40,8 @@ public class Player {
 		return city;
 	}
 	
-	void takeCardsAtBeginning(){
-		hand.addAll(Assets.TheDeck.withdrawMany(4));//constante à retirer
+	void takeCardsAtBeginning(Deck deck){
+		hand.addAll(deck.withdrawMany(4));//constante à retirer
 	}
 	void pickNewDistrict(District d) {
 		hand.add(d);
@@ -183,18 +184,18 @@ public class Player {
 		}
 		else{
 			
-			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
+			ArrayList<District> districts=board.getDeck().withdrawMany(this.character.getNumberDistrictPickable());
 			this.hand.addAll(districts);
-			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
+			System.out.println("Je prends "+this.character.getNumberDistrictPickable()+" districts");
 		}
 
 		if(brain.whatToDoFirst()==0){
-			specialMove();
+			specialMove(board.getPlayers());
 			action();
 
 		}else{
 			action();
-			specialMove();
+			specialMove(board.getPlayers());
 		}
 
 		
@@ -208,7 +209,7 @@ public class Player {
 		}
 	}
 
-	public void specialMove() {
+	public void specialMove(ArrayList<Player> players) {
 
 		switch (character.toString()) {
 			case "Murderer":
@@ -219,7 +220,7 @@ public class Player {
 				targetToRob=brain.whoToSteal();
 				break;
 			case "Warlord":
-				targetToDestroyDistrict=brain.whoseCityToDestroy();
+				targetToDestroyDistrict=brain.whoseCityToDestroy(players);
 				break;
 			
 			case "Wizard":
@@ -228,8 +229,6 @@ public class Player {
 		
 			default:
 				break;
-
-			character.useSpecialPower();
 		}
 
 		character.useSpecialPower();

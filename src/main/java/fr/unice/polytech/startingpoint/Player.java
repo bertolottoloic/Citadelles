@@ -47,8 +47,14 @@ public class Player {
 	}
 	
 	boolean addToTheCity(District theDistrict) {
+		for(District aDis: city){
+			if(theDistrict.equals(aDis)){
+				return false;
+			}
+		}
 		if(gold - theDistrict.getCost() >= 0) {
 			gold -= theDistrict.getCost();
+			Assets.TheBank.deposit(theDistrict.getCost());
 			city.add(theDistrict);
 			hand.remove(theDistrict);
 			return true;

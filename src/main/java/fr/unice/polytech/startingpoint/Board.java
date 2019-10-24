@@ -37,4 +37,31 @@ class Board{
     }
 
 
+    public boolean canWithdraw(int i) {
+        return true;
+    }
+
+    public ArrayList<District> withdrawMany(int i) {
+        return deck.withdrawMany(i);
+    }
+
+    public int withdraw(int i) {
+            if (bank.canWithdraw(i)){
+                bank.withdraw(i);
+                return i;
+            }
+            return 0;
+    }
+
+    public void deposit(int cost) {
+        bank.deposit(cost);
+    }
+
+    public ArrayList<District> exchangeMany(Hand hand) {
+        return deck.exchangeMany(hand);
+    }
+
+    public int numberOfCardsOfDeck() {
+        return this.deck.numberOfCards();
+    }
 }

@@ -39,7 +39,7 @@ class Deck{
     public ArrayList<District> withdrawMany(int nb){
         ArrayList<District> taken=new ArrayList<>();
         while(nb>0){
-            taken.add(list.remove(0));
+            taken.add(withdraw());
             nb--;
         }
         return taken;
@@ -66,7 +66,7 @@ class Deck{
         
      * 
      */
-    public void putbackMany(Collection<? extends District> c){
+    public void putbackMany(ArrayList<District> c){
         list.addAll(c);
         this.shuffle();
     }
@@ -92,7 +92,7 @@ class Deck{
     }
 
     /**
-     * @param c
+     * @param districts
             Une collection de cartes à remettre dans le deck
 
         @return 
@@ -103,18 +103,16 @@ class Deck{
         
      * 
      */
-    public ArrayList<District> exchangeMany(Collection<? extends District> c){
+    public ArrayList<District> exchangeMany(ArrayList<District> districts){
         ArrayList <District> l=new ArrayList<>();
-        if(c.size()>list.size()){
-            for(int i=0;i<c.size();i++){
-                l.add(this.withdraw());
-            }
-            list.addAll(c);
+        if(districts.size()<list.size()){
+            l = withdrawMany(districts.size());
+            list.addAll(districts);
         }
         return l;
     }
 
-    public int lenght(){
+    public int numberOfCards(){
         return list.size();
     }
 

@@ -13,7 +13,7 @@ public class Architect extends Role {
         *deux cartes en plus
         */
     void action(){
-        if(player.getBoard().lenght()>=2){
+        if(player.getBoard().numberOfCardsOfDeck()>=2){
             this.player.getHand().addAll(player.getBoard().withdrawMany(2));
         }
     }

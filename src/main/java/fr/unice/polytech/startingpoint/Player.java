@@ -99,9 +99,11 @@ public class Player {
 	 * par celle ci cela permet de savoir si l'argent voulue est disponible
 	 */
 	public void takeCoinsFromBank(int nb){
-		board.withdraw(nb);
-		System.out.println("Je retire "+character.getNumberGold()+" de la banque. ");
-		gold+=character.getNumberGold();
+		int pickGold = board.withdraw(nb);
+		if(pickGold>0) {
+			System.out.println("Je retire " + nb + " de la banque. ");
+			gold+=nb;
+		}
 	}
 
 	public void exchangeHands() {
@@ -162,7 +164,7 @@ public class Player {
 		if(brain.whatToPick()==0){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
-				this.takeCoinsFromBank(character.getNumberGold());	
+				this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
 			
@@ -210,7 +212,7 @@ public class Player {
 		if(f<0.5){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
-				this.takeCoinsFromBank(character.getNumberGold());	
+				this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
 			

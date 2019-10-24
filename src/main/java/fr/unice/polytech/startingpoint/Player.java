@@ -9,6 +9,7 @@ public class Player {
 	private Hand hand;
 	private ArrayList<District> city;
 	Player nextPlayer;
+	Board board;
 	Bot brain;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
@@ -41,8 +42,8 @@ public class Player {
 	}
 	
 	
-	void takeCardsAtBeginning(){
-		hand.addAll(Assets.TheDeck.withdrawMany(4));//constante à retirer
+	void takeCardsAtBeginning(Deck deck){
+		hand.addAll(deck.withdrawMany(4));//constante à retirer
 	}
 	/**
 	 * En tout début de partie chacun prend deux pièces avant 
@@ -165,18 +166,18 @@ public class Player {
 		}
 		else{
 			
-			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
+			ArrayList<District> districts=board.getDeck().withdrawMany(this.character.getNumberDistrictPickable());
 			this.hand.addAll(districts);
-			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
+			System.out.println("Je prends "+this.character.getNumberDistrictPickable()+" districts");
 		}
 
 		if(brain.whatToDoFirst()==0){
-			specialMove();
+			specialMove(board.getPlayers());
 			action();
 
 		}else{
 			action();
-			specialMove();
+			specialMove(board.getPlayers());
 		}
 
 		

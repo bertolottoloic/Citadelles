@@ -82,7 +82,7 @@ abstract class Role {
 
         for(District d:districts){
             if(d.getColor().equals(this.getColor())){
-                if(Assets.TheBank.canWithdraw(1)){ 
+                if(this.player.getBoard().canWithdraw(1)){
                     //Que se passe t-il si il y a pas assez d'argent dans la banque?
                     this.player.takeCoinsFromBank(1);
                 }

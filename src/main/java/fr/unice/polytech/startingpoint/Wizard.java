@@ -13,7 +13,7 @@ public class Wizard extends Role{
     @Override
     void useSpecialPower() {
         if(this.player.getTargetToExchangeHandWith()==null){
-          this.player.setHand(Assets.TheDeck.exchangeMany(this.player.getHand()));
+          this.player.setHand(player.getBoard().exchangeMany(this.player.getHand()));
         }
         else{
             this.action();

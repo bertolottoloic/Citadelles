@@ -42,8 +42,8 @@ public class Player {
 	}
 	
 	
-	void takeCardsAtBeginning(Deck deck){
-		hand.addAll(deck.withdrawMany(4));//constante à retirer
+	void takeCardsAtBeginning(){
+		hand.addAll(board.withdrawMany(4));//constante à retirer
 	}
 	/**
 	 * En tout début de partie chacun prend deux pièces avant 
@@ -53,7 +53,7 @@ public class Player {
 	 * obtient nullPointerException
 	 */
 	void takeCoinsAtBeginning(){
-		Assets.TheBank.withdraw(2);
+		board.withdraw(2);
 		System.out.println("Joueur "+id+" retire "+2+" de la banque. ");
 		gold+=2;
 	}
@@ -69,7 +69,7 @@ public class Player {
 		}
 		if(gold - theDistrict.getCost() >= 0) {
 			gold -= theDistrict.getCost();
-			Assets.TheBank.deposit(theDistrict.getCost());
+			board.deposit(theDistrict.getCost());
 			city.add(theDistrict);
 			hand.remove(theDistrict);
 			return true;
@@ -99,7 +99,7 @@ public class Player {
 	 * par celle ci cela permet de savoir si l'argent voulue est disponible
 	 */
 	public void takeCoinsFromBank(int nb){
-		Assets.TheBank.withdraw(nb);
+		board.withdraw(nb);
 		System.out.println("Je retire "+character.getNumberGold()+" de la banque. ");
 		gold+=character.getNumberGold();
 	}
@@ -172,12 +172,12 @@ public class Player {
 		}
 
 		if(brain.whatToDoFirst()==0){
-			specialMove(board.getPlayers());
+			specialMove();
 			action();
 
 		}else{
 			action();
-			specialMove(board.getPlayers());
+			specialMove();
 		}
 
 		
@@ -214,7 +214,7 @@ public class Player {
 		}
 		else{
 			
-			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
+			ArrayList<District> districts=board.withdrawMany(this.character.getNumberDistrictPickable());
 			this.hand.addAll(districts);
 			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
 		}
@@ -293,6 +293,12 @@ public class Player {
 		this.hand.clear();
 		this.hand.addAll(liste);
 	}
+
+	public Board getBoard() {
+		return board;
+	}
+
+
 	public Role getTargetToKill() {
 		return targetToKill;
 	}

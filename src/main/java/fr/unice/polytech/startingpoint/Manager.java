@@ -57,9 +57,8 @@ class Manager{
 
         for(Player p:players){
             p.takeCardsAtBeginning();
-            if(Assets.TheBank.canWithdraw(2)){
-                p.takeCoinsAtBeginning();
-            }
+            p.takeCoinsAtBeginning();
+
             p.setTargetToKill(Assets.TheArchitect);
             p.setTargetToRob(Assets.TheMerchant);
             

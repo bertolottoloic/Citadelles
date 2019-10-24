@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Assets {
-    public static final Deck TheDeck=new Deck();
-    public static final Bank TheBank=new Bank();
 
     public final static Murderer TheMurderer=new Murderer();
     public static final Thief TheThief=new Thief();

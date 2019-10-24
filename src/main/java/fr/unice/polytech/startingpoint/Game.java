@@ -17,7 +17,6 @@ class Game {
 
         while(gameOver){
             new DealRoles(this.players);
-            playAllTurns();
         }
         this.points=new HashMap<Player, Integer>();
         for(Player p : players){
@@ -29,19 +28,6 @@ class Game {
     void startGame(){
         dealCards(4);
         dealGolds(2);
-        Board board=new Board(this.players);
-    }
-
-
-    void playAllTurns(){
-         int i=0;
-         int index = players.indexOf(board.getCrown().getCrownOwner());
-         while(i<players.size()){
-             if(index==players.size()){index=0;}
-             players.get(index).playTurn(board);
-             index++;
-             i++;
-         }
     }
 
 

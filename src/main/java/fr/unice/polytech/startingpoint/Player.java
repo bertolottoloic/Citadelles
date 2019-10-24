@@ -205,7 +205,7 @@ public class Player {
 	}
 
 	protected void action() {
-		System.err.println("Joueur "+id+" fait quelque chose de super ....");
+		System.out.println("Joueur "+id+" reflechit à son action ...");
 	}
 
 	public void specialMove() {
@@ -306,6 +306,10 @@ public class Player {
 	public void setCharacter(Role character) {
 		this.character = character;
 		character.setPlayer(this);
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 	public int getGold() {

@@ -20,38 +20,38 @@ class  DeckTest{
 
     @Test
     void putBackOneTest() {
-        int oldLenght=d.lenght();
+        int oldLenght=d.numberOfCards();
         d.putbackOne(new District(5,5,"noblesse",""));
-        assertEquals(oldLenght+1, d.lenght());
+        assertEquals(oldLenght+1, d.numberOfCards());
     }
 
     @Test
     void putBackManyTest() {
-        int oldLenght=d.lenght();
+        int oldLenght=d.numberOfCards();
 
         toAdd.add(new District(4,4,"religion",""));
         toAdd.add(new District(1,3,"commerce",""));
         
         d.putbackMany(toAdd);
-        assertEquals(oldLenght+toAdd.size(), d.lenght());
+        assertEquals(oldLenght+toAdd.size(), d.numberOfCards());
     }
 
     @Test
     void exchangeManyTest() {
-        int oldLenght=d.lenght();
+        int oldLenght=d.numberOfCards();
 
         toAdd.add(new District(4,4,"religion",""));
         toAdd.add(new District(1,3,"commerce",""));
         
         d.exchangeMany(toAdd);
-        assertEquals(oldLenght, d.lenght());
+        assertEquals(oldLenght, d.numberOfCards());
     }
 
     @Test
     void exchangeOneTest() {
-        int oldLenght=d.lenght();
+        int oldLenght=d.numberOfCards();
         d.exchangeOne(new District(5,5,"noblesse",""));
-        assertEquals(oldLenght, d.lenght());
+        assertEquals(oldLenght, d.numberOfCards());
     }
     
 }

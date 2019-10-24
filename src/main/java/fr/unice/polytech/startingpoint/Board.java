@@ -6,22 +6,17 @@ import java.util.Random;
 class Board{
     private Deck deck;
     private Bank bank;
-    private ArrayList<Player> players;
     private Crown crown;
-    Board(ArrayList<Player> p){
+    ArrayList<Player> players;
+    Board(){
         this.crown=new Crown();
         this.deck=new Deck();
         this.bank = new Bank();
-        this.players=p;
-        crown.goesTo(selectRandomPlayer());
 
     }
 
     Bank getBank() {
         return bank;
-    }
-    ArrayList<Player> getPlayers() {
-        return players;
     }
     Crown getCrown() {
         return crown;
@@ -30,11 +25,6 @@ class Board{
         return deck;
     }
 
-    Player selectRandomPlayer(){
-        Random rand = new Random();
-        int random = rand.nextInt(players.size());
-        return players.get(random);
-    }
 
 
     public boolean canWithdraw(int i) {
@@ -63,5 +53,13 @@ class Board{
 
     public int numberOfCardsOfDeck() {
         return this.deck.numberOfCards();
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

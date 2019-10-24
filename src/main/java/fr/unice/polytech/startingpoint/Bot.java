@@ -13,20 +13,13 @@ class Bot extends Player{
 
     @Override
     public void chooseRole() {
-        Iterator<Role> it =Assets.leftRoles.iterator();
 
-        while(it.hasNext()){
-            Role r=it.next();
 
-            if(r.toString().equals("Murderer")){
-                setCharacter(r);
-                it.remove();
-                nextPlayer.chooseRole();
-                return;
-            }
-        }
 
-            super.chooseRole();
+
+
+                super.chooseRole();
+
 
     }
 
@@ -41,8 +34,9 @@ class Bot extends Player{
     @Override
     protected void action() {
         int i =0;
-
-            for (District d : getHand()) {
+            ArrayList<District> currHand=new ArrayList<District>();
+            currHand.addAll(getHand());
+            for (District d : currHand){
                 if ((d.getCost() < getGold())&& i<getCharacter().getNumberDistrictBuildable()) {
                     addToTheCity(d);
                     i++;

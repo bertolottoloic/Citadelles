@@ -1,16 +1,20 @@
 package fr.unice.polytech.startingpoint;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 class Manager{
 
-    private static Crown crown=new Crown();
+    private  Crown crown=new Crown();
+    private Board board=new Board();
 
     /**
      * Tout ce qui est commun à un tour complet de table excluant ce qui ce passe en début de partie
      * @param players
      */
-    static void oneRound(Player ...players){
+     void oneRound(Player ...players){
 
         Assets.readyToDistribute();
         crown.getCrownOwner().chooseRole();
@@ -47,20 +51,22 @@ class Manager{
 
 
     }
-    static void letsPlay(Player ...players){
+     void letsPlay(Player ...players){
 
         //On crée met les players en cercle
         for(int i=0;i<players.length-1;i++){
             players[i].setNextPlayer(players[i+1]);
         }
         players[players.length-1].setNextPlayer(players[0]);
+        ArrayList<Player> list = new ArrayList(Arrays.asList(players));
+        board.setPlayers(list);
 
         for(Player p:players){
+            p.setBoard(board);
             p.takeCardsAtBeginning();
             p.takeCoinsAtBeginning();
 
-            p.setTargetToKill(Assets.TheArchitect);
-            p.setTargetToRob(Assets.TheMerchant);
+
             
         }
 

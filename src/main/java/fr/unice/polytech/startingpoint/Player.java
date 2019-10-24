@@ -18,29 +18,43 @@ public class Player {
 	private District districtToDestroy;
 	private Player targetToExchangeHandWith;
 
+	/*Attributs permeetants de savoir si on a déja joué ou choisi son personnage */
+	private boolean alreadyChosenRole;
+	private boolean alreadyPlayedTurn;
+
+	/**
+	 * 
+	 * @param id
+	 * @param brain
+	 */
 	Player(int id,Bot brain){
 		this.brain=brain;
 		this.id = id;
 		hand = new Hand();
 		city = new ArrayList<>();
 	}
-	
-	public int getGold() {
-		return gold;
-	}
 
-	public Hand getHand(){return hand;}
-	
-	public int getId() {
-		return id;
+	Player(int id){
+		this.id = id;
+		hand = new Hand();
+		city = new ArrayList<>();
 	}
 	
-	ArrayList<District> getCity() {
-		return city;
-	}
 	
 	void takeCardsAtBeginning(){
 		hand.addAll(Assets.TheDeck.withdrawMany(4));//constante à retirer
+	}
+	/**
+	 * En tout début de partie chacun prend deux pièces avant 
+	 * même de prendre son personnage
+	 * D'où cette méthode puisque si on appelle
+	 * takeCoinsFromBank avant d'avoir les personnages on 
+	 * obtient nullPointerException
+	 */
+	void takeCoinsAtBeginning(){
+		Assets.TheBank.withdraw(2);
+		System.out.println("Joueur "+id+" retire "+2+" de la banque. ");
+		gold+=2;
 	}
 	void pickNewDistrict(District d) {
 		hand.add(d);
@@ -99,6 +113,185 @@ public class Player {
 		targetToExchangeHandWith.hand.addAll(tmpHand);
 	}
 
+	
+	
+	void surrenderToThief(){
+			System.out.println("Moi le joueur "+id+" j'ai été volé");
+			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
+			gold=0;//plus d'argent apres le vol
+	}
+
+	/**
+	 * Méthode de choix de Personnages
+	 * pour le moment il choisit le premier Personnage
+	 *  puis appelle la méthode sur nextPlayer
+	 */
+
+	public void chooseRole(){
+		if(!alreadyChosenRole){
+			setCharacter(Assets.leftRoles.remove(0));
+			alreadyChosenRole=true;
+			//appele le prochain player
+			nextPlayer.chooseRole();
+		}
+		
+    }
+	
+
+	public void playTurn(Board board){
+		//check if murdered
+		//check if stolen
+		//pick money from Bank or pick card from Deck
+		//collect rentMoney
+		//use special power of Role if any
+
+		if(character.isMurdered()){
+			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
+			return; //on sort de la fonction sans plus rien faire
+		}
+		else if(character.isStolen()){
+			this.surrenderToThief();
+			
+		}
+
+		this.collectMoneyFromDistricts();
+
+		double f=Math.random();
+		System.out.println(f);
+		if(brain.whatToPick()==0){//on prend au hasard
+			//après c'est l'IA qui doit prendre la décision
+			
+				this.takeCoinsFromBank(character.getNumberGold());	
+		}
+		else{
+			
+			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
+			this.hand.addAll(districts);
+			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
+		}
+
+		if(brain.whatToDoFirst()==0){
+			specialMove();
+			action();
+
+		}else{
+			action();
+			specialMove();
+		}
+
+		
+		
+	}
+	/**
+	 * check if murdered
+	 * check if stolen
+	 * pick money from Bank or pick card from Deck
+	 * collect rentMoney
+	 * use special power of Role if any
+	 * 
+	 * 
+	 * 
+	 * */
+	public void playTurn(){
+		if(character.isMurdered()){
+			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
+			return; //on sort de la fonction sans plus rien faire
+		}
+		else if(character.isStolen()){
+			this.surrenderToThief();
+			
+		}
+
+		this.collectMoneyFromDistricts();
+
+		double f=Math.random();
+		//System.out.println(f);
+		if(f<0.5){//on prend au hasard
+			//après c'est l'IA qui doit prendre la décision
+			
+				this.takeCoinsFromBank(character.getNumberGold());	
+		}
+		else{
+			
+			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
+			this.hand.addAll(districts);
+			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
+		}
+
+		
+		specialMove();
+		action();
+		
+	}
+
+	/**
+	 * Méthode pour remettre au default les valeurs 
+	 * changées par le tour qui vient d'être joué
+	 * Il peut y avoir une méthode pareille pour une 
+	 * partie complète 
+	 *
+	 */
+	void reInitializeForNextTurn(){
+		alreadyChosenRole=false;
+		alreadyPlayedTurn=false;
+		character=null;
+		targetToDestroyDistrict=null;
+		targetToExchangeHandWith=null;
+		targetToKill=null;
+		targetToRob=null;
+
+		// forgot something ??
+	}
+
+	protected void action() {
+		System.err.println("Joueur "+id+" fait quelque chose de super ....");
+	}
+
+	public void specialMove() {
+		System.out.println("Joueur "+id+" reflechit à quoi faire ...");
+		character.useSpecialPower();
+	}
+
+	/**
+	 * Méthode pour collecter l'argent des districts
+	 */
+	public void collectMoneyFromDistricts(){
+		character.collectRentMoney();
+	}
+	
+	@Override
+	public String toString() {
+		return "**********\n"
+			+ "Player #" + id + "\n"
+			+ "Current role: " + character +"\n"
+			+ "Amount of gold: " + gold + "\n"
+			+ "City :" + city +"\n";
+	}
+
+	
+
+	/**
+	 * Pour qu'on puisse utiliser HashMap<Player,Integer>
+	 */
+	@Override
+	public int hashCode(){
+		return id;
+	}
+
+	/* ----- setters et getters ----*/
+
+	public Player getNextPlayer() {
+		return nextPlayer;
+	}
+
+	public void setNextPlayer(Player nextPlayer) {
+		this.nextPlayer = nextPlayer;
+	}
+
+	public void setHand(ArrayList<District> liste) {
+		this.hand.clear();
+		this.hand.addAll(liste);
+	}
 	public Role getTargetToKill() {
 		return targetToKill;
 	}
@@ -148,127 +341,18 @@ public class Player {
 		character.setPlayer(this);
 	}
 
+	public int getGold() {
+		return gold;
+	}
+
+	public Hand getHand(){return hand;}
 	
-	void surrenderToThief(){
-			System.out.println("Moi le joueur "+id+" j'ai été volé");
-			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
-			gold=0;//plus d'argent apres le vol
-	}
-	
-
-	public void playTurn(Board board){
-		//check if murdered
-		//check if stolen
-		//pick money from Bank or pick card from Deck
-		//collect rentMoney
-		//use special power of Role if any
-
-		if(character.isMurdered()){
-			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
-			return; //on sort de la fonction sans plus rien faire
-		}
-		else if(character.isStolen()){
-			this.surrenderToThief();
-			
-		}
-
-		this.collectMoneyFromDistricts();
-
-		double f=Math.random();
-		System.out.println(f);
-		if(brain.whatToPick()==0){//on prend au hasard
-			//après c'est l'IA qui doit prendre la décision
-			
-				this.takeCoinsFromBank(character.getNumberGold());	
-		}
-		else{
-			
-			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
-			this.hand.addAll(districts);
-			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
-		}
-
-		if(brain.whatToDoFirst()==0){
-			specialMove();
-			action();
-
-		}else{
-			action();
-			specialMove();
-		}
-
-		
-		
-	}
-
-	private void action() {
-		District d=brain.whatToBuild(hand,gold);
-		if(d!=null){
-			addToTheCity(d);
-		}
-	}
-
-	public void specialMove() {
-
-		switch (character.toString()) {
-			case "Murderer":
-				targetToKill=brain.whoToKill();
-				break;
-
-			case "Thief":
-				targetToRob=brain.whoToSteal();
-				break;
-			case "Warlord":
-				targetToDestroyDistrict=brain.whoseCityToDestroy();
-				break;
-			
-			case "Wizard":
-				//
-				
-		
-			default:
-				break;
-
-			character.useSpecialPower();
-		}
-
-		character.useSpecialPower();
-	}
-
-	/**
-	 * Méthodes pour collecter l'argent des districts
-	 */
-	public void collectMoneyFromDistricts(){
-		character.collectRentMoney();
-	}
-	
-	@Override
-	public String toString() {
-		return "**********\n"
-			+ "Player #" + id + "\n"
-			+ "Current role: " + character +"\n"
-			+ "Amount of gold: " + gold + "\n"
-			+ "City :" + city +"\n";
-	}
-
-	public Player getNextPlayer() {
-		return nextPlayer;
-	}
-
-	public void setNextPlayer(Player nextPlayer) {
-		this.nextPlayer = nextPlayer;
-	}
-
-	public void setHand(ArrayList<District> liste) {
-		this.hand.clear();
-		this.hand.addAll(liste);
-	}
-
-	/**
-	 * Pour qu'on puisse utiliser HashMap<Player,Integer>
-	 */
-	@Override
-	public int hashCode(){
+	public int getId() {
 		return id;
 	}
+	
+	ArrayList<District> getCity() {
+		return city;
+	}
+
 }

@@ -13,7 +13,7 @@ public class Warlord extends Role {
 
     @Override
     void useSpecialPower() {
-        action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
+        //action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
 
     }
 

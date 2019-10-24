@@ -1,52 +1,76 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
-class Bot{
+class Bot extends Player{
     Random random=new Random();
 
-    Bot(){
+    Bot(int id){
+        super(id);
     }
 
-    int whatToPick(){
-        return random.nextInt(2);
-    }
+    @Override
+    public void chooseRole() {
+        Iterator<Role> it =Assets.leftRoles.iterator();
 
-    int whatToDoFirst(){
-        return random.nextInt(2);
-    }
+        while(it.hasNext()){
+            Role r=it.next();
 
-    District whatToBuild(ArrayList<District> hand, int gold){
-        for(District d : hand){
-            if(d.getCost()<=gold){return d;}
+            if(r.toString().equals("Murderer")){
+                setCharacter(r);
+                it.remove();
+                nextPlayer.chooseRole();
+                return;
+            }
         }
-        return null;
+
+            super.chooseRole();
+
     }
 
-    int wantToActivate(){
-        return random.nextInt(2);
+    @Override
+    public void specialMove() {
+        targetToKill=pickRandomTargetRole();
+        targetToRob=pickRandomTargetRole();
+        targetToExchangeHandWith=pickRandomTargetPlayer();
+        super.specialMove();
     }
 
-    Role whoToKill(){
-        return Assets.getRoles().get(random.nextInt(8));
+    @Override
+    protected void action() {
+        int i =0;
+
+            for (District d : getHand()) {
+                if ((d.getCost() < getGold())&& i<getCharacter().getNumberDistrictBuildable()) {
+                    addToTheCity(d);
+                    i++;
+                }
+            }
+        super.action();
     }
 
-
-    District whatToDestroy(Player p){
-        if(p.getCity().size()>=1){
-            return p.getCity().get(0);}
-        return null;
-    }
-    Player whoseCityToDestroy(ArrayList<Player> players){
-        return players.get(random.nextInt(2));
+    @Override
+    boolean coinsOrDistrict() {
+        if(random.nextInt(2)==1){
+        return true;}
+        else
+            {return false;}
     }
 
-    Role whoToSteal(){
-        return Assets.getRoles().get(random.nextInt(8));
+    @Override
+    protected boolean isBuildingFirst() {
+        if(random.nextInt(2)==1){
+            return true;}
+        else
+        {return false;}
     }
 
-
-
-
+    Role pickRandomTargetRole(){
+        return Assets.getRoles().get(random.nextInt(9));
+    }
+    Player pickRandomTargetPlayer(){
+        return getBoard().getPlayers().get(random.nextInt(4));
+    }
 }

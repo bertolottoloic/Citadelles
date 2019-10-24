@@ -8,16 +8,15 @@ public class Player {
 	private int gold;
 	private Hand hand;
 	private ArrayList<District> city;
-	Player nextPlayer;
-	Board board;
-	Bot brain;
+	protected Player nextPlayer;
+	private Board board;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
-	private Role targetToKill;
-	private Role targetToRob;
-	private Player targetToDestroyDistrict;
-	private District districtToDestroy;
-	private Player targetToExchangeHandWith;
+	protected Role targetToKill;
+	protected Role targetToRob;
+	protected Player targetToDestroyDistrict;
+	protected District districtToDestroy;
+	protected Player targetToExchangeHandWith;
 
 	/*Attributs permeetants de savoir si on a déja joué ou choisi son personnage */
 	private boolean alreadyChosenRole;
@@ -26,14 +25,7 @@ public class Player {
 	/**
 	 * 
 	 * @param id
-	 * @param brain
 	 */
-	Player(int id,Bot brain){
-		this.brain=brain;
-		this.id = id;
-		hand = new Hand();
-		city = new ArrayList<>();
-	}
 
 	Player(int id){
 		this.id = id;
@@ -53,7 +45,7 @@ public class Player {
 	 * obtient nullPointerException
 	 */
 	void takeCoinsAtBeginning(){
-		board.withdraw(2);
+		getBoard().withdraw(2);
 		System.out.println("Joueur "+id+" retire "+2+" de la banque. ");
 		gold+=2;
 	}
@@ -69,7 +61,7 @@ public class Player {
 		}
 		if(gold - theDistrict.getCost() >= 0) {
 			gold -= theDistrict.getCost();
-			board.deposit(theDistrict.getCost());
+			getBoard().deposit(theDistrict.getCost());
 			city.add(theDistrict);
 			hand.remove(theDistrict);
 			return true;
@@ -99,7 +91,7 @@ public class Player {
 	 * par celle ci cela permet de savoir si l'argent voulue est disponible
 	 */
 	public void takeCoinsFromBank(int nb){
-		board.withdraw(nb);
+		getBoard().withdraw(nb);
 		System.out.println("Je retire "+character.getNumberGold()+" de la banque. ");
 		gold+=character.getNumberGold();
 	}
@@ -137,52 +129,11 @@ public class Player {
 		}
 		
     }
-	
 
-	public void playTurn(Board board){
-		//check if murdered
-		//check if stolen
-		//pick money from Bank or pick card from Deck
-		//collect rentMoney
-		//use special power of Role if any
-
-		if(character.isMurdered()){
-			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
-			return; //on sort de la fonction sans plus rien faire
-		}
-		else if(character.isStolen()){
-			this.surrenderToThief();
-			
-		}
-
-		this.collectMoneyFromDistricts();
-
-		double f=Math.random();
-		System.out.println(f);
-		if(brain.whatToPick()==0){//on prend au hasard
-			//après c'est l'IA qui doit prendre la décision
-			
-				this.takeCoinsFromBank(character.getNumberGold());	
-		}
-		else{
-			
-			ArrayList<District> districts=board.getDeck().withdrawMany(this.character.getNumberDistrictPickable());
-			this.hand.addAll(districts);
-			System.out.println("Je prends "+this.character.getNumberDistrictPickable()+" districts");
-		}
-
-		if(brain.whatToDoFirst()==0){
-			specialMove();
-			action();
-
-		}else{
-			action();
-			specialMove();
-		}
-
-		
-		
+    boolean coinsOrDistrict(){
+		return true;
 	}
+
 	/**
 	 * check if murdered
 	 * check if stolen
@@ -205,24 +156,31 @@ public class Player {
 
 		this.collectMoneyFromDistricts();
 
-		double f=Math.random();
-		//System.out.println(f);
-		if(f<0.5){//on prend au hasard
+		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
 				this.takeCoinsFromBank(character.getNumberGold());	
 		}
 		else{
 			
-			ArrayList<District> districts=board.withdrawMany(this.character.getNumberDistrictPickable());
+			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
 			this.hand.addAll(districts);
 			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
 		}
 
+		if(isBuildingFirst()) {
+			action();
+			specialMove();
+		}
+		else{
+			specialMove();
+			action();
+		}
 		
-		specialMove();
-		action();
-		
+	}
+
+	protected boolean isBuildingFirst() {
+		return true;
 	}
 
 	/**

@@ -1,15 +1,14 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.board;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 
-class Deck{
-    private ArrayList <District> list=new ArrayList<>();
-    Deck(){
-        list=DistrictsInput.getDistricts();
+public class Deck{
+    private ArrayList <District> list;
+    public Deck(){
+        list= DistrictsInput.getDistricts();
 
         this.shuffle();//We shuffle the districts
     }
@@ -25,7 +24,6 @@ class Deck{
     }
 
     public District withdraw(){
-
         if(!list.isEmpty()){
             return list.remove(0);
         }

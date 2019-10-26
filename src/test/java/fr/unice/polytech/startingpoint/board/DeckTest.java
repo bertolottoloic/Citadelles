@@ -1,5 +1,7 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.board;
 
+import fr.unice.polytech.startingpoint.board.Deck;
+import fr.unice.polytech.startingpoint.board.District;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

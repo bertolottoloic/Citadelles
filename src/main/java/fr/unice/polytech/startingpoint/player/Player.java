@@ -1,4 +1,8 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.player;
+
+import fr.unice.polytech.startingpoint.board.*;
+import fr.unice.polytech.startingpoint.game.Assets;
+import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
 
@@ -8,17 +12,17 @@ public class Player {
 	private int gold;
 	private Hand hand;
 	private ArrayList<District> city;
-	protected Player nextPlayer;
+	private Player nextPlayer;
 	private Board board;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	protected Role targetToKill;
 	protected Role targetToRob;
-	protected Player targetToDestroyDistrict;
-	protected District districtToDestroy;
+	private Player targetToDestroyDistrict;
+	private District districtToDestroy;
 	protected Player targetToExchangeHandWith;
 
-	/*Attributs permeetants de savoir si on a déja joué ou choisi son personnage */
+	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	private boolean alreadyChosenRole;
 	private boolean alreadyPlayedTurn;
 
@@ -27,14 +31,14 @@ public class Player {
 	 * @param id
 	 */
 
-	Player(int id){
+	public Player(int id){
 		this.id = id;
 		hand = new Hand();
 		city = new ArrayList<>();
 	}
 	
 	
-	void takeCardsAtBeginning(){
+	public void takeCardsAtBeginning(){
 		hand.addAll(board.withdrawMany(4));//constante à retirer
 	}
 	/**
@@ -44,16 +48,16 @@ public class Player {
 	 * takeCoinsFromBank avant d'avoir les personnages on 
 	 * obtient nullPointerException
 	 */
-	void takeCoinsAtBeginning(){
+	public void takeCoinsAtBeginning(){
 		getBoard().withdraw(2);
 		System.out.println("Joueur "+id+" retire "+2+" de la banque. ");
 		gold+=2;
 	}
-	void pickNewDistrict(District d) {
+	public void pickNewDistrict(District d) {
 		hand.add(d);
 	}
 	
-	boolean addToTheCity(District theDistrict) {
+	public boolean addToTheCity(District theDistrict) {
 		for(District aDis: city){
 			if(theDistrict.equals(aDis)){
 				return false;
@@ -64,13 +68,14 @@ public class Player {
 			getBoard().deposit(theDistrict.getCost());
 			city.add(theDistrict);
 			hand.remove(theDistrict);
+			System.out.println("Joueur "+id+" construit \n"+theDistrict.toString());
 			return true;
 		}
 		return false;
 	}
 	
 	
-	void addMoney(int amount) {
+	public void addMoney(int amount) {
 		gold+= amount;
 	}
 
@@ -93,7 +98,7 @@ public class Player {
 	public void takeCoinsFromBank(int nb){
 		int pickGold = board.withdraw(nb);
 		if(pickGold>0) {
-			System.out.println("Je retire " + nb + " de la banque. ");
+			System.out.println("Joueur "+id+" retire " + nb + " de la banque. ");
 			gold+=nb;
 		}
 	}
@@ -110,7 +115,7 @@ public class Player {
 
 	
 	
-	void surrenderToThief(){
+	private void surrenderToThief(){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
 			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
 			gold=0;//plus d'argent apres le vol
@@ -132,7 +137,7 @@ public class Player {
 		
     }
 
-    boolean coinsOrDistrict(){
+    public boolean coinsOrDistrict(){
 		return true;
 	}
 
@@ -148,7 +153,7 @@ public class Player {
 	 * */
 	public void playTurn(){
 		if(character.isMurdered()){
-			System.out.println("Moi le joueur "+id+" je passe mon tour parce que j'ai été tué");
+			System.out.println("Joueur "+id+" passe son tour car il a été tué");
 			return; //on sort de la fonction sans plus rien faire
 		}
 		else if(character.isStolen()){
@@ -167,7 +172,7 @@ public class Player {
 			
 			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
 			this.hand.addAll(districts);
-			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");
+			System.out.println("Joueur "+id+" prend "+this.character.getNumberDistrictPickable()+" districts");
 		}
 
 		if(isBuildingFirst()) {
@@ -192,7 +197,7 @@ public class Player {
 	 * partie complète 
 	 *
 	 */
-	void reInitializeForNextTurn(){
+	public void reInitializeForNextTurn(){
 		alreadyChosenRole=false;
 		alreadyPlayedTurn=false;
 		character=null;
@@ -216,7 +221,7 @@ public class Player {
 	/**
 	 * Méthode pour collecter l'argent des districts
 	 */
-	public void collectMoneyFromDistricts(){
+	private void collectMoneyFromDistricts(){
 		character.collectRentMoney();
 	}
 	
@@ -299,7 +304,7 @@ public class Player {
 		this.targetToExchangeHandWith = targetToExchangeHandWith;
 	}
 
-	public Role getCharacter() {
+	Role getCharacter() {
 		return character;
 	}
 
@@ -312,7 +317,7 @@ public class Player {
 		this.board = board;
 	}
 
-	public int getGold() {
+	int getGold() {
 		return gold;
 	}
 
@@ -322,7 +327,7 @@ public class Player {
 		return id;
 	}
 	
-	ArrayList<District> getCity() {
+	public ArrayList<District> getCity() {
 		return city;
 	}
 

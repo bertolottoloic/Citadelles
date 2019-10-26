@@ -1,9 +1,9 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
 
 
 public class Bishop extends Role{
 
-    Bishop(){
+    public Bishop(){
         super(5);
         this.setColor("religion");
     }
@@ -12,7 +12,7 @@ public class Bishop extends Role{
     }
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         // TODO Auto-generated method stub
 
     }

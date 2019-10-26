@@ -1,29 +1,32 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
+
+import fr.unice.polytech.startingpoint.board.*;
+import fr.unice.polytech.startingpoint.player.*;
 
 import java.util.ArrayList;
 
-abstract class Role {
-    protected Player player;
-    protected final int position;
-    protected int numberDistrictBuildable = 1;
+public abstract class Role {
+     protected Player player;
+     private final int position;
+     int numberDistrictBuildable = 1;
     /**
      * Nombre de pieces qu'on peut retirer de la banque
      * n'inclut pas le nombre de pieces qu'on
      * gagne grace au matching Role.color==Disctrict.color
      */
-    protected int numberGold = 2;
+     int numberGold = 2;
     /**
      * Permet de savoir si un Role est volé
      */
-    protected boolean isStolen = false;
+     boolean isStolen = false;
     /**
      * Permet de savoir si on est tué
      */
-    protected boolean isMurdered = false;
+     private boolean isMurdered = false;
     /**
      * Nombre de districts qu'on peut consulter dans le Deck
      */
-    protected int numberDistrictPickable = 2;
+    private int numberDistrictPickable = 2;
     /**
      * Nombre de districts parmi les cartes du Deck consulter que le joueur peut garder
      * Change pour l'architecte
@@ -33,7 +36,7 @@ abstract class Role {
      * Couleur du Role 
      * Penser à utiliser une enum Gem ou Color au lieu de String
      */
-    protected String color="#";
+    private String color="#";
     Role(int position) {
         this.position = position;
     }
@@ -50,7 +53,7 @@ abstract class Role {
      * affecté par un tour précédent à leur valeur par défaut 
      * eg isStolen,isMurdered,player ...
      */
-    void reInitialize(){
+    public void reInitialize(){
         isMurdered=false;
         isStolen=false;
         player=null;
@@ -66,7 +69,7 @@ abstract class Role {
      * eg: Murderer ---> player.getTargetToKill
      *  */
 
-    abstract void useSpecialPower();
+    public abstract void useSpecialPower();
 
     /**
      * Le Role est chargé de collecter l'argent généré par les cités
@@ -102,7 +105,7 @@ abstract class Role {
 
     /* Les getters et setters */
 
-    Player getPlayer(){
+    public Player getPlayer(){
         return this.player;
     }
 
@@ -110,19 +113,19 @@ abstract class Role {
         return this.position;
     }
 
-    int getNumberDistrictBuildable(){
+    public int getNumberDistrictBuildable(){
         return this.numberDistrictBuildable;
     }
 
-    int getNumberDistrictPickable() {
+    public int getNumberDistrictPickable() {
         return numberDistrictPickable;
     }
 
-    int getNumberGold(){
+    public int getNumberGold(){
         return this.numberGold;
     }
 
-    void setPlayer(Player player){
+    public void setPlayer(Player player){
         this.player = player;
     }
 
@@ -138,19 +141,19 @@ abstract class Role {
         this.isMurdered = true;
     }
 
-    boolean isMurdered(){
+    public boolean isMurdered(){
         return this.isMurdered;
     }
 
-    boolean isStolen(){
+    public boolean isStolen(){
         return this.isStolen;
     }
 
-    public String getColor() {
+    private String getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+     void setColor(String color) {
         this.color = color;
     }
 

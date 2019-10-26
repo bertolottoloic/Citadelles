@@ -1,18 +1,21 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
+
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.player.Player;
 
 public class Warlord extends Role {
 
-    Warlord(){
+    public Warlord(){
         super(8);
         this.setColor("soldatesque");
     }
 
-    void action(Player target,District toDestroy){
+    void action(Player target, District toDestroy){
         target.deleteDistrictFromCity(toDestroy);
     }
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         //action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
 
     }

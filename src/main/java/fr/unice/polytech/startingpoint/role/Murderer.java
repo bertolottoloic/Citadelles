@@ -1,12 +1,12 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
 
-class Murderer extends Role {
+public class Murderer extends Role {
 
-    Murderer(){
+    public Murderer(){
         super(1);
     }
 
-    void action(Role c){
+    private void action(Role c){
         c.murdered();
         System.out.println(toString()+" ( joueur numero "+ player.getId()+" )"+"tue le "+c.toString());
     }
@@ -22,7 +22,7 @@ class Murderer extends Role {
     
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         this.action(this.player.getTargetToKill());
 
     }

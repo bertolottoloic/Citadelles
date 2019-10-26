@@ -1,5 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.game.Manager;
+import fr.unice.polytech.startingpoint.player.Bot;
+import fr.unice.polytech.startingpoint.player.Player;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

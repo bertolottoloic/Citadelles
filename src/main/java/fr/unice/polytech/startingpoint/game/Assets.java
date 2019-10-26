@@ -1,4 +1,6 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.game;
+
+import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +44,7 @@ public class Assets {
 
     }
 
-    static ArrayList<Role> getRoles(){
+    public static ArrayList<Role> getRoles(){
         ArrayList<Role> tmp=new ArrayList<>();
         tmp.addAll(allRoles);
         return tmp;

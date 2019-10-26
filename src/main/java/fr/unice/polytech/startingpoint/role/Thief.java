@@ -1,8 +1,8 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
 
 public class Thief extends Role {
 
-    Thief(){
+    public Thief(){
         super(2);
         this.isStolen = false;
     }
@@ -11,7 +11,7 @@ public class Thief extends Role {
         return;
     }
 
-    void action(Role c){
+    private void action(Role c){
         if (!c.isMurdered()) {
             c.stolen();
             System.out.println(toString() + " ( joueur numero " + player.getId() + " )" + "vole le " + c.toString());
@@ -19,7 +19,7 @@ public class Thief extends Role {
     }
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         action(this.player.getTargetToRob());
 
     }

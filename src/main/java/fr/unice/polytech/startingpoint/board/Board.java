@@ -1,14 +1,18 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.board;
+
+
+import fr.unice.polytech.startingpoint.player.Hand;
+import fr.unice.polytech.startingpoint.player.Player;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-class Board{
+public class Board{
     private Deck deck;
     private Bank bank;
     private Crown crown;
-    ArrayList<Player> players;
-    Board(){
+    private ArrayList<Player> players;
+
+    public Board(){
         this.crown=new Crown();
         this.deck=new Deck();
         this.bank = new Bank();
@@ -21,7 +25,7 @@ class Board{
     Crown getCrown() {
         return crown;
     }
-    Deck getDeck() {
+    public Deck getDeck() {
         return deck;
     }
 
@@ -41,6 +45,13 @@ class Board{
                 return i;
             }
             return 0;
+    }
+    public District draw() {
+        if (deck.withdraw()!=null){
+            return deck.withdraw();
+
+        }
+        return null;
     }
 
     public void deposit(int cost) {
@@ -62,4 +73,5 @@ class Board{
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
 }

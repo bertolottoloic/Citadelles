@@ -1,6 +1,6 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.board;
 
-class District{
+public class District{
     private final int cost;
     private final int value;
     private String color; /* color aussi pourrait etre final dépend de si on implémente la carte
@@ -9,7 +9,7 @@ class District{
     
 
     
-    District(int cost,int value,String color,String nom){
+    public District(int cost, int value, String color, String nom){
         this.cost=cost;
         this.value=value;
         this.color=color;

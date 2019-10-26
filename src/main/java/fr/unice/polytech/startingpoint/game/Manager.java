@@ -1,20 +1,23 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.game;
 
-import java.lang.reflect.Array;
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Crown;
+import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.role.Role;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
-class Manager{
+public class Manager{
 
-    private  Crown crown=new Crown();
+    private Crown crown=new Crown();
     private Board board=new Board();
 
     /**
      * Tout ce qui est commun à un tour complet de table excluant ce qui ce passe en début de partie
      * @param players
      */
-     void oneRound(Player ...players){
+     void oneRound(Player...players){
 
         Assets.readyToDistribute();
         crown.getCrownOwner().chooseRole();
@@ -51,7 +54,7 @@ class Manager{
 
 
     }
-     void letsPlay(Player ...players){
+     public void letsPlay(Player... players){
 
         //On crée met les players en cercle
         for(int i=0;i<players.length-1;i++){

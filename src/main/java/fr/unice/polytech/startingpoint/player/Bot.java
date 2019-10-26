@@ -1,26 +1,22 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.player;
+
+import fr.unice.polytech.startingpoint.game.Assets;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
-class Bot extends Player{
-    Random random=new Random();
+public class Bot extends Player{
+    private Random random=new Random();
 
-    Bot(int id){
+    public Bot(int id){
         super(id);
     }
 
     @Override
     public void chooseRole() {
-
-
-
-
-
                 super.chooseRole();
-
-
     }
 
     @Override
@@ -46,7 +42,7 @@ class Bot extends Player{
     }
 
     @Override
-    boolean coinsOrDistrict() {
+    public boolean coinsOrDistrict() {
         if(random.nextInt(2)==1){
         return true;}
         else
@@ -62,7 +58,7 @@ class Bot extends Player{
     }
 
     Role pickRandomTargetRole(){
-        return Assets.getRoles().get(random.nextInt(9));
+        return Assets.getRoles().get(random.nextInt(8));
     }
     Player pickRandomTargetPlayer(){
         return getBoard().getPlayers().get(random.nextInt(4));

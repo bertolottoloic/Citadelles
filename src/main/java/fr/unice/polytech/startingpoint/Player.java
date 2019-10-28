@@ -172,12 +172,12 @@ public class Player {
 		}
 
 		if(brain.whatToDoFirst()==0){
-			specialMove(board.getPlayers());
+			specialMove();
 			action();
 
 		}else{
 			action();
-			specialMove(board.getPlayers());
+			specialMove();
 		}
 
 		
@@ -213,7 +213,6 @@ public class Player {
 				this.takeCoinsFromBank(character.getNumberGold());	
 		}
 		else{
-			
 			ArrayList<District> districts=Assets.TheDeck.withdrawMany(this.character.getNumberDistrictPickable());
 			this.hand.addAll(districts);
 			System.out.println("Je prend "+this.character.getNumberDistrictPickable()+" districts");

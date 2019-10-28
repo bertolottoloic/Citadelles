@@ -105,7 +105,7 @@ class Deck{
      */
     public ArrayList<District> exchangeMany(Collection<? extends District> c){
         ArrayList <District> l=new ArrayList<>();
-        if(c.size()>list.size()){
+        if(c.size()<list.size()){
             for(int i=0;i<c.size();i++){
                 l.add(this.withdraw());
             }

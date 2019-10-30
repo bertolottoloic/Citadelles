@@ -214,9 +214,10 @@ public class Player {
 	}
 
 	public void specialMove() {
-		System.out.println("Joueur "+id+" reflechit à quoi faire ...");
+		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();
 	}
+
 
 	/**
 	 * Méthode pour collecter l'argent des districts

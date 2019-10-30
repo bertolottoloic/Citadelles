@@ -208,13 +208,14 @@ public class Player {
 	}
 
 	protected void action() {
-		System.out.println("Joueur "+id+" reflechit à son action ...");
+
 	}
 
 	public void specialMove() {
-		System.out.println("Joueur "+id+" reflechit à quoi faire ...");
+		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();
 	}
+
 
 	/**
 	 * Méthode pour collecter l'argent des districts
@@ -302,7 +303,7 @@ public class Player {
 		this.targetToExchangeHandWith = targetToExchangeHandWith;
 	}
 
-	Role getCharacter() {
+	public Role getCharacter() {
 		return character;
 	}
 

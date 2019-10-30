@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 class Game {
     private ArrayList<Player> players=new ArrayList<>();
-    static Boolean gameOver=true;
     private HashMap<Player,Integer> points;
     private Board board;
 
@@ -18,13 +17,13 @@ class Game {
             this.players.add(p);
         }
 
-        while(gameOver){
+       /* while(true){
             new DealRoles(this.players);
         }
         this.points=new HashMap<Player, Integer>();
         for(Player p : players){
             countPoints(p);
-        }
+        }*/
 
     }
 
@@ -34,7 +33,6 @@ class Game {
     }
 
 
-    Boolean getGameOver(){ return this.gameOver;}
     HashMap<Player,Integer> getPoints(){return this.points;}
     ArrayList<Player> getPlayers(){ return this.players;}
 

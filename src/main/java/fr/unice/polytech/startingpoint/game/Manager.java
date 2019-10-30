@@ -8,7 +8,6 @@ import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class Manager{
@@ -24,6 +23,16 @@ public class Manager{
      * @param players
      */
      void oneRound(Player...players){
+
+         /**
+          * On reInitialize les Roles
+          * on reInitialize les Personnages
+          */
+
+         Assets.reInitializeRoles();
+         for(Player p:players){
+             p.reInitializeForNextTurn();
+         }
 
         Assets.readyToDistribute();
         crown.getCrownOwner().chooseRole();
@@ -44,19 +53,10 @@ public class Manager{
         for(Role r:roles){
               Player p=r.getPlayer();
               if(p!=null){
+                  System.out.println("Tour du joueur " +p.getId()+" : "+p.getCharacter());
                   p.playTurn();
               }
         }
-
-          /**
-           * On reInitialize les Roles 
-           * on reInitialize les Personnages
-           */
-
-           Assets.reInitializeRoles();
-           for(Player p:players){
-               p.reInitializeForNextTurn();
-           }
 
 
     }
@@ -111,7 +111,7 @@ public class Manager{
                     "Points: "+scores.get(p.getId())+"\n"+
                     "******************\n";
         }
-        res+="WINNER : "+winner.toString();
+        res+="WINNER : \n"+winner.toString();
         System.out.println(res);
     }
 

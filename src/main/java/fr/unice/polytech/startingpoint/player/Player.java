@@ -210,7 +210,7 @@ public class Player {
 	}
 
 	protected void action() {
-		System.out.println("Joueur "+id+" reflechit à son action ...");
+
 	}
 
 	public void specialMove() {
@@ -305,7 +305,7 @@ public class Player {
 		this.targetToExchangeHandWith = targetToExchangeHandWith;
 	}
 
-	Role getCharacter() {
+	public Role getCharacter() {
 		return character;
 	}
 

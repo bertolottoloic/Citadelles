@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Crown;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
@@ -9,6 +10,7 @@ import fr.unice.polytech.startingpoint.role.Role;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Manager{
 
@@ -49,16 +51,14 @@ public class Manager{
           * On commence à jouer par l'Assassin
           (s'il est dans la partie)
           */
-        ArrayList<Role> roles=Assets.getRoles();
-        for(Role r:roles){
-              Player p=r.getPlayer();
-              if(p!=null){
-                  System.out.println("Tour du joueur " +p.getId()+" : "+p.getCharacter());
-                  p.playTurn();
-              }
+        Iterator<Role> it = Assets.getRoles().iterator();
+        while(it.hasNext() && board.getDeck().numberOfCards() != 0) {
+        	Player p = it.next().getPlayer();
+            if(p != null){
+                System.out.println("Tour du joueur " +p.getId()+" : "+p.getCharacter());
+                p.playTurn();
+            }
         }
-
-
     }
      public void letsPlay(Player... players){
 
@@ -86,11 +86,18 @@ public class Manager{
          * déclenchement de la distrib des roles par le
          * joueur ayant la couronne
          */
-        while(gameOver==false) {
+        while(gameOver == false) {
             oneRound(players);
-            gameOver=true;
-
-            // et on boucle super !!!!
+            if(board.getDeck().numberOfCards() == 0) {
+            	gameOver = true;
+            	break;
+            }
+            for(Player p : players){
+            	if(p.getCity().size() == 8) {
+            		gameOver = true;
+            		break;
+            	}
+            }
         }
         endGame(players);
 

@@ -1,15 +1,18 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.game;
+
+import fr.unice.polytech.startingpoint.board.*;
+import fr.unice.polytech.startingpoint.player.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 class Game {
-    private ArrayList<Player> players=new ArrayList<Player>();
+    private ArrayList<Player> players=new ArrayList<>();
     static Boolean gameOver=true;
     private HashMap<Player,Integer> points;
-    Board board;
+    private Board board;
 
-     Game(Player ... players){
+    Game(Player ... players){
         
         for (Player p : players){
             this.players.add(p);
@@ -17,7 +20,6 @@ class Game {
 
         while(gameOver){
             new DealRoles(this.players);
-            playAllTurns();
         }
         this.points=new HashMap<Player, Integer>();
         for(Player p : players){
@@ -29,19 +31,6 @@ class Game {
     void startGame(){
         dealCards(4);
         dealGolds(2);
-        Board board=new Board(this.players);
-    }
-
-
-    void playAllTurns(){
-         int i=0;
-         int index = players.indexOf(board.getCrown().getCrownOwner());
-         while(i<players.size()){
-             if(index==players.size()){index=0;}
-             players.get(index).playTurn(board);
-             index++;
-             i++;
-         }
     }
 
 
@@ -52,7 +41,7 @@ class Game {
     void dealCards(int n){
         for(Player p : players){
             for(int i=0;i<n;i++){
-                p.pickNewDistrict(board.getDeck().withdraw());
+                p.pickNewDistrict(board.draw());
             }
         }
     }

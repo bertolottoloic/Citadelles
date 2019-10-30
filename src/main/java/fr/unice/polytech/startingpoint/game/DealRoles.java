@@ -1,4 +1,7 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.game;
+
+import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
 import java.util.Collections;

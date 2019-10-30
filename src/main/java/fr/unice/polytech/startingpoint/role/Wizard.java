@@ -1,19 +1,19 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
 
 public class Wizard extends Role{
 
-    Wizard(){
+    public Wizard(){
         super(3);
     }
 
-    void action(){
+    private void action(){
         this.player.exchangeHands();
     }
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         if(this.player.getTargetToExchangeHandWith()==null){
-          this.player.setHand(Assets.TheDeck.exchangeMany(this.player.getHand()));
+          this.player.setHand(player.getBoard().exchangeMany(this.player.getHand()));
         }
         else{
             this.action();

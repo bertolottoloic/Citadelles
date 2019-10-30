@@ -1,11 +1,11 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.game;
+
+import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Assets {
-    public static final Deck TheDeck=new Deck();
-    public static final Bank TheBank=new Bank();
 
     public final static Murderer TheMurderer=new Murderer();
     public static final Thief TheThief=new Thief();
@@ -44,7 +44,7 @@ public class Assets {
 
     }
 
-    static ArrayList<Role> getRoles(){
+    public static ArrayList<Role> getRoles(){
         ArrayList<Role> tmp=new ArrayList<>();
         tmp.addAll(allRoles);
         return tmp;

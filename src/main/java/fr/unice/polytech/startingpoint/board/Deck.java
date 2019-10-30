@@ -1,15 +1,14 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.board;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 
-class Deck{
-    private ArrayList <District> list=new ArrayList<>();
-    Deck(){
-        list=DistrictsInput.getDistricts();
+public class Deck{
+    private ArrayList <District> list;
+    public Deck(){
+        list= DistrictsInput.getDistricts();
 
         this.shuffle();//We shuffle the districts
     }
@@ -25,7 +24,6 @@ class Deck{
     }
 
     public District withdraw(){
-
         if(!list.isEmpty()){
             return list.remove(0);
         }
@@ -39,7 +37,7 @@ class Deck{
     public ArrayList<District> withdrawMany(int nb){
         ArrayList<District> taken=new ArrayList<>();
         while(nb>0){
-            taken.add(list.remove(0));
+            taken.add(withdraw());
             nb--;
         }
         return taken;
@@ -66,7 +64,7 @@ class Deck{
         
      * 
      */
-    public void putbackMany(Collection<? extends District> c){
+    public void putbackMany(ArrayList<District> c){
         list.addAll(c);
         this.shuffle();
     }
@@ -92,7 +90,7 @@ class Deck{
     }
 
     /**
-     * @param c
+     * @param districts
             Une collection de cartes à remettre dans le deck
 
         @return 
@@ -103,18 +101,16 @@ class Deck{
         
      * 
      */
-    public ArrayList<District> exchangeMany(Collection<? extends District> c){
+    public ArrayList<District> exchangeMany(ArrayList<District> districts){
         ArrayList <District> l=new ArrayList<>();
-        if(c.size()<list.size()){
-            for(int i=0;i<c.size();i++){
-                l.add(this.withdraw());
-            }
-            list.addAll(c);
+        if(districts.size()<list.size()){
+            l = withdrawMany(districts.size());
+            list.addAll(districts);
         }
         return l;
     }
 
-    public int lenght(){
+    public int numberOfCards(){
         return list.size();
     }
 

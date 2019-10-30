@@ -1,9 +1,9 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
 
 
 public class Merchant extends Role {
 
-    Merchant(){
+    public Merchant(){
         super(6);
         this.numberGold++;
         this.setColor("commerce");
@@ -13,7 +13,7 @@ public class Merchant extends Role {
     }
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         // TODO Auto-generated method stub
     }
 

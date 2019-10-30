@@ -1,9 +1,11 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.role;
 
 
-public class King extends Role{
+import fr.unice.polytech.startingpoint.board.Crown;
 
-    King(){
+public class King extends Role {
+
+    public King(){
         super(4);
         this.setColor("noblesse");
     }
@@ -15,7 +17,7 @@ public class King extends Role{
     
 
     @Override
-    void useSpecialPower() {
+    public void useSpecialPower() {
         // TODO Auto-generated method stub
 
     }

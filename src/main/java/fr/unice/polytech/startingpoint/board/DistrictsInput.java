@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.board;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

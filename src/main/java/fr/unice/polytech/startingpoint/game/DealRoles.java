@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.board.Crown;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
 
@@ -7,43 +8,47 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 class DealRoles{
-    private ArrayList<Role> roles;
-    private ArrayList<Role> visible;
+    private ArrayList<Role> leftRoles;
+    private ArrayList<Role> visible = new ArrayList<>();
+    private ArrayList<Player> players;
     private Role hidden;
     DealRoles(ArrayList<Player> player){
-        this.roles=new ArrayList<Role>();
+        this.players = new ArrayList<>(player);
         this.visible=new ArrayList<Role>();
-        this.roles.addAll(Assets.getRoles());
-        
-
-        Collections.shuffle(this.roles);
-        System.out.println(this.roles);
-        this.visible.add(this.roles.remove(0));
-        this.roles.add(Assets.TheKing);
-        Collections.shuffle(this.roles);
-        this.hidden=this.roles.remove(0);
-
-        for(Player p : player){
-            Role r=selectRole(p,this.roles);
-            p.setCharacter(r);
-            this.roles.remove(r);
-        }
     }
 
-    ArrayList<Role> getRoles(){
-        return this.roles;
+    ArrayList<Role> getLeftRoles(){
+        return this.leftRoles;
     }
 
     ArrayList<Role> getVisible(){
         return this.visible;
     }
 
-    /*Role selectRole(Player p,ArrayList<Role> roles, ArrayList<Role> visible){
-        return p.selectRole(roles,visible);
-    }*/
+    void selectRole(Player p, ArrayList<Role> roles){
+        roles.get(0).setPlayer(p);
+        p.setCharacter(roles.remove(0));
+    }
 
-    Role selectRole(Player p,ArrayList<Role> roles){
-        return this.roles.get(0);
+    void distributeRoles(Crown c){
+        Player player = c.getCrownOwner();
+        selectRole(player,leftRoles);
+        while((player=player.getNextPlayer())!=c.getCrownOwner()){
+            selectRole(player, leftRoles);
+        }
+    }
+
+    void  readyToDistribute(ArrayList<Role> roles){
+        ArrayList<Role> al = new ArrayList<Role>(roles);
+
+        Collections.shuffle(al);
+        hidden=al.remove(0);
+        Collections.shuffle(al);
+        visible.add(al.remove(0)); //Le Roi ne peut pas etre le Role Visible
+        //Je crois qu'il faut choisir d'abord les visibles
+
+        leftRoles=al;
+
     }
 
 }

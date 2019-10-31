@@ -16,6 +16,7 @@ public class Manager implements PropertyChangeListener {
     private Crown crown = new Crown();
     private Board board = new Board();
     private Boolean gameOver = false;
+    DealRoles dealRoles;
 
     ArrayList<Player> winner = new ArrayList<>();
 
@@ -31,27 +32,27 @@ public class Manager implements PropertyChangeListener {
          * On reInitialize les Roles on reInitialize les Personnages
          */
 
-        Assets.reInitializeRoles();
+        board.reInitializeRoles();
         for (Player p : players) {
             p.reInitializeForNextTurn();
         }
 
-        Assets.readyToDistribute();
-        crown.getCrownOwner().chooseRole();
+        dealRoles.readyToDistribute(board.getRoles());
+        dealRoles.distributeRoles(crown);
 
          /**
           * On remet la couronne au Roi s'il est dans la partie
           */
-        
-        if(Assets.TheKing.getPlayer()!=null){
-             crown.goesTo(Assets.TheKing.getPlayer());
-         }
+
+        if(board.getRole(3).getPlayer()!=null){
+            crown.goesTo(board.getRole(3).getPlayer());
+        }
 
          /**
           * On commence à jouer par l'Assassin
           (s'il est dans la partie)
           */
-        Iterator<Role> it = Assets.getRoles().iterator();
+        Iterator<Role> it = board.getRoles().iterator();
         while(it.hasNext() && board.getDeck().numberOfCards() != 0) {
         	Player p = it.next().getPlayer();
             if(p != null){
@@ -70,6 +71,7 @@ public class Manager implements PropertyChangeListener {
         players[players.length - 1].setNextPlayer(players[0]);
         ArrayList<Player> list = new ArrayList<>(Arrays.asList(players));
         board.setPlayers(list);
+        dealRoles = new DealRoles(list);
 
         for (Player p : players) {
             p.addPropertyChangeListener(this);

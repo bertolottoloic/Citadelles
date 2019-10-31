@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.board;
 
 import fr.unice.polytech.startingpoint.player.Hand;
 import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
 
@@ -11,11 +12,20 @@ public class Board{
     private Bank bank;
     private Crown crown;
     private ArrayList<Player> players;
+    private ArrayList<Role> roles = new ArrayList<>();
 
     public Board(){
         this.crown=new Crown();
         this.deck=new Deck();
         this.bank = new Bank();
+        this.roles.add(new Murderer());
+        this.roles.add(new Thief());
+        this.roles.add(new Wizard());
+        this.roles.add(new King());
+        this.roles.add(new Bishop());
+        this.roles.add(new Merchant());
+        this.roles.add(new Architect());
+        this.roles.add(new Warlord());
 
     }
 
@@ -74,4 +84,18 @@ public class Board{
         return players;
     }
 
+    public ArrayList<Role> getRoles(){
+        return new ArrayList<Role>(this.roles);
+    }
+
+    public Role getRole(int index){
+        return this.roles.get(index);
+    }
+
+    public void reInitializeRoles(){
+        for(Role r:roles){
+            r.reInitialize();
+        }
+
+    }
 }

@@ -96,7 +96,7 @@ public class Player {
 	 * @param toDelete
 	 */
 	public void deleteDistrictFromCity(District toDelete){
-		if(!character.equals(Assets.TheBishop)){
+		if(!(character instanceof Bishop)){
 			city.remove(toDelete);
 		}
 			
@@ -129,7 +129,7 @@ public class Player {
 	
 	private void surrenderToThief(){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
-			Assets.TheThief.getPlayer().addMoney(gold);//donne l'argent au player de Thief
+			board.getRole(1).getPlayer().addMoney(gold);//donne l'argent au player de Thief
 			gold=0;//plus d'argent apres le vol
 	}
 

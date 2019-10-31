@@ -4,6 +4,8 @@ import fr.unice.polytech.startingpoint.board.*;
 import fr.unice.polytech.startingpoint.game.Assets;
 import fr.unice.polytech.startingpoint.role.*;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class Player {
@@ -11,9 +13,11 @@ public class Player {
 	private Role character;
 	private int gold;
 	private Hand hand;
-	private ArrayList<District> city;
+	protected ArrayList<District> city;
 	private Player nextPlayer;
 	private Board board;
+
+	private boolean gameOver=false;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	protected Role targetToKill;
@@ -21,6 +25,7 @@ public class Player {
 	private Player targetToDestroyDistrict;
 	private District districtToDestroy;
 	protected Player targetToExchangeHandWith;
+	protected PropertyChangeSupport support;
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	private boolean alreadyChosenRole;
@@ -31,11 +36,19 @@ public class Player {
 	 * @param id
 	 */
 	public Player(int id){
+		support = new PropertyChangeSupport(this);
 		this.id = id;
 		hand = new Hand();
 		city = new ArrayList<>();
 	}
 	
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+ 
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
+    }
 	
 	public void takeCardsAtBeginning(){
 		hand.addAll(board.withdrawMany(4));//constante à retirer
@@ -208,6 +221,8 @@ public class Player {
 	}
 
 	protected void action() {
+		support.firePropertyChange("gameOver",gameOver , true);
+		this.gameOver=true;
 
 	}
 
@@ -231,6 +246,15 @@ public class Player {
 			+ "Current role: " + character +"\n"
 			+ "Amount of gold: " + gold + "\n"
 			+ "City :" + city +"\n";
+	}
+
+	public int points(){
+		ArrayList<District> ct=getCity();
+		int points=0;
+         for(District d : ct){
+             points+=d.getValue();
+         }
+         return points;
 	}
 
 	

@@ -38,7 +38,10 @@ public class Bot extends Player{
                     i++;
                 }
             }
-        super.action();
+            if(city.size()==8){
+                super.action();
+            }
+        
     }
 
     @Override

@@ -20,14 +20,23 @@ class Game {
        /* while(true){
             new DealRoles(this.players);
         }
-        this.points=new HashMap<Player, Integer>();
+        
         for(Player p : players){
             countPoints(p);
         }*/
 
+        points = new HashMap<Player, Integer>();
     }
+    
+    /**
+     * Setter of board needed solely for the JUnit tests
+     * @param board
+     */
+	void setBoard(Board board) {
+		this.board = board;
+	}
 
-    void startGame(){
+	void startGame(){
         dealCards(4);
         dealGolds(2);
     }

@@ -340,7 +340,7 @@ public class Player {
 		this.board = board;
 	}
 
-	int getGold() {
+	public int getGold() {
 		return gold;
 	}
 

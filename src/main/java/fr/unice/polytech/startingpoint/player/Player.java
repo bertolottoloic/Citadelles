@@ -17,7 +17,7 @@ public class Player {
 	private Player nextPlayer;
 	private Board board;
 
-	private boolean gameOver=false;
+	protected boolean gameOver=false;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	protected Role targetToKill;

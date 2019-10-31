@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Manager implements PropertyChangeListener {
 
@@ -38,26 +39,26 @@ public class Manager implements PropertyChangeListener {
         Assets.readyToDistribute();
         crown.getCrownOwner().chooseRole();
 
-        /**
-         * On remet la couronne au Roi s'il est dans la partie
-         */
+         /**
+          * On remet la couronne au Roi s'il est dans la partie
+          */
+        
+        if(Assets.TheKing.getPlayer()!=null){
+             crown.goesTo(Assets.TheKing.getPlayer());
+         }
 
-        if (Assets.TheKing.getPlayer() != null) {
-            crown.goesTo(Assets.TheKing.getPlayer());
-        }
-
-        /**
-         * On commence à jouer par l'Assassin (s'il est dans la partie)
-         */
-        ArrayList<Role> roles = Assets.getRoles();
-        for (Role r : roles) {
-            Player p = r.getPlayer();
-            if (p != null) {
-                System.out.println("Tour du joueur " + p.getId() + " : " + p.getCharacter());
+         /**
+          * On commence à jouer par l'Assassin
+          (s'il est dans la partie)
+          */
+        Iterator<Role> it = Assets.getRoles().iterator();
+        while(it.hasNext() && board.getDeck().numberOfCards() != 0) {
+        	Player p = it.next().getPlayer();
+            if(p != null){
+                System.out.println("Tour du joueur " +p.getId()+" : "+p.getCharacter());
                 p.playTurn();
             }
         }
-
     }
 
     public void letsPlay(Player... players) {
@@ -71,6 +72,7 @@ public class Manager implements PropertyChangeListener {
         board.setPlayers(list);
 
         for (Player p : players) {
+            p.addPropertyChangeListener(this);
             p.setBoard(board);
             p.takeCardsAtBeginning();
             p.takeCoinsAtBeginning();
@@ -83,11 +85,8 @@ public class Manager implements PropertyChangeListener {
          * distribution des roles déclenchement de la distrib des roles par le joueur
          * ayant la couronne
          */
-        while(gameOver==false) {
+        while(!gameOver) {
             oneRound(players);
-            gameOver=true;
-
-            // et on boucle super !!!!
         }
         endGame(players);
 
@@ -123,6 +122,5 @@ public class Manager implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         gameOver=true;
-
     }
 }

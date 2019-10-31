@@ -38,7 +38,7 @@ public class Bot extends Player{
                     i++;
                 }
             }
-            if(city.size()==8){
+            if(city.size()==8 || getBoard().numberOfCardsOfDeck()==0){
                 super.action();
             }
         

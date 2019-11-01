@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Board;
-import fr.unice.polytech.startingpoint.player.Bot;
-import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.player.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,7 +42,8 @@ class GameTest {
     void countPointsTest() {    	
     	game.countPoints(p1);
     	assertEquals(0, game.getPoints().get(p1));
+    	p2.getCity().add(new District(1, 3, "blue", "unDistrict"));
     	game.countPoints(p2);
-    	assertEquals(0, game.getPoints().get(p2));    	
+    	assertEquals(3, game.getPoints().get(p2));    	
     }    
 }

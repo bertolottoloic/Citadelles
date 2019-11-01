@@ -46,4 +46,13 @@ class GameTest {
     	game.countPoints(p2);
     	assertEquals(3, game.getPoints().get(p2));    	
     }    
+    
+    @Test
+    void startGameTest() {
+    	game.startGame();
+    	for(Player p : game.getPlayers()) {
+    		assertEquals(2, p.getGold());
+    		assertEquals(4, p.getHand().size());
+    	}
+    }
 }

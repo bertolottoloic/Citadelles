@@ -61,6 +61,8 @@ class DealRolesTest {
 		Crown c = new Crown();
 		c.goesTo(p2);
 		dealer.distributeRoles(c);
+		for (Player p : players) {
+			assertNotEquals(null , p.getCharacter());
+		}
 	}
-
 }

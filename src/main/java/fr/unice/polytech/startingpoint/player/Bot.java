@@ -61,7 +61,7 @@ public class Bot extends Player{
     }
 
     Role pickRandomTargetRole(){
-        return Assets.getRoles().get(random.nextInt(8));
+        return getBoard().getRole(random.nextInt(8));
     }
     Player pickRandomTargetPlayer(){
         return getBoard().getPlayers().get(random.nextInt(4));

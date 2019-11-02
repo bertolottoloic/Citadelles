@@ -99,7 +99,6 @@ public class Player {
 		if(!(character instanceof Bishop)){
 			city.remove(toDelete);
 		}
-			
 	}
 	
 	/**
@@ -118,7 +117,7 @@ public class Player {
 	public void exchangeHands() {
 		ArrayList<District> tmpHand = new ArrayList<>();
 		tmpHand.addAll(hand);
-		hand.removeAll(hand);
+		hand.clear();
 		
 		hand.addAll(targetToExchangeHandWith.hand);
 		targetToExchangeHandWith.hand.removeAll(targetToExchangeHandWith.hand);
@@ -127,7 +126,7 @@ public class Player {
 
 	
 	
-	private void surrenderToThief(){
+	void surrenderToThief(){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
 			board.getRole(1).getPlayer().addMoney(gold);//donne l'argent au player de Thief
 			gold=0;//plus d'argent apres le vol
@@ -145,7 +144,6 @@ public class Player {
 			//appele le prochain player
 			nextPlayer.chooseRole();
 		}
-		
     }
 
     public boolean coinsOrDistrict(){
@@ -223,7 +221,6 @@ public class Player {
 	protected void action() {
 		support.firePropertyChange("gameOver",gameOver , true);
 		this.gameOver=true;
-
 	}
 
 	public void specialMove() {
@@ -235,7 +232,7 @@ public class Player {
 	/**
 	 * Méthode pour collecter l'argent des districts
 	 */
-	private void collectMoneyFromDistricts(){
+	void collectMoneyFromDistricts(){
 		character.collectRentMoney();
 	}
 	

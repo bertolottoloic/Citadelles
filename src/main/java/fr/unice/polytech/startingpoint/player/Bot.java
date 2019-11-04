@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.game.Assets;
+
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
@@ -16,7 +16,7 @@ public class Bot extends Player{
 
     @Override
     public void chooseRole() {
-                super.chooseRole();
+        super.chooseRole();
     }
 
     @Override
@@ -32,14 +32,16 @@ public class Bot extends Player{
         int i =0;
             ArrayList<District> currHand=new ArrayList<District>();
             currHand.addAll(getHand());
+            int nb=getCharacter().getNumberDistrictBuildable();
             for (District d : currHand){
-                if ((d.getCost() < getGold())&& i<getCharacter().getNumberDistrictBuildable()) {
+                if ((d.getCost() < getGold()) && i<nb) {
                     addToTheCity(d);
                     i++;
                 }
             }
-            if(city.size()==8 || getBoard().numberOfCardsOfDeck()==0){
-                super.action();
+            if(city.size()>=8 || getBoard().numberOfCardsOfDeck()<=0){
+                support.firePropertyChange("gameOver",gameOver , true);
+		        this.gameOver=true;//inutile en fait : c'est là pour le principe
             }
         
     }

@@ -139,9 +139,9 @@ public class Player {
 	 */
 	public void chooseRole(){
 		if(!alreadyChosenRole){
-			setCharacter(Assets.leftRoles.remove(0));
+			setCharacter(board.getDealRoles().getLeftRoles().remove(0));
 			alreadyChosenRole=true;
-			//appele le prochain player
+			//appelle le prochain player
 			nextPlayer.chooseRole();
 		}
     }
@@ -219,8 +219,7 @@ public class Player {
 	}
 
 	protected void action() {
-		support.firePropertyChange("gameOver",gameOver , true);
-		this.gameOver=true;
+		
 	}
 
 	public void specialMove() {

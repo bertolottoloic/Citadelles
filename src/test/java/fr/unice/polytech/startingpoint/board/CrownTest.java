@@ -1,11 +1,11 @@
 package fr.unice.polytech.startingpoint.board;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import fr.unice.polytech.startingpoint.player.Player;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
+
+
+import org.junit.jupiter.api.Test;
 
 public class CrownTest{
     Crown crown = new Crown();

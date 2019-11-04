@@ -1,11 +1,9 @@
 package fr.unice.polytech.startingpoint.board;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-//import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class BankTest {
     Bank b=new Bank();

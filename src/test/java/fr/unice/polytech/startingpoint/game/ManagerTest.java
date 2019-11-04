@@ -3,12 +3,11 @@ package fr.unice.polytech.startingpoint.game;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.unice.polytech.startingpoint.board.District;
+
 import fr.unice.polytech.startingpoint.player.*;
 import fr.unice.polytech.startingpoint.role.Role;
 

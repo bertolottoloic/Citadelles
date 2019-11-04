@@ -38,12 +38,12 @@ public class Manager implements PropertyChangeListener {
         }
 
         dealRoles.readyToDistribute();
-        dealRoles.distributeRoles(crown);
+        //dealRoles.distributeRoles(crown);
+        crown.getCrownOwner().chooseRole();
 
          /**
           * On remet la couronne au Roi s'il est dans la partie
           */
-
         if(dealRoles.getRole(3).getPlayer()!=null){
             crown.goesTo(dealRoles.getRole(3).getPlayer());
         }
@@ -53,7 +53,7 @@ public class Manager implements PropertyChangeListener {
           (s'il est dans la partie)
           */
         Iterator<Role> it = dealRoles.getRoles().iterator();
-        while(it.hasNext() && board.getDeck().numberOfCards() != 0) {
+        while(it.hasNext()) {
         	Player p = it.next().getPlayer();
             if(p != null){
                 System.out.println("Tour du joueur " +p.getId()+" : "+p.getCharacter());
@@ -91,6 +91,7 @@ public class Manager implements PropertyChangeListener {
         while(!gameOver) {
             oneRound(players);
         }
+
         endGame(players);
 
     }

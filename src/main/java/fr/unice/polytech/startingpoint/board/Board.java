@@ -88,4 +88,8 @@ public class Board{
         return this.dealRoles.getRoles();
     }
 
+    public DealRoles getDealRoles() {
+        return dealRoles;
+    }
+
 }

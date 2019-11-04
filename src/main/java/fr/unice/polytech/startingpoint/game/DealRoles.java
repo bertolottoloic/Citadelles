@@ -26,7 +26,7 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
-    ArrayList<Role> getLeftRoles(){
+    public ArrayList<Role> getLeftRoles(){
         return this.leftRoles;
     }
 
@@ -51,7 +51,7 @@ public class DealRoles{
         ArrayList<Role> al = new ArrayList<Role>(roles);
 
         Collections.shuffle(al);
-        hidden=al.remove(0);
+        this.hidden=al.remove(0);
         Collections.shuffle(al);
         visible.add(al.remove(0)); //Le Roi ne peut pas etre le Role Visible
         //Je crois qu'il faut choisir d'abord les visibles

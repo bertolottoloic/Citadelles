@@ -37,7 +37,10 @@ public class Deck{
     public ArrayList<District> withdrawMany(int nb){
         ArrayList<District> taken=new ArrayList<>();
         while(nb>0){
-            taken.add(withdraw());
+            District d=withdraw();
+            if(d!=null){
+                taken.add(d);
+            }
             nb--;
         }
         return taken;

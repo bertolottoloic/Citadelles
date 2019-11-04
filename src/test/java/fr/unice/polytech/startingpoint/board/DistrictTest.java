@@ -1,10 +1,8 @@
 package fr.unice.polytech.startingpoint.board;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import fr.unice.polytech.startingpoint.player.Player;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DistrictTest{
     District d1 = new District(3,3,"religion","test");

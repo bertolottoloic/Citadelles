@@ -20,7 +20,7 @@ public class Main {
         Player p6=new Bot(6);
 
         Manager manager=new Manager();
-        manager.letsPlay(p1,p2,p3,p4,p5,p6);
+        manager.letsPlay(p1,p2,p3,p4);
 
     }
 

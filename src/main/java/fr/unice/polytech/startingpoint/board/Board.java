@@ -34,7 +34,7 @@ public class Board{
 
 
     public boolean canWithdraw(int i) {
-        return true;
+        return bank.canWithdraw(i);
     }
 
     public ArrayList<District> withdrawMany(int i) {

@@ -18,13 +18,12 @@ class DealRolesTest {
     Player p2 = new Bot(2);
     Player p3 = new Bot(3);
     ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3));
-	DealRoles dealer = new DealRoles(players);
+	DealRoles dealer;
 	ArrayList<Role> myRoles;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		myRoles = new ArrayList<Role>(Arrays.asList(new Wizard(), new King(), new Thief(), new King(), new Merchant()));
-	
+		dealer = new DealRoles(players);
 	}
 
 	@Test
@@ -42,7 +41,7 @@ class DealRolesTest {
 		for (Player p : players) {
             p.reInitializeForNextTurn();
         }
-		dealer.readyToDistribute(myRoles);
+		dealer.readyToDistribute();
 		assertEquals((myRoles.size()/2) + myRoles.size()%2, dealer.getLeftRoles().size());
 		assertEquals(1, dealer.getVisible().size());
 	}
@@ -57,7 +56,7 @@ class DealRolesTest {
 			myPlayers[i].setNextPlayer(myPlayers[i + 1]);
         }
 		myPlayers[myPlayers.length - 1].setNextPlayer(myPlayers[0]);
-		dealer.readyToDistribute(myRoles);
+		dealer.readyToDistribute();
 		Crown c = new Crown();
 		c.goesTo(p2);
 		dealer.distributeRoles(c);

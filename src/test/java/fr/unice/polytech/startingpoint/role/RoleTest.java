@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.game.DealRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,33 +10,58 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import fr.unice.polytech.startingpoint.player.*;
 
+import java.util.ArrayList;
+
 public class RoleTest {
     Player player;
+    Player target;
+    Board board;
+    DealRoles dealRoles;
+
     @BeforeEach
     void setUp(){
         player=new Player(1);
+        target = new Player(2);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(player);
+        players.add(target);
+        dealRoles = new DealRoles(players);
+        board = new Board();
+        board.setDealRoles(dealRoles);
     }
 
     
 
     @Test
     void murdererTest(){
-        Role murderer = new Murderer();
-
-        assertEquals(1,murderer.getPosition());
-        assertEquals(null,murderer.getPlayer());
+        Role murderer = board.getRole(0);
+        Role merchant = board.getRole(5);
+        player.setCharacter(murderer);
+        target.setCharacter(merchant);
+        player.setTargetToKill(merchant);
+        player.getCharacter().useSpecialPower();
+        assertEquals(1,board.getRole(0).getPosition());
+        assertEquals(player,murderer.getPlayer());
         assertEquals(1,murderer.getNumberDistrictBuildable());
         assertEquals(2,murderer.getNumberGold());
+        assertEquals(true, merchant.isMurdered());
     }
 
     @Test
     void thiefTest(){
-        Role thief = new Thief();
+        Role thief = board.getRole(1);
+        Role merchant = board.getRole(5);
         player.setCharacter(thief);
-
+        target.setCharacter(merchant);
+        target.setBoard(board);
+        player.setTargetToRob(merchant);
+        target.addMoney(4);
+        thief.useSpecialPower();
+        target.playTurn();
         assertEquals(player,thief.getPlayer());
         assertEquals(2,thief.getPosition());
         assertEquals(player,thief.getPlayer());
+        assertEquals(4,player.getGold());
         
     }
 

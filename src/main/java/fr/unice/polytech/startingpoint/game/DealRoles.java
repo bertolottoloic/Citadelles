@@ -2,19 +2,28 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.board.Crown;
 import fr.unice.polytech.startingpoint.player.Player;
-import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-class DealRoles{
+public class DealRoles{
     private ArrayList<Role> leftRoles;
+    private ArrayList<Role> roles = new ArrayList<>();
     private ArrayList<Role> visible = new ArrayList<>();
     private ArrayList<Player> players;
     private Role hidden;
-    DealRoles(ArrayList<Player> player){
+    public DealRoles(ArrayList<Player> player){
         this.players = new ArrayList<>(player);
         this.visible=new ArrayList<Role>();
+        this.roles.add(new Murderer());
+        this.roles.add(new Thief());
+        this.roles.add(new Wizard());
+        this.roles.add(new King());
+        this.roles.add(new Bishop());
+        this.roles.add(new Merchant());
+        this.roles.add(new Architect());
+        this.roles.add(new Warlord());
     }
 
     ArrayList<Role> getLeftRoles(){
@@ -38,7 +47,7 @@ class DealRoles{
         }
     }
 
-    void  readyToDistribute(ArrayList<Role> roles){
+    void  readyToDistribute(){
         ArrayList<Role> al = new ArrayList<Role>(roles);
 
         Collections.shuffle(al);
@@ -51,4 +60,18 @@ class DealRoles{
 
     }
 
+    public ArrayList<Role> getRoles(){
+        return new ArrayList<Role>(this.roles);
+    }
+
+    public Role getRole(int index){
+        return this.roles.get(index);
+    }
+
+    public void reInitializeRoles(){
+        for(Role r:roles){
+            r.reInitialize();
+        }
+
+    }
 }

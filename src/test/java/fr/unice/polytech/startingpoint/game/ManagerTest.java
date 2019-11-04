@@ -14,20 +14,26 @@ import fr.unice.polytech.startingpoint.role.Role;
 class ManagerTest {
 	
 	Manager manager = new Manager();
-	Player p1 = new Bot(1);
-    Player p2 = new Bot(2);
-    Player p3 = new Bot(3);
-    Player p4 = new Bot(4);
+	Player p1 ;
+    Player p2 ;
+    Player p3 ;
+    Player p4;
 
-    Player[] players = {p1, p2, p3, p4};
+    
     ArrayList<Role> myRoles;
 
 	@BeforeEach
 	void setUp() throws Exception {
+		p1 = new Bot(1);
+		p2 = new Bot(2);
+		p3 = new Bot(3);
+		p4 = new Bot(4);
+		
 	}
 	
 	@Test
 	void testLetsPlayAndOneRound() {
+		Player[] players = {p1, p2, p3, p4};
 		manager.letsPlay(players);
 		for(Player p : players) {
 			assertNotEquals(null , p.getNextPlayer());
@@ -36,6 +42,7 @@ class ManagerTest {
 
 	@Test
 	void testEndGame() {
+		Player[] players = {p1, p2, p3, p4};
 		manager.endGame(players);
 		assertEquals(4, manager.winner.size());
 	}

@@ -44,6 +44,7 @@ public class Manager implements PropertyChangeListener {
          /**
           * On remet la couronne au Roi s'il est dans la partie
           */
+
         if(dealRoles.getRole(3).getPlayer()!=null){
             crown.goesTo(dealRoles.getRole(3).getPlayer());
         }
@@ -71,7 +72,7 @@ public class Manager implements PropertyChangeListener {
         players[players.length - 1].setNextPlayer(players[0]);
         ArrayList<Player> list = new ArrayList<>(Arrays.asList(players));
         board.setPlayers(list);
-        dealRoles = new DealRoles(list);
+        dealRoles = new DealRoles();
         board.setDealRoles(dealRoles);
 
         for (Player p : players) {

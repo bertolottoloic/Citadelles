@@ -26,7 +26,7 @@ public class ThiefTest {
         ArrayList<Player> players = new ArrayList<>();
         players.add(player);
         players.add(target);
-        dealRoles = new DealRoles(players);
+        dealRoles = new DealRoles();
         board = new Board();
         board.setDealRoles(dealRoles);
         player.setBoard(board);

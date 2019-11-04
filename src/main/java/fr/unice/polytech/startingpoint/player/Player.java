@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.*;
-import fr.unice.polytech.startingpoint.game.Assets;
 import fr.unice.polytech.startingpoint.role.*;
 
 import java.beans.PropertyChangeListener;
@@ -29,7 +28,6 @@ public class Player {
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	private boolean alreadyChosenRole;
-	private boolean alreadyPlayedTurn;
 
 	/**
 	 * 
@@ -142,7 +140,10 @@ public class Player {
 			setCharacter(board.getDealRoles().getLeftRoles().remove(0));
 			alreadyChosenRole=true;
 			//appelle le prochain player
-			nextPlayer.chooseRole();
+			if(nextPlayer!=null){
+				nextPlayer.chooseRole();
+			}
+			
 		}
     }
 
@@ -208,7 +209,6 @@ public class Player {
 	 */
 	public void reInitializeForNextTurn(){
 		alreadyChosenRole=false;
-		alreadyPlayedTurn=false;
 		character=null;
 		targetToDestroyDistrict=null;
 		targetToExchangeHandWith=null;

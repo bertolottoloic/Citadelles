@@ -2,12 +2,12 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.*;
 
 class PlayerTest {
@@ -15,8 +15,12 @@ class PlayerTest {
 	Player player;
     @BeforeEach
     void setUp(){
-        player=new Player(1);
-        player.setBoard(new Board());
+		player=new Player(1);
+		Board b=new Board();
+		DealRoles dr=new DealRoles();
+		dr.readyToDistribute();
+		b.setDealRoles(dr);
+        player.setBoard(b);
     }
     
     @Test

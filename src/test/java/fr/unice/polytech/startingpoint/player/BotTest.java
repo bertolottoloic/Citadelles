@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Warlord;
 
 class BotTest {
@@ -25,8 +26,11 @@ class BotTest {
 		b3 = new Bot(3);
 		b4 = new Bot(4);
 		board = new Board();
+		DealRoles rolesDealer=new DealRoles();
+		board.setDealRoles(rolesDealer);
 		board.setPlayers(new ArrayList<Player>(Arrays.asList(b1, b2, b3, b4)));
 		b1.setBoard(board);
+
 		b1.setCharacter(new Warlord());
 	}
 
@@ -35,7 +39,9 @@ class BotTest {
 		assertNull(b1.targetToExchangeHandWith);
 		assertNull(b1.targetToKill);
 		assertNull(b1.targetToRob);
-		b1.specialMove();
+		//assertThrows(NullPointerException.class, ()->{
+			b1.specialMove();
+		//});
 		assertNotNull(b1.targetToExchangeHandWith);
 		assertNotNull(b1.targetToKill);
 		assertNotNull(b1.targetToRob);

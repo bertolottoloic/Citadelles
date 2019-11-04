@@ -1,7 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.board.Crown;
-import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
@@ -11,10 +9,9 @@ public class DealRoles{
     private ArrayList<Role> leftRoles;
     private ArrayList<Role> roles = new ArrayList<>();
     private ArrayList<Role> visible = new ArrayList<>();
-    private ArrayList<Player> players;
+   
     private Role hidden;
-    public DealRoles(ArrayList<Player> player){
-        this.players = new ArrayList<>(player);
+    public DealRoles(){
         this.visible=new ArrayList<Role>();
         this.roles.add(new Murderer());
         this.roles.add(new Thief());
@@ -26,15 +23,7 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
-    public ArrayList<Role> getLeftRoles(){
-        return this.leftRoles;
-    }
-
-    ArrayList<Role> getVisible(){
-        return this.visible;
-    }
-
-    void selectRole(Player p, ArrayList<Role> roles){
+    /*void selectRole(Player p, ArrayList<Role> roles){
         roles.get(0).setPlayer(p);
         p.setCharacter(roles.remove(0));
     }
@@ -45,9 +34,9 @@ public class DealRoles{
         while((player=player.getNextPlayer())!=c.getCrownOwner()){
             selectRole(player, leftRoles);
         }
-    }
+    }*/
 
-    void  readyToDistribute(){
+    public void  readyToDistribute(){
         ArrayList<Role> al = new ArrayList<Role>(roles);
 
         Collections.shuffle(al);
@@ -60,6 +49,13 @@ public class DealRoles{
 
     }
 
+
+    public void reInitializeRoles(){
+        for(Role r:roles){
+            r.reInitialize();
+        }
+
+    }
     public ArrayList<Role> getRoles(){
         return new ArrayList<Role>(this.roles);
     }
@@ -68,10 +64,19 @@ public class DealRoles{
         return this.roles.get(index);
     }
 
-    public void reInitializeRoles(){
-        for(Role r:roles){
-            r.reInitialize();
-        }
+    public ArrayList<Role> getLeftRoles(){
+        return this.leftRoles;
+    }
 
+    ArrayList<Role> getVisible(){
+        return this.visible;
+    }
+
+    public Role getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Role hidden) {
+        this.hidden = hidden;
     }
 }

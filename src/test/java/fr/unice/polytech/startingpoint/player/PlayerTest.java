@@ -2,6 +2,9 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +16,18 @@ import fr.unice.polytech.startingpoint.role.*;
 class PlayerTest {
 
 	Player player;
+	Board board;
+	DealRoles dl;
+	
     @BeforeEach
     void setUp(){
-		player=new Player(1);
-		Board b=new Board();
-		DealRoles dr=new DealRoles();
-		dr.readyToDistribute();
-		b.setDealRoles(dr);
-        player.setBoard(b);
+        player = new Player(1);
+        
+        board = new Board();
+        dl = new DealRoles();
+        board.setDealRoles(dl);
+        dl.readyToDistribute();
+        player.setBoard(board);
     }
     
     @Test
@@ -112,15 +119,16 @@ class PlayerTest {
     }
 
     @Test
-    void testChooseRole(){
+    void testChooseRole(){   	
     	assertEquals(null, player.getCharacter());
+    	player.getBoard().getDealRoles().readyToDistribute();
     	player.chooseRole();
-    	assertTrue(player.getCharacter() != null);
+    	assertNotNull(player.getCharacter());
     }
     
     @Test
     void testReInitializeForNextTurn(){
-    	player.chooseRole();
+    	player.setCharacter(new Warlord());
 		player.setTargetToDestroyDistrict(new Player(2));
 		player.setTargetToExchangeHandWith(new Player(3));
 		player.setTargetToKill(new Bishop());

@@ -11,7 +11,7 @@ public class Player {
 	private final int id;
 	private Role character;
 	private int gold;
-	private Hand hand;
+	private ArrayList<District> hand;
 	protected ArrayList<District> city;
 	private Player nextPlayer;
 	private Board board;
@@ -36,7 +36,7 @@ public class Player {
 	public Player(int id){
 		support = new PropertyChangeSupport(this);
 		this.id = id;
-		hand = new Hand();
+		hand = new ArrayList<>();
 		city = new ArrayList<>();
 	}
 	
@@ -340,7 +340,7 @@ public class Player {
 		return gold;
 	}
 
-	public Hand getHand(){return hand;}
+	public ArrayList<District> getHand(){return hand;}
 	
 	public int getId() {
 		return id;

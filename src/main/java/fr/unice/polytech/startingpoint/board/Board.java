@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.board;
 
 
 import fr.unice.polytech.startingpoint.game.DealRoles;
-import fr.unice.polytech.startingpoint.player.Hand;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.*;
 
@@ -60,7 +59,7 @@ public class Board{
         bank.deposit(cost);
     }
 
-    public ArrayList<District> exchangeMany(Hand hand) {
+    public ArrayList<District> exchangeMany(ArrayList<District> hand) {
         return deck.exchangeMany(hand);
     }
 

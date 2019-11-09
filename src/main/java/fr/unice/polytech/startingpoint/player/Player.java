@@ -1,11 +1,14 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.*;
-import fr.unice.polytech.startingpoint.role.*;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.HashSet;
+
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Bishop;
+import fr.unice.polytech.startingpoint.role.Role;
 
 public class Player {
 	private final int id;
@@ -28,6 +31,9 @@ public class Player {
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	private boolean alreadyChosenRole;
+
+	/*Attribut permettant de savoir si le joueur a posé son huitième quartier en premier */
+	private boolean firstToFinish=false;
 
 	/**
 	 * 
@@ -243,13 +249,73 @@ public class Player {
 			+ "Amount of gold: " + gold + "\n"
 			+ "City :" + city +"\n";
 	}
+	/**
+	 * Contrairement a ce que son nom peut laisser croire cette méthode ne se contente
+	 * pas de vérifier si le joueur a fini de construire  8 districts
+	 * Elle vérifie également si le joueur est bien le premier à avoir fini
+	 * avec isFirstToFinish()
+	 * @return true if the player is the first to reach at least 8 districts 
+	 * 
+	 */
+	public boolean checkFinishBuilding()
+	{
+		if(this.isFirstToFinish() && getSizeOfCity()>=8){
+			this.firstToFinish=true;
+		}
+		return this.firstToFinish;
+	}
+	/**
+	 * Cette fonction doit permettre d'initialiser l'attribut
+	 * firstToFinish, attribut qui sera utilisé plus tard dans la méthode
+	 * points() pour attribuer ou non les bonus
+	 * Le board et des joueurs doivent etre défini avant de lancer cette fonction
+	 * @return un boolean selon que le joueur est le premier a avoir fini ou pas
+	 */
+	public boolean isFirstToFinish(){
+		ArrayList<Player> players =board.getPlayers();
 
+		for (Player player : players) {
+			if(player.firstToFinish && player.id!=this.id){
+				return false;
+			}
+		}
+		
+		return true;
+
+	}
+
+	public boolean cityContainsAllColors(){
+		HashSet<String> s=new HashSet<String>();
+		city.forEach((c)->{
+			s.add(c.getColor());
+
+		});
+		return s.size()==5;
+	}
+	/**
+	 * Cette méthode permet de compter les points en fin de partie
+	 * @return le nombre de points
+	 */
 	public int points(){
 		ArrayList<District> ct=getCity();
 		int points=0;
          for(District d : ct){
              points+=d.getValue();
-         }
+		 }
+		 if(this.firstToFinish){
+			//Le premier joueur à avoir posé son quartier reçoit +4
+			points+=4;
+		 }
+		 else if(!this.firstToFinish && getSizeOfCity()>=8){
+			 // + 2 pour les autres joueurs ayant huit quartiers.
+			 points+=2;
+		 }
+
+		 if(this.cityContainsAllColors()){
+			 // + 3 si la cité comprend des quartiers des cinq couleurs différentes.
+			 points+=3;
+		 }
+		 
          return points;
 	}
 
@@ -265,6 +331,9 @@ public class Player {
 
 	/* ----- setters et getters ----*/
 
+	public int getSizeOfCity(){
+		return city.size();
+	}
 	public Player getNextPlayer() {
 		return nextPlayer;
 	}
@@ -348,6 +417,15 @@ public class Player {
 	
 	public ArrayList<District> getCity() {
 		return city;
+	}
+
+	/**
+	 * Pour les tests uniquement, ne devrait pas etre
+	 * utilisé ailleurs
+	 * @param city
+	 */
+	public void setCity(ArrayList<District> city) {
+		this.city = city;
 	}
 
 }

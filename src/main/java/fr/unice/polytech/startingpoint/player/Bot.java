@@ -39,7 +39,15 @@ public class Bot extends Player{
                     i++;
                 }
             }
-            if(city.size()>=8 || getBoard().numberOfCardsOfDeck()<=0){
+            if(checkFinishBuilding() || getBoard().numberOfCardsOfDeck()<=0){
+                /*
+                Notez que si il reste encore des cartes dans le deck et
+                que le joueur a bien atteint  les 8 districts sans être le premier à
+                l'avoir fait, ce bloc n'est pas executé
+                Cela ne pose pas problème puisque le Manager n'est notifié qu'une
+                seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
+                fois
+                */
                 support.firePropertyChange("gameOver",gameOver , true);
 		        this.gameOver=true;//inutile en fait : c'est là pour le principe
             }

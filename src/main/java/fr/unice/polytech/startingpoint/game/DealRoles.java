@@ -23,18 +23,6 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
-    /*void selectRole(Player p, ArrayList<Role> roles){
-        roles.get(0).setPlayer(p);
-        p.setCharacter(roles.remove(0));
-    }
-
-    void distributeRoles(Crown c){
-        Player player = c.getCrownOwner();
-        selectRole(player,leftRoles);
-        while((player=player.getNextPlayer())!=c.getCrownOwner()){
-            selectRole(player, leftRoles);
-        }
-    }*/
 
     public void  readyToDistribute(){
         ArrayList<Role> al = new ArrayList<Role>(roles);

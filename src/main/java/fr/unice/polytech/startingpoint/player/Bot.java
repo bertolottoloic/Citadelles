@@ -55,6 +55,13 @@ public class Bot extends Player{
     }
 
     @Override
+    public void Discard(ArrayList<District> d){
+        if(!d.isEmpty()){
+            getBoard().getDeck().putbackOne(d.remove(0));
+        }
+    }
+
+    @Override
     public boolean coinsOrDistrict() {
         if(random.nextInt(2)==1){
         return true;}

@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.Role;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Player {
 	private final int id;
@@ -187,8 +187,10 @@ public class Player {
 		else{
 			
 			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
+			Discard(districts);
 			this.hand.addAll(districts);
-			System.out.println("Joueur "+id+" prend "+this.character.getNumberDistrictPickable()+" districts");
+			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
+					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
 		}
 
 		if(isBuildingFirst()) {
@@ -222,6 +224,11 @@ public class Player {
 		targetToRob=null;
 
 		// forgot something ??
+	}
+
+	public void Discard(ArrayList<District> d){
+		if(!d.isEmpty()){
+			getBoard().getDeck().putbackOne(d.remove(0)); }
 	}
 
 	protected void action() {

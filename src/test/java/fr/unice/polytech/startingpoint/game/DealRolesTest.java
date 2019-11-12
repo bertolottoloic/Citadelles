@@ -1,6 +1,8 @@
 package fr.unice.polytech.startingpoint.game;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,9 +10,9 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.unice.polytech.startingpoint.board.Crown;
-import fr.unice.polytech.startingpoint.player.*;
-import fr.unice.polytech.startingpoint.role.*;
+import fr.unice.polytech.startingpoint.player.Bot;
+import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.role.Role;
 
 class DealRolesTest {
 	
@@ -37,25 +39,6 @@ class DealRolesTest {
 		assertEquals(1, dealer.getVisible().size());
 	}
 	
-	/*@Test
-	void testDistributeRoles() {
-		for (Player p : players) {
-            p.reInitializeForNextTurn();
-        }
-		Player[] myPlayers = {p1, p2, p3};
-		for (int i = 0; i < myPlayers.length - 1; i++) {
-			myPlayers[i].setNextPlayer(myPlayers[i + 1]);
-        }
-		myPlayers[myPlayers.length - 1].setNextPlayer(myPlayers[0]);
-		dealer.readyToDistribute();
-		
-		Crown c = new Crown();
-		c.goesTo(p2);
-		dealer.distributeRoles(c);
-		for (Player p : players) {
-			assertNotNull(p.getCharacter());
-		}
-	}*/
 	
 	@Test
 	void reInitializeRoles(){

@@ -1,9 +1,12 @@
 package fr.unice.polytech.startingpoint.player;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +14,11 @@ import org.junit.jupiter.api.Test;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.game.DealRoles;
-import fr.unice.polytech.startingpoint.role.*;
+import fr.unice.polytech.startingpoint.role.Bishop;
+import fr.unice.polytech.startingpoint.role.King;
+import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Warlord;
+import fr.unice.polytech.startingpoint.role.Wizard;
 
 class PlayerTest {
 
@@ -25,7 +32,7 @@ class PlayerTest {
         
         board = new Board();
         dl = new DealRoles();
-        board.setDealRoles(dl);
+		board.setDealRoles(dl);
         dl.readyToDistribute();
         player.setBoard(board);
     }
@@ -157,10 +164,88 @@ class PlayerTest {
     @Test
     void testPoints() {
     	assertEquals(0, player.points());
-    	player.addMoney(5);
+    	player.addMoney(20);//assez d'argent
     	player.addToTheCity(new District(3,3,"noblesse","Chateau"));
-    	assertEquals(3, player.points());
-    }
+		assertEquals(3, player.points());
+		
+		player.addToTheCity(new District(2, 2, "merveille", "Poudlard"));
+		player.addToTheCity(new District(2, 2, "soldatesque", "Caserne"));
+		player.addToTheCity(new District(2, 2, "commerce", "Casino"));
+		player.addToTheCity(new District(2, 2, "religion", "Eglise"));
+		assertEquals(14, player.points());
+	}
+	@Test
+	void testChekFinishBuilding(){
+		Player p3=new Player(3);
+		
+		Player p2=new Player(7);
+		Player p1=new Player(4);
+		board.setPlayers(p3,p2,p1);
+		p1.setBoard(board);
+		
+		assertEquals(true,p1.isFirstToFinish());
+		assertEquals(false,p1.checkFinishBuilding());
+	}
+
+	@Test
+	void testCheckFinishBuilding2(){
+		Player p3=new Player(3);
+		Player p2=new Player(7);
+		Player p1=new Player(4);
+		board.setPlayers(p3,p2,p1);
+		p1.setBoard(board);
+		ArrayList<District> al=(ArrayList<District>) mock(ArrayList.class);
+		when(al.size()).thenReturn(9);
+		p1.setCity(al);
+		
+		assertEquals(true,p1.checkFinishBuilding());
+	}
+
+	@Test
+	void testIsFirstToFinish3(){
+		Player p3=new Player(3);
+		Player p2=new Player(7);
+		Player p1=new Player(4);
+		board.setPlayers(p3,p2,p1);
+		p1.setBoard(board);
+		ArrayList<District> al=(ArrayList<District>) mock(ArrayList.class);
+		when(al.size()).thenReturn(7);
+		p1.setCity(al);
+		
+		assertEquals(false,p1.checkFinishBuilding());
+	}
+
+	@Test
+	void testCityContainsAllColors(){
+		player.addMoney(20);
+		player.addToTheCity(new District(2, 2, "merveille", "Poudlard"));
+		player.addToTheCity(new District(2, 2, "soldatesque", "Caserne"));
+		player.addToTheCity(new District(2, 2, "noblesse", "Chateau"));
+		player.addToTheCity(new District(2, 2, "religion", "Eglise"));
+
+		assertEquals(false, player.cityContainsAllColors());
+
+		player.addToTheCity(new District(2, 2, "commerce", "Casino"));
+
+		assertEquals(true, player.cityContainsAllColors());
+	}
+
+	@Test
+	void testCityContainsAllColors2(){
+		player.addMoney(20);
+		player.addToTheCity(new District(2, 2, "merveille", "Poudlard"));
+		player.addToTheCity(new District(2, 2, "merveille", "Caserne"));
+		player.addToTheCity(new District(2, 2, "noblesse", "Chateau"));
+		player.addToTheCity(new District(2, 2, "religion", "Eglise"));
+
+		assertEquals(false, player.cityContainsAllColors());
+
+		player.addToTheCity(new District(2, 2, "commerce", "Casino"));
+		
+		assertEquals(false, player.cityContainsAllColors());
+	}
+
+
     
     
 }

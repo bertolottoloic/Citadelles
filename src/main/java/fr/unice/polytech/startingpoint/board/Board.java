@@ -6,6 +6,7 @@ import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Board{
     private Deck deck;
@@ -69,6 +70,11 @@ public class Board{
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+    public void setPlayers(Player ... players) {
+        this.players=new ArrayList<>();
+        this.players.addAll(Arrays.asList(players));
+
     }
 
     public ArrayList<Player> getPlayers() {

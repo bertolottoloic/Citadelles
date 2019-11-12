@@ -2,8 +2,8 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Bishop;
-import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.*;
+
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

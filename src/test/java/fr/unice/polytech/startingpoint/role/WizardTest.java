@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class WizardTest {
 
 
     @Test
-    void wizardTest(){
+    void exchangeWithPlayerTest(){
         Role wizard = board.getRole(2);
         Role merchant = board.getRole(5);
         player.setCharacter(wizard);
@@ -45,5 +46,22 @@ public class WizardTest {
         assertEquals(3,wizard.getPosition());
         assertEquals(true, target.getHand().isEmpty());
         assertEquals(false, player.getHand().isEmpty());
+    }
+
+    @Test
+    void exchangeWithDeckTest(){
+        Role wizard = board.getRole(2);
+        player.setCharacter(wizard);
+        player.takeCardsAtBeginning();
+        ArrayList<District> cardsToExchange = new ArrayList<District>(player.getHand());
+        ArrayList<District> hand = new ArrayList<District>(player.getHand());
+        cardsToExchange.remove(0);
+        cardsToExchange.remove(0);
+        player.setCardsToExchange(cardsToExchange);
+        wizard.useSpecialPower();
+        assertEquals(hand.get(0),player.getHand().get(0));
+        assertEquals(hand.get(1),player.getHand().get(1));
+        assertNotSame(hand.get(2),player.getHand().get(2));
+        assertNotSame(hand.get(3),player.getHand().get(3));
     }
 }

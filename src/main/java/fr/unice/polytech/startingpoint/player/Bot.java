@@ -24,6 +24,8 @@ public class Bot extends Player{
         targetToKill=pickRandomTargetRole();
         targetToRob=pickRandomTargetRole();
         targetToExchangeHandWith=pickRandomTargetPlayer();
+        targetToDestroyDistrict = pickRandomTargetPlayer();
+        districtToDestroy = pickRandomDistrict();
         super.specialMove();
     }
 
@@ -67,5 +69,16 @@ public class Bot extends Player{
     }
     Player pickRandomTargetPlayer(){
         return getBoard().getPlayers().get(random.nextInt(4));
+    }
+    District pickRandomDistrict() {
+        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity());
+        if(!hand.isEmpty()) {
+            District d = hand.get(0);
+            for (District d1 : hand) {
+                if (d1.getCost() < d.getCost()) d = d1;
+            }
+            return d;
+        }
+        return null;
     }
 }

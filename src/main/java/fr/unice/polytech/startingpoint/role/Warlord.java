@@ -12,12 +12,14 @@ public class Warlord extends Role {
 
     void action(Player target, District toDestroy){
         target.deleteDistrictFromCity(toDestroy);
+        System.out.println(this+" (joueur numéro "+this.player.getId()+") détruit le district \n"+this.player.getDistrictToDestroy()+" du joueur numéro "+this.player.getTargetToDestroyDistrict().getId());
     }
 
     @Override
     public void useSpecialPower() {
-        //action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
-
+        if(this.player.getDistrictToDestroy()!= null && this.player.getDistrictToDestroy().getCost()<this.player.getGold()) {
+            action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
+        }
     }
 
     

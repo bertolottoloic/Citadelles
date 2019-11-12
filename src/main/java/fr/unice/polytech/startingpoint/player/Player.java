@@ -21,8 +21,9 @@ public class Player {
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	protected Role targetToKill;
 	protected Role targetToRob;
-	private Player targetToDestroyDistrict;
-	private District districtToDestroy;
+	protected Player targetToDestroyDistrict;
+	protected District districtToDestroy;
+	private ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
 
@@ -225,6 +226,10 @@ public class Player {
 	public void specialMove() {
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();
+		if(character instanceof Warlord && districtToDestroy!=null){
+			gold-=districtToDestroy.getCost();
+			board.deposit(districtToDestroy.getCost());
+		}
 	}
 
 
@@ -321,6 +326,14 @@ public class Player {
 
 	public void setTargetToExchangeHandWith(Player targetToExchangeHandWith) {
 		this.targetToExchangeHandWith = targetToExchangeHandWith;
+	}
+
+	public ArrayList<District> getCardsToExchange(){
+		return new ArrayList<District>(cardsToExchange);
+	}
+
+	public void setCardsToExchange(ArrayList<District> cards){
+		this.cardsToExchange = new ArrayList<District>(cards);
 	}
 
 	public Role getCharacter() {

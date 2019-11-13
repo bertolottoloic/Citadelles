@@ -56,10 +56,20 @@ public class BotIA extends Player{
         
     }
 
+
+
     @Override
     public void Discard(ArrayList<District> d){
-        if(!d.isEmpty()){
-            getBoard().getDeck().putbackOne(d.remove(0));
+        District discard;
+        if(d.size()>=2){
+            if(d.get(0).getCost()>getGold()){discard=d.get(0);}
+            else if(d.get(1).getCost()>getGold()){discard=d.get(1);}
+            else {
+                if(d.get(0).getCost()>d.get(1).getCost()){discard=d.get(1);}
+                else{discard=d.get(0);}
+            }
+            d.remove(discard);
+            getBoard().getDeck().putbackOne(discard);
         }
         //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
@@ -82,10 +92,25 @@ public class BotIA extends Player{
         return getGold() < 2 || highValuedDistrict();
     }
 
+    int nbTooExpensivesDistricts(ArrayList<District> districts){
+        int n=0;
+        for(District d : districts) {
+            if (getGold() < d.getCost()) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     @Override
     protected boolean isBuildingFirst() {
-        if(random.nextInt(2)==1){
+        if(getCharacter().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
+        else if(getCharacter().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+            int countBadCards=nbTooExpensivesDistricts(getHand());
+            if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+            else{return true;}
+        }
         else
         {return false;}
     }

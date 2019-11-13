@@ -128,9 +128,24 @@ public class BotIA extends Player{
 		super.getCharacter().collectRentMoney();
 	}
 
-    Role pickRandomTargetRole(){
-        return getBoard().getRole(random.nextInt(8));
+    Role pickTargetRole(){
+        Role character = this.getCharacter();
+        ArrayList<Role> roles = this.getBoard().getRoles();
+        Role target;
+        switch(character.getPosition()){
+            case 1:
+                target = roles.get(5);
+                break;
+            case 2:
+                target = roles.get(6);
+                break;
+            default :
+                target = null;
+                break;
+        }
+        return target;
     }
+    
     Player pickRandomTargetPlayer(){
         return getBoard().getPlayers().get(random.nextInt(4));
     }

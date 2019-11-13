@@ -7,10 +7,10 @@ import fr.unice.polytech.startingpoint.role.Role;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Bot extends Player{
+public class BotIA extends Player{
     private Random random=new Random();
 
-    public Bot(int id){
+    public BotIA(int id){
         super(id);
     }
 
@@ -61,14 +61,25 @@ public class Bot extends Player{
         if(!d.isEmpty()){
             getBoard().getDeck().putbackOne(d.remove(0));
         }
+        //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
 
+    /**
+     * Cherche un district qui vaut plus que l'or possédé par le joueur
+     * @return true s'il y en a
+     */
+    private boolean highValuedDistrict() {
+    	for(District d : getHand()){
+    		if(d.getValue() > getGold()) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     @Override
     public boolean coinsOrDistrict() {
-        if(random.nextInt(2)==1){
-        return true;}
-        else
-            {return false;}
+        return getGold() < 2 || highValuedDistrict();
     }
 
     @Override
@@ -78,6 +89,19 @@ public class Bot extends Player{
         else
         {return false;}
     }
+    
+    /**
+     * A override en cas de possession de la carte Ecole de Magie
+     */
+    @Override
+    void collectMoneyFromDistricts(){
+    	getCity().forEach((District d) -> {
+    		if(d.getNom().equals("Ecole de Magie")) {
+    			//d.setColor("TODO"); // Le joueur choisit la couleur
+    		}
+    	});
+		super.getCharacter().collectRentMoney();
+	}
 
     Role pickRandomTargetRole(){
         return getBoard().getRole(random.nextInt(8));

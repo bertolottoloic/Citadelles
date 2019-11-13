@@ -127,5 +127,21 @@
         "cost":5,
         "nb":2,
         "nom":"Forteresse"
+    },
+    {
+        
+        "color":"merveille",
+        "value":8,
+        "cost":6,
+        "nb":1,
+        "nom":"Universite"
+    },
+    {
+        
+        "color":"merveille",
+        "value":8,
+        "cost":6,
+        "nb":1,
+        "nom":"Dracoport"
     }
 ]

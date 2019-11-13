@@ -10,15 +10,15 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.unice.polytech.startingpoint.player.Bot;
+import fr.unice.polytech.startingpoint.player.BotRnd;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
 
 class DealRolesTest {
 	
-	Player p1 = new Bot(1);
-    Player p2 = new Bot(2);
-    Player p3 = new Bot(3);
+	Player p1 = new BotRnd(1);
+    Player p2 = new BotRnd(2);
+    Player p3 = new BotRnd(3);
     ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3));
 	DealRoles dealer;
 	ArrayList<Role> myRoles;

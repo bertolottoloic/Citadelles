@@ -192,6 +192,8 @@ public class Player {
 			this.hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
+			//TODO one of the districts is named "Cour des miracles"
+			//Changement de couleur à n'importe quel tour, tant que pas dernier
 		}
 
 		if(isBuildingFirst()) {

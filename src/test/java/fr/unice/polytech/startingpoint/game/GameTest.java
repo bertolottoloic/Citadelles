@@ -10,9 +10,9 @@ import fr.unice.polytech.startingpoint.player.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-	Player p1 = new Bot(1);
-    Player p2 = new Bot(2);
-    Player p3 = new Bot(3);
+	Player p1 = new BotRnd(1);
+    Player p2 = new BotRnd(2);
+    Player p3 = new BotRnd(3);
     Game game = new Game(p1, p2, p3);
     
     @BeforeEach

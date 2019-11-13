@@ -24,10 +24,10 @@ class ManagerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		p1 = new Bot(1);
-		p2 = new Bot(2);
-		p3 = new Bot(3);
-		p4 = new Bot(4);
+		p1 = new BotRnd(1);
+		p2 = new BotRnd(2);
+		p3 = new BotRnd(3);
+		p4 = new BotRnd(4);
 		
 	}
 	

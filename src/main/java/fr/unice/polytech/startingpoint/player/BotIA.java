@@ -134,10 +134,10 @@ public class BotIA extends Player{
         Role target;
         switch(character.getPosition()){
             case 1:
-                target = roles.get(5);
+                target = roles.get(1);
                 break;
             case 2:
-                target = roles.get(6);
+                target = roles.get(5);
                 break;
             default :
                 target = null;

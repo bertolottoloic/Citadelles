@@ -97,4 +97,24 @@ public class Board{
         return dealRoles;
     }
 
+    public Player getPlayerWithTheBiggestHand(){
+        Player player = this.getPlayers().get(0);
+        for(Player players : this.getPlayers()) {
+            if(players.getHand().size()>player.getHand().size()){
+                player = players;
+            }
+        }
+        return player;
+    }
+
+    public Player getPlayerWithTheBiggestCity(){
+        Player player = this.getPlayers().get(0);
+        for(Player players : this.getPlayers()) {
+            if(players.getCity().size()>player.getCity().size()){
+                player = players;
+            }
+        }
+        return player;
+    }
+
 }

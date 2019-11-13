@@ -21,10 +21,10 @@ public class BotIA extends Player{
 
     @Override
     public void specialMove() {
-        targetToKill=pickRandomTargetRole();
-        targetToRob=pickRandomTargetRole();
-        targetToExchangeHandWith=pickRandomTargetPlayer();
-        targetToDestroyDistrict = pickRandomTargetPlayer();
+        targetToKill=pickTargetRole();
+        targetToRob=pickTargetRole();
+        targetToExchangeHandWith=pickTargetPlayer();
+        targetToDestroyDistrict = pickTargetPlayer();
         districtToDestroy = pickRandomDistrict();
         super.specialMove();
     }
@@ -146,9 +146,23 @@ public class BotIA extends Player{
         return target;
     }
     
-    Player pickRandomTargetPlayer(){
-        return getBoard().getPlayers().get(random.nextInt(4));
+    Player pickTargetPlayer(){
+        Role character = this.getCharacter();
+        Player target;
+        switch(character.getPosition()){
+            case 3:
+                target = this.getBoard().getPlayerWithTheBiggestHand();
+                break;
+            case 8:
+                target = this.getBoard().getPlayerWithTheBiggestCity();
+                break;
+            default :
+                target = null;
+                break;
+        }
+        return target;
     }
+
     District pickRandomDistrict() {
         ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity());
         if(!hand.isEmpty()) {

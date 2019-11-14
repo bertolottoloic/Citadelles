@@ -188,7 +188,7 @@ public class Player {
 		else{
 			
 			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
-			Discard(districts);
+			discard(districts);
 			this.hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
@@ -229,7 +229,7 @@ public class Player {
 		// forgot something ??
 	}
 
-	public void Discard(ArrayList<District> d){
+	public void discard(ArrayList<District> d){
 		if(!d.isEmpty()){
 			getBoard().getDeck().putbackOne(d.remove(0)); }
 	}

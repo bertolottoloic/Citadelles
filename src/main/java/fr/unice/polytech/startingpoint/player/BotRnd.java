@@ -57,7 +57,7 @@ public class BotRnd extends Player{
     }
 
     @Override
-    public void Discard(ArrayList<District> d){
+    public void discard(ArrayList<District> d){
         if(!d.isEmpty()){
             getBoard().getDeck().putbackOne(d.remove(0));
         }

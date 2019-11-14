@@ -32,15 +32,15 @@ public class BotIA extends Player{
     @Override
     protected void action() {
         int i =0;
-            ArrayList<District> currHand=new ArrayList<District>();
-            currHand.addAll(getHand());
+            ArrayList<District> currHand=new ArrayList<District>(getHand());
             int nb=getCharacter().getNumberDistrictBuildable();
-            for (District d : currHand){
-                if ((d.getCost() < getGold()) && i<nb) {
-                    addToTheCity(d);
-                    i++;
+            if(!getHand().isEmpty()) {
+                District toBuild = whatToBuild();
+                if (toBuild != null) {
+                    addToTheCity(toBuild);
                 }
             }
+
             if(checkFinishBuilding() || getBoard().numberOfCardsOfDeck()<=0){
                 /*
                 Notez que si il reste encore des cartes dans le deck et
@@ -59,7 +59,7 @@ public class BotIA extends Player{
 
 
     @Override
-    public void Discard(ArrayList<District> d){
+    public void discard(ArrayList<District> d){
         District discard;
         if(d.size()>=2){
             if(d.get(0).getCost()>getGold()){discard=d.get(0);}
@@ -78,28 +78,55 @@ public class BotIA extends Player{
      * Cherche un district qui vaut plus que l'or possédé par le joueur
      * @return true s'il y en a
      */
-    private boolean highValuedDistrict() {
-    	for(District d : getHand()){
-    		if(d.getValue() > getGold()) {
+     boolean highValuedDistrict(ArrayList<District>hand ,int golds) {
+    	for(District d : hand){
+    		if(d.getValue() > golds) {
     			return true;
     		}
     	}
     	return false;
     }
+
+     District lowCostDistrict(ArrayList<District> hand) {
+        District lowCost=hand.get(0);
+        for(District d : hand){
+            if(d.getCost() < lowCost.getCost()) {
+                lowCost=d;
+            }
+        }
+        return lowCost;
+    }
     
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2 || highValuedDistrict();
+        return getGold() < 2 || highValuedDistrict(getHand(),getGold());
     }
 
-    int nbTooExpensivesDistricts(ArrayList<District> districts){
+    /**
+     * Compte le nombre de district dont le cout est plus eleve que le nombre de piece d'or posseder par le joueur
+     * @return int : nombre de district
+     */
+
+     public int nbTooExpensivesDistricts(ArrayList<District> districts,int golds){
         int n=0;
         for(District d : districts) {
-            if (getGold() < d.getCost()) {
+            if (golds < d.getCost()) {
                 n++;
             }
         }
         return n;
+    }
+
+    /**
+     * utilise une srrategie pour chercher le quartier le moins cher a poser
+     * @return le district a poser
+     */
+    District whatToBuild(){
+        District lowerCost = lowCostDistrict(getHand());
+        if(lowerCost.getCost()<=getGold()){
+            return lowerCost;
+        }
+        else{return null;}
     }
 
     @Override
@@ -107,7 +134,7 @@ public class BotIA extends Player{
         if(getCharacter().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
         else if(getCharacter().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=nbTooExpensivesDistricts(getHand());
+            int countBadCards=nbTooExpensivesDistricts(getHand(),getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}
         }

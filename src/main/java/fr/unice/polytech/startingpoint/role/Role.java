@@ -109,7 +109,7 @@ public abstract class Role {
         return this.player;
     }
 
-    int getPosition(){
+    public int getPosition(){
         return this.position;
     }
 

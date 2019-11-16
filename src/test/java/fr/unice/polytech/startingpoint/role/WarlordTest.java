@@ -41,14 +41,14 @@ public class WarlordTest {
         player.takeCoinsFromBank(10);
         target.takeCoinsFromBank(10);
         target.addToTheCity(target.getHand().get(0));
-        ArrayList<District> city = new ArrayList<District>(target.getCity());
+        ArrayList<District> city = target.getCity().getListDistricts();
         player.setTargetToDestroyDistrict(target);
-        player.setDistrictToDestroy(target.getCity().get(0));
+        player.setDistrictToDestroy(target.getCity().getListDistricts().get(0));
         player.specialMove();
         assertEquals(8,warlord.getPosition());
         assertEquals(player,warlord.getPlayer());
         assertEquals(1,warlord.getNumberDistrictBuildable());
-        assertEquals(1,city.size());
-        assertEquals(0,target.getCity().size());
+        assertEquals(0,city.size());
+        assertEquals(0,target.getCity().getListDistricts().size());
     }
 }

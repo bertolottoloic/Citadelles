@@ -1,12 +1,12 @@
 package fr.unice.polytech.startingpoint.board;
 
 
-import fr.unice.polytech.startingpoint.game.DealRoles;
-import fr.unice.polytech.startingpoint.player.Player;
-import fr.unice.polytech.startingpoint.role.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.role.Role;
 
 public class Board{
     private Deck deck;
@@ -110,7 +110,7 @@ public class Board{
     public Player getPlayerWithTheBiggestCity(){
         Player player = this.getPlayers().get(0);
         for(Player players : this.getPlayers()) {
-            if(players.getCity().size()>player.getCity().size()){
+            if(players.getCity().getSizeOfCity()>player.getCity().getSizeOfCity()){
                 player = players;
             }
         }

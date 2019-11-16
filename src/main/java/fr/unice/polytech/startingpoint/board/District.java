@@ -45,10 +45,14 @@ public class District{
 
     }
 
-
-    public boolean equals(District other) {
-            return  this.nom.equals(other.nom) && this.color.equals(other.color);
+    @Override
+    public boolean equals(Object other) {
+        if(other instanceof District){
+            return  this.nom.equals(((District)other).nom) && this.color.equals(((District)other).color);
+        }
+        return false;
     }
+    
 
     public String getNom() {
         return nom;

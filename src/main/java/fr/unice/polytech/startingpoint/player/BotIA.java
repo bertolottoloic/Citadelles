@@ -131,9 +131,9 @@ public class BotIA extends Player{
 
     @Override
     protected boolean isBuildingFirst() {
-        if(getCharacter().equals("Wizard")){ //pioche 3 cartes avant de jouer
+        if(getCharacter().toString().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
-        else if(getCharacter().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+        else if(getCharacter().toString().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=nbTooExpensivesDistricts(getHand(),getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}
@@ -147,13 +147,44 @@ public class BotIA extends Player{
      */
     @Override
     void collectMoneyFromDistricts(){
-    	getCity().forEach((District d) -> {
+    	/*getCity().forEach((District d) -> {
     		if(d.getNom().equals("Ecole de Magie")) {
     			//d.setColor("TODO"); // Le joueur choisit la couleur
     		}
-    	});
+    	});*/
 		super.getCharacter().collectRentMoney();
-	}
+    }
+    /**
+         * Fonction pour récupérer le Role permettant 
+         * d'avoir le plus d'argent
+         * On utilisera hidden que si le joueur est le 
+         * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
+         */
+    public Role roleToOptimizeCoins(ArrayList<Role> lefts,Role hidden){
+        
+        if(city.getSizeOfCity()==0){
+            //une autre 
+            return null;
+        }
+        else{
+            ArrayList<String> availableColors=new ArrayList<>();
+            lefts.stream().map(d -> d.getColor()).forEach(s->{
+                if(s.equals("soldatesque") || s.equals("commerce") || s.equals("regligion") || s.equals("noblesse") ){
+                    availableColors.add(s);
+                }
+            });
+            String bestColor=this.city.mostPotentiallyPayingColor(availableColors);
+            
+            for(Role r:lefts){
+                if(r.getColor().equals(bestColor)){
+                    return r;
+                }
+            }
+            return null;
+        }
+        
+        
+    }
 
     Role pickTargetRole(){
         Role character = this.getCharacter();
@@ -191,7 +222,7 @@ public class BotIA extends Player{
     }
 
     District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity());
+        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
         if(!hand.isEmpty()) {
             District d = hand.get(0);
             for (District d1 : hand) {

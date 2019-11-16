@@ -1,7 +1,9 @@
 package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,11 +53,11 @@ class BotRndTest {
 		b1.pickNewDistrict(new District(6, 2, "violet", "Pont"));
 		assertTrue(b1.city.isEmpty());
 		b1.action();
-		assertEquals(1, b1.city.size());
+		assertEquals(1, b1.city.getSizeOfCity());
 		b1.action();
-		assertEquals(2, b1.city.size());
+		assertEquals(2, b1.city.getSizeOfCity());
 		b1.action();
-		assertEquals(2, b1.city.size());
+		assertEquals(2, b1.city.getSizeOfCity());
 		b1.getBoard().getDeck().getList().clear();
 		b1.action();
 		assertTrue(b1.gameOver);

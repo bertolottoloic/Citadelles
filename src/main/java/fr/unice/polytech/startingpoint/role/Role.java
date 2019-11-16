@@ -81,7 +81,7 @@ public abstract class Role {
      * 
      */
     public void collectRentMoney(){
-        ArrayList<District> districts=this.player.getCity();
+        ArrayList<District> districts=this.player.getCity().getListDistricts();
 
         for(District d:districts){
             if(d.getColor().equals(this.getColor())){
@@ -112,6 +112,8 @@ public abstract class Role {
     public int getPosition(){
         return this.position;
     }
+
+    
 
     public int getNumberDistrictBuildable(){
         return this.numberDistrictBuildable;
@@ -149,7 +151,7 @@ public abstract class Role {
         return this.isStolen;
     }
 
-    private String getColor() {
+    public String getColor() {
         return color;
     }
 

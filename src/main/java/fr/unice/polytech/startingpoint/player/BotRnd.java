@@ -86,7 +86,7 @@ public class BotRnd extends Player{
         return getBoard().getPlayers().get(random.nextInt(4));
     }
     District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity());
+        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
         if(!hand.isEmpty()) {
             District d = hand.get(0);
             for (District d1 : hand) {

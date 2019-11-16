@@ -59,14 +59,7 @@ class Game {
         }
     }
 
-    void countPoints(Player p){
-        int point=0;
-        for(District district : p.getCity()){
-            point+=district.getValue();
-        }
-        points.put(p,point);
-    }
-
+    
     public String toString(){
          String scores="";
          for(Player p : players){

@@ -38,14 +38,7 @@ class GameTest {
     	}
     }
     
-    @Test
-    void countPointsTest() {    	
-    	game.countPoints(p1);
-    	assertEquals(0, game.getPoints().get(p1));
-    	p2.getCity().add(new District(1, 3, "blue", "unDistrict"));
-    	game.countPoints(p2);
-    	assertEquals(3, game.getPoints().get(p2));    	
-    }    
+    
     
     @Test
     void startGameTest() {

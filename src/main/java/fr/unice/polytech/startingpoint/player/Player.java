@@ -1,21 +1,21 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.Board;
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.*;
-
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.HashSet;
+
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Bishop;
+import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Warlord;
 
 public class Player {
 	private final int id;
 	private Role character;
 	private int gold;
 	private ArrayList<District> hand;
-	protected ArrayList<District> city;
+	protected City city;
 	protected Player nextPlayer;
 	protected Board board;
 
@@ -44,7 +44,7 @@ public class Player {
 		support = new PropertyChangeSupport(this);
 		this.id = id;
 		hand = new ArrayList<>();
-		city = new ArrayList<>();
+		city = new City();
 	}
 	
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -75,10 +75,8 @@ public class Player {
 	}
 	
 	public boolean addToTheCity(District theDistrict) {
-		for(District aDis: city){
-			if(theDistrict.equals(aDis)){
-				return false;
-			}
+		if(city.alreadyContains(theDistrict)){
+			return false;
 		}
 		if(gold - theDistrict.getCost() >= 0) {
 			gold -= theDistrict.getCost();
@@ -102,7 +100,7 @@ public class Player {
 	 */
 	public void deleteDistrictFromCity(District toDelete){
 		if(!(character instanceof Bishop)){
-			city.remove(toDelete);
+			city.removeDistrict(toDelete);
 		}
 	}
 	
@@ -273,7 +271,7 @@ public class Player {
 	 */
 	public boolean checkFinishBuilding()
 	{
-		if(this.isFirstToFinish() && getSizeOfCity()>=8){
+		if(this.isFirstToFinish() && city.getSizeOfCity()>=8){
 			this.firstToFinish=true;
 		}
 		return this.firstToFinish;
@@ -298,34 +296,24 @@ public class Player {
 
 	}
 
-	public boolean cityContainsAllColors(){
-		HashSet<String> s=new HashSet<String>();
-		city.forEach((c)->{
-			s.add(c.getColor());
-
-		});
-		return s.size()==5;
-	}
+	
 	/**
 	 * Cette méthode permet de compter les points en fin de partie
 	 * @return le nombre de points
 	 */
 	public int points(){
-		ArrayList<District> ct=getCity();
 		int points=0;
-         for(District d : ct){
-             points+=d.getValue();
-		 }
+         points+=city.getTotalValue();
 		 if(this.firstToFinish){
 			//Le premier joueur à avoir posé son quartier reçoit +4
 			points+=4;
 		 }
-		 else if(!this.firstToFinish && getSizeOfCity()>=8){
+		 else if(!this.firstToFinish && city.getSizeOfCity()>=8){
 			 // + 2 pour les autres joueurs ayant huit quartiers.
 			 points+=2;
 		 }
 
-		 if(this.cityContainsAllColors()){
+		 if(this.city.containsAllColors()){
 			 // + 3 si la cité comprend des quartiers des cinq couleurs différentes.
 			 points+=3;
 		 }
@@ -345,9 +333,7 @@ public class Player {
 
 	/* ----- setters et getters ----*/
 
-	public int getSizeOfCity(){
-		return city.size();
-	}
+	
 	public Player getNextPlayer() {
 		return nextPlayer;
 	}
@@ -437,7 +423,7 @@ public class Player {
 		return id;
 	}
 	
-	public ArrayList<District> getCity() {
+	public City getCity() {
 		return city;
 	}
 
@@ -446,7 +432,7 @@ public class Player {
 	 * utilisé ailleurs
 	 * @param city
 	 */
-	public void setCity(ArrayList<District> city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 

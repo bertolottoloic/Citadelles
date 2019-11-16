@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.player.Hand;
 
 import java.util.ArrayList;
 
@@ -17,11 +18,11 @@ public class Wizard extends Role{
     @Override
     public void useSpecialPower() {
         if(this.player.getTargetToExchangeHandWith()==null){
-            ArrayList<District> hand = new ArrayList<District>(this.player.getHand());
+            ArrayList<District> hand = new ArrayList<District>(this.player.getHand().toList());
             hand.removeAll(this.player.getCardsToExchange());
             ArrayList<District> tmphand = new ArrayList<District>(player.getBoard().exchangeMany(this.player.getCardsToExchange()));
             hand.addAll(tmphand);
-            this.player.setHand(hand);
+            this.player.setHand(new Hand(hand));
             System.out.println(this+" (joueur numero "+this.player.getId()+") echange des cartes avec le deck");
         }
         else{

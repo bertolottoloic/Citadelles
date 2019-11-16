@@ -33,7 +33,7 @@ public class BotRnd extends Player{
     protected void action() {
         int i =0;
             ArrayList<District> currHand=new ArrayList<District>();
-            currHand.addAll(getHand());
+            currHand.addAll(getHand().toList());
             int nb=getCharacter().getNumberDistrictBuildable();
             for (District d : currHand){
                 if ((d.getCost() < getGold()) && i<nb) {

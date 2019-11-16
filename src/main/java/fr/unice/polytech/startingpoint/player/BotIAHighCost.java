@@ -1,12 +1,14 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Warlord;
+import fr.unice.polytech.startingpoint.role.Wizard;
 
 public class BotIAHighCost extends Player {
     private Random random=new Random();
@@ -57,9 +59,9 @@ public class BotIAHighCost extends Player {
         countColors.put("religion",0);
         countColors.put("commerce",0);
         countColors.put("militaire",0);
-        countColors.put("noble",0);
+        countColors.put("noblesse",0);
         countColors.put("merveille",0);
-        for (District d : getHand()){
+        for (District d : getHand().toList()){
              int count = countColors.containsKey(d.getColor()) ? countColors.get(d.getColor()) : 0;
             countColors.put(d.getColor(), count + 1);
         }
@@ -83,9 +85,6 @@ public class BotIAHighCost extends Player {
 
     @Override
     protected void action() {
-        int i =0;
-        ArrayList<District> currHand=new ArrayList<District>(getHand());
-        int nb=getCharacter().getNumberDistrictBuildable();
         if(!getHand().isEmpty()) {
             District toBuild = whatToBuild();
             if (toBuild != null) {
@@ -107,18 +106,9 @@ public class BotIAHighCost extends Player {
         }
     }
 
-    District highCostDistrict(ArrayList<District> hand,int golds) {
-        District highCost=hand.get(0);
-        for(District d : hand){
-            if(d.getCost() > highCost.getCost()&&(d.getCost()<=golds)) {
-                highCost=d;
-            }
-        }
-        return highCost;
-    }
 
     District whatToBuild(){
-        District district = highCostDistrict(getHand(),getGold());
+        District district = getHand().highCostDistrict(getGold());
         if(district.getCost()<=getGold()){
             return district;
         }
@@ -154,7 +144,7 @@ public class BotIAHighCost extends Player {
         if(getCharacter() instanceof Wizard){ //pioche 3 cartes avant de jouer
             return true;}
         else if(getCharacter() instanceof Warlord){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=nbBadCards(getHand(),getGold());
+            int countBadCards=getHand().nbBadCards(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}
         }
@@ -162,15 +152,6 @@ public class BotIAHighCost extends Player {
         {return false;}
     }
 
-    int nbBadCards(ArrayList<District>hand , int golds){
-        int count=0;
-        for(District d : hand){
-            if(d.getCost()+3<golds||d.getCost()>golds){
-                count++;
-            }
-        }
-        return count;
-    }
 
     Role pickTargetRole(){
         Role character = this.getCharacter();

@@ -14,12 +14,7 @@ class BotIATest{
     District d2 = new District(6,6, "merveille","rue");
     ArrayList<District> hand;
 
-    @Test
-    void nbTooExpensivesDistrictsTest(){
-        hand = new ArrayList<>();
-        hand.add(d1); hand.add(d2); hand.add(d2);
-        assertEquals(2,bot.nbTooExpensivesDistricts(hand,4));
-    }
+    
 
    /* @Test
     void discardTest(){
@@ -30,19 +25,5 @@ class BotIATest{
         assertEquals(d1,hand.get(0));
     }*/
 
-   @Test
-    void lowCostDistrictTest(){
-       hand=new ArrayList<>();
-       hand.add(d2);
-       hand.add(d1);
-       assertEquals(d1,bot.lowCostDistrict(hand));
-   }
-
-   @Test
-    void highValuedDistrictTest(){
-       hand=new ArrayList<>();
-       hand.add(d2);
-       hand.add(d1);
-       assertEquals(true,bot.highValuedDistrict(hand,3));
-   }
+   
 }

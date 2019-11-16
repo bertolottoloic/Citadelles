@@ -40,7 +40,7 @@ public class WarlordTest {
         target.takeCardsAtBeginning();
         player.takeCoinsFromBank(10);
         target.takeCoinsFromBank(10);
-        target.addToTheCity(target.getHand().get(0));
+        target.addToTheCity(target.getHand().toList().get(0));
         ArrayList<District> city = target.getCity().getListDistricts();
         player.setTargetToDestroyDistrict(target);
         player.setDistrictToDestroy(target.getCity().getListDistricts().get(0));

@@ -14,7 +14,7 @@ public class Player {
 	private final int id;
 	private Role character;
 	private int gold;
-	private ArrayList<District> hand;
+	protected Hand hand;
 	protected City city;
 	protected Player nextPlayer;
 	protected Board board;
@@ -43,7 +43,7 @@ public class Player {
 	public Player(int id){
 		support = new PropertyChangeSupport(this);
 		this.id = id;
-		hand = new ArrayList<>();
+		hand = new Hand();
 		city = new City();
 	}
 	
@@ -118,13 +118,12 @@ public class Player {
 	}
 
 	public void exchangeHands() {
-		ArrayList<District> tmpHand = new ArrayList<>();
-		tmpHand.addAll(hand);
-		hand.clear();
+		Hand tmpHand=this.hand;
 		
-		hand.addAll(targetToExchangeHandWith.hand);
-		targetToExchangeHandWith.hand.removeAll(targetToExchangeHandWith.hand);
-		targetToExchangeHandWith.hand.addAll(tmpHand);
+		this.hand=targetToExchangeHandWith.hand;
+
+		targetToExchangeHandWith.hand=tmpHand;
+		
 	}
 
 	
@@ -342,9 +341,8 @@ public class Player {
 		this.nextPlayer = nextPlayer;
 	}
 
-	public void setHand(ArrayList<District> liste) {
-		this.hand.clear();
-		this.hand.addAll(liste);
+	public void setHand(Hand liste) {
+		this.hand=liste;
 	}
 
 	public Board getBoard() {
@@ -417,7 +415,7 @@ public class Player {
 		return gold;
 	}
 
-	public ArrayList<District> getHand(){return hand;}
+	public Hand getHand(){return hand;}
 	
 	public int getId() {
 		return id;

@@ -53,15 +53,15 @@ public class WizardTest {
         Role wizard = board.getRole(2);
         player.setCharacter(wizard);
         player.takeCardsAtBeginning();
-        ArrayList<District> cardsToExchange = new ArrayList<District>(player.getHand());
-        ArrayList<District> hand = new ArrayList<District>(player.getHand());
+        ArrayList<District> cardsToExchange = new ArrayList<District>(player.getHand().toList());
+        ArrayList<District> hand = new ArrayList<District>(player.getHand().toList());
         cardsToExchange.remove(0);
         cardsToExchange.remove(0);
         player.setCardsToExchange(cardsToExchange);
         wizard.useSpecialPower();
-        assertEquals(hand.get(0),player.getHand().get(0));
-        assertEquals(hand.get(1),player.getHand().get(1));
-        assertNotSame(hand.get(2),player.getHand().get(2));
-        assertNotSame(hand.get(3),player.getHand().get(3));
+        assertEquals(hand.get(0),player.getHand().toList().get(0));
+        assertEquals(hand.get(1),player.getHand().toList().get(1));
+        assertNotSame(hand.get(2),player.getHand().toList().get(2));
+        assertNotSame(hand.get(3),player.getHand().toList().get(3));
     }
 }

@@ -122,13 +122,13 @@ public class Manager implements PropertyChangeListener {
 
         }
         printResults(players);
-        stats();
+        //stats();
     }
-    public void stats(){
+    /*public void stats(){
         for(Player p :winner){
             Main.stats.put(p.getId(),Main.stats.get(p.getId())+1);
         }
-    }
+    }*/
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         gameOver=true;

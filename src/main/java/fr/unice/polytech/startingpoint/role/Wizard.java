@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.role;
 
 import fr.unice.polytech.startingpoint.board.District;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Wizard extends Role{

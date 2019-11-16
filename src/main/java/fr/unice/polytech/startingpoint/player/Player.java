@@ -16,8 +16,8 @@ public class Player {
 	private int gold;
 	private ArrayList<District> hand;
 	protected ArrayList<District> city;
-	private Player nextPlayer;
-	private Board board;
+	protected Player nextPlayer;
+	protected Board board;
 
 	protected boolean gameOver=false;
 
@@ -31,7 +31,7 @@ public class Player {
 	protected PropertyChangeSupport support;
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
-	private boolean alreadyChosenRole;
+	protected boolean alreadyChosenRole;
 
 	/*Attribut permettant de savoir si le joueur a posé son huitième quartier en premier */
 	private boolean firstToFinish=false;

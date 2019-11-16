@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.Main;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Crown;
 import fr.unice.polytech.startingpoint.player.Player;
@@ -121,8 +122,13 @@ public class Manager implements PropertyChangeListener {
 
         }
         printResults(players);
+        stats();
     }
-
+    public void stats(){
+        for(Player p :winner){
+            Main.stats.put(p.getId(),Main.stats.get(p.getId())+1);
+        }
+    }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         gameOver=true;

@@ -1,13 +1,13 @@
 package fr.unice.polytech.startingpoint.game;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Board;
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.player.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import fr.unice.polytech.startingpoint.player.BotRnd;
+import fr.unice.polytech.startingpoint.player.Player;
 
 class GameTest {
 	Player p1 = new BotRnd(1);

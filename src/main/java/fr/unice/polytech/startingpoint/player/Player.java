@@ -130,7 +130,7 @@ public class Player {
 	
 	void surrenderToThief(){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
-			board.getRole(1).getPlayer().addMoney(gold);//donne l'argent au player de Thief
+			board.getRole("Thief").getPlayer().addMoney(gold);//donne l'argent au player de Thief
 			gold=0;//plus d'argent apres le vol
 	}
 
@@ -185,7 +185,7 @@ public class Player {
 		else{
 			
 			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
-			discard(districts);
+			this.discard(districts);
 			this.hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");

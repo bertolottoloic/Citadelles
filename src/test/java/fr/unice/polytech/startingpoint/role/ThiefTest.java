@@ -35,8 +35,8 @@ public class ThiefTest {
 
     @Test
     void thiefTest(){
-        Role thief = board.getRole(1);
-        Role merchant = board.getRole(5);
+        Role thief = board.getRole("Thief");
+        Role merchant = board.getRole("Merchant");
         player.setCharacter(thief);
         target.setCharacter(merchant);
         target.setBoard(board);

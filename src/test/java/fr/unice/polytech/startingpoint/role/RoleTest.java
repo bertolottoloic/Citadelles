@@ -34,13 +34,13 @@ public class RoleTest {
 
     @Test
     void murdererTest(){
-        Role murderer = board.getRole(0);
-        Role merchant = board.getRole(5);
+        Role murderer = board.getRole("Murderer");
+        Role merchant = board.getRole("Merchant");
         player.setCharacter(murderer);
         target.setCharacter(merchant);
         player.setTargetToKill(merchant);
         player.getCharacter().useSpecialPower();
-        assertEquals(1,board.getRole(0).getPosition());
+        assertEquals(1,board.getRole("Murderer").getPosition());
         assertEquals(player,murderer.getPlayer());
         assertEquals(1,murderer.getNumberDistrictBuildable());
         assertEquals(2,murderer.getNumberGold());
@@ -49,8 +49,8 @@ public class RoleTest {
 
     @Test
     void thiefTest(){
-        Role thief = board.getRole(1);
-        Role merchant = board.getRole(5);
+        Role thief = board.getRole("Thief");
+        Role merchant = board.getRole("Merchant");
         player.setCharacter(thief);
         target.setCharacter(merchant);
         target.setBoard(board);

@@ -113,7 +113,7 @@ class PlayerTest {
     	player.addMoney(6);
     	
     	Player p2 = new Player(3);
-    	Role r = player.getBoard().getRole(1);
+    	Role r = player.getBoard().getRole("Thief");
     	r.setPlayer(p2);
     	
     	assertEquals(6, player.getGold());

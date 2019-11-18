@@ -1,11 +1,8 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import fr.unice.polytech.startingpoint.board.District;
 
@@ -39,7 +36,7 @@ public class City {
     }
 
     public String mostPotentiallyPayingColor(List<String> availableColors){
-        if(districts.isEmpty()){
+        if(districts.isEmpty() || availableColors.isEmpty()){
             return null;
         }
         else{

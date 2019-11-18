@@ -45,8 +45,8 @@ public class Manager implements PropertyChangeListener {
          /**
           * On remet la couronne au Roi s'il est dans la partie
           */
-        if(dealRoles.getRole(3).getPlayer()!=null){
-            crown.goesTo(dealRoles.getRole(3).getPlayer());
+        if(dealRoles.getRole("King").getPlayer()!=null){
+            crown.goesTo(dealRoles.getRole("King").getPlayer());
         }
 
          /**

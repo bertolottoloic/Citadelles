@@ -9,8 +9,8 @@ public class DealRoles{
     private ArrayList<Role> leftRoles;
     private ArrayList<Role> roles = new ArrayList<>();
     private ArrayList<Role> visible = new ArrayList<>();
-   
     private Role hidden;
+    
     public DealRoles(){
         this.visible=new ArrayList<Role>();
         this.roles.add(new Murderer());
@@ -50,6 +50,10 @@ public class DealRoles{
 
     public Role getRole(int index){
         return this.roles.get(index);
+    }
+
+    public Role getRole(String roleName){
+        return roles.stream().filter(role-> role.toString().equals(roleName)).findFirst().get();
     }
 
     public ArrayList<Role> getLeftRoles(){

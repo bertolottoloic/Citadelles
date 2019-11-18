@@ -1,7 +1,5 @@
 package fr.unice.polytech.startingpoint.board;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,17 +9,14 @@ import org.json.JSONObject;
 
 
 class DistrictsInput{
-    private static final String srcData="src/main/resources/infos_districts.json";
+    private final String srcData="/json/infos_districts.json";
 
-    private static String readFile(String fichier) throws FileNotFoundException,IOException{
-        File f=new File(fichier);
-        FileInputStream rf=new FileInputStream(f);
-        String tmp=new String(rf.readAllBytes());
-        rf.close();
+    private String readFile(String fichier) throws FileNotFoundException,IOException{
+        String tmp=new String(getClass().getResourceAsStream(srcData).readAllBytes());
         return tmp;
     }
 
-	public static ArrayList<District> getDistricts() {
+	public  ArrayList<District> getDistricts() {
         ArrayList<District> list=new ArrayList<>();
 		try {
             JSONArray infos=new JSONArray(readFile(srcData));

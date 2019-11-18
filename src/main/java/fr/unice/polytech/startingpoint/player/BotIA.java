@@ -1,10 +1,10 @@
 package fr.unice.polytech.startingpoint.player;
 
-
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 
 public class BotIA extends Player{
@@ -16,7 +16,33 @@ public class BotIA extends Player{
 
     @Override
     public void chooseRole() {
-        super.chooseRole();
+        Optional<Role> tmpRole=this.roleToOptimizeCoins(
+            board.getDealRoles().getLeftRoles(), 
+            board.getDealRoles().getHidden()    
+        );
+        if(tmpRole.isPresent()){
+                chooseRole(tmpRole.get());
+        }
+        else{
+            super.chooseRole();
+        }
+        
+    }
+
+    /**
+     * Fonction qui modifie choisit pour le
+     * joueur le Role passé en paramètre doit être modifié quand il faudra
+     * utiliser le Role caché
+     * @param chosen
+     */
+    public void chooseRole(Role chosen){
+        if(!alreadyChosenRole && board.getDealRoles().getLeftRoles().remove(chosen) ){
+                this.setCharacter(chosen);
+                alreadyChosenRole=true;
+                if(nextPlayer!=null){
+                    nextPlayer.chooseRole();
+                }	
+		}
     }
 
     @Override
@@ -43,7 +69,7 @@ public class BotIA extends Player{
                 Notez que si il reste encore des cartes dans le deck et
                 que le joueur a bien atteint  les 8 districts sans être le premier à
                 l'avoir fait, ce bloc n'est pas executé
-                Cela ne pose pas problème puisque le Manager n'est notifié qu'une
+                Cela ne pose pas problème puisque comme ça le Manager n'est notifié qu'une
                 seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
                 fois
                 */
@@ -54,19 +80,19 @@ public class BotIA extends Player{
     }
 
 
+    /**
+     * On garde la carte la moins chere
+     */
 
     @Override
     public void discard(ArrayList<District> d){
-        District discard;
         if(d.size()>=2){
-            if(d.get(0).getCost()>getGold()){discard=d.get(0);}
-            else if(d.get(1).getCost()>getGold()){discard=d.get(1);}
-            else {
-                if(d.get(0).getCost()>d.get(1).getCost()){discard=d.get(1);}
-                else{discard=d.get(0);}
+            d.sort((a,b)->
+                Integer.compare(a.getCost(),b.getCost())
+            );
+            while(d.size()>1){//On ne garde qu'une carte
+                getBoard().getDeck().putbackOne(d.remove(d.size()-1));
             }
-            d.remove(discard);
-            getBoard().getDeck().putbackOne(discard);
         }
         //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
@@ -121,20 +147,21 @@ public class BotIA extends Player{
     }
     /**
          * Fonction pour récupérer le Role permettant 
-         * d'avoir le plus d'argent
+         * d'avoir le plus d'argent lors de la collecte d'argent des quartiers
          * On utilisera hidden que si le joueur est le 
          * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
+         * TODO utliser le parametre hidden
          */
-    public Role roleToOptimizeCoins(ArrayList<Role> lefts,Role hidden){
+    public Optional<Role> roleToOptimizeCoins(ArrayList<Role> lefts,Role hidden){
         
         if(city.getSizeOfCity()==0){
             //une autre 
-            return null;
+            return Optional.empty();
         }
         else{
             ArrayList<String> availableColors=new ArrayList<>();
             lefts.stream().map(d -> d.getColor()).forEach(s->{
-                if(s.equals("soldatesque") || s.equals("commerce") || s.equals("regligion") || s.equals("noblesse") ){
+                if(s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse") ){
                     availableColors.add(s);
                 }
             });
@@ -142,10 +169,10 @@ public class BotIA extends Player{
             
             for(Role r:lefts){
                 if(r.getColor().equals(bestColor)){
-                    return r;
+                    return Optional.of(r);
                 }
             }
-            return null;
+            return Optional.empty();
         }
         
         

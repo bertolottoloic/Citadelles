@@ -41,8 +41,8 @@ public class BotIA extends Player{
                 alreadyChosenRole=true;
                 if(nextPlayer!=null){
                     nextPlayer.chooseRole();
-                }	
-		}
+                }   
+        }
     }
 
     @Override
@@ -74,7 +74,7 @@ public class BotIA extends Player{
                 fois
                 */
                 support.firePropertyChange("gameOver",gameOver , true);
-		        this.gameOver=true;//inutile en fait : c'est là pour le principe
+                this.gameOver=true;//inutile en fait : c'est là pour le principe
             }
         
     }
@@ -94,20 +94,63 @@ public class BotIA extends Player{
                 getBoard().getDeck().putbackOne(d.remove(d.size()-1));
             }
         }
-        //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
-
-    
-
-     
     
     @Override
-    public boolean coinsOrDistrict() {
-        return getGold() < 2 || hand.highValuedDistrict(getGold());
+	public void discardWonderEffect(ArrayList<District> d, String wonder){
+    	ArrayList<District> disToDiscard = new ArrayList<>();
+    	if(d.size() > 2){
+    		if(wonder.equals("Observatoire")) {
+                d.sort((a,b)->
+                    Integer.compare(a.getCost(),b.getCost())
+                );
+    			d.forEach(theD -> {
+    				if(theD.getCost() > getGold()) {
+    					disToDiscard.add(theD);
+    				}
+    			});
+    			
+    			switch(disToDiscard.size()) {
+    				case 0:
+    					getBoard().getDeck().putbackOne(d.get(2));
+        				d.remove(d.get(2));
+        				getBoard().getDeck().putbackOne(d.get(1));
+        				d.remove(d.get(1));
+    					break;
+    				case 1:
+    					getBoard().getDeck().putbackOne(disToDiscard.get(0));
+    					d.remove(disToDiscard.get(0));
+    					getBoard().getDeck().putbackOne(d.get(1));
+    					d.remove(1);
+    					break;
+    				case 2:
+    					d.removeAll(disToDiscard);
+    					getBoard().getDeck().putbackMany(disToDiscard);
+    					break;
+    				case 3:
+    					d.remove(disToDiscard.get(2));
+    					getBoard().getDeck().putbackOne(disToDiscard.get(2));
+    					d.remove(disToDiscard.get(1));
+    					getBoard().getDeck().putbackOne(disToDiscard.get(1));
+    					break;
+    				default:
+    					discard(d);
+    			}
+    		} else {
+    			//TODO: Manufacture
+    		}
+    	} else {
+    		discard(d);
+    	}
     }
 
+    @Override
+    public boolean coinsOrDistrict() {
+        return getGold() < 2 || 
+        		hand.highValuedDistrict(getGold()) || 
+        		city.getSizeOfCity() == 7;
+    }
     
-
     /**
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
@@ -125,7 +168,7 @@ public class BotIA extends Player{
         if(getCharacter().toString().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
         else if(getCharacter().toString().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().nbTooExpensivesDistricts(getGold());
+            int countBadCards=getHand().nbTooExpensiveDistricts(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}
         }
@@ -136,47 +179,50 @@ public class BotIA extends Player{
     /**
      * A override en cas de possession de la carte Ecole de Magie
      */
-    @Override
+   /* @Override
     void collectMoneyFromDistricts(){
-    	/*getCity().forEach((District d) -> {
+    	getCity().forEach((District d) -> {
     		if(d.getNom().equals("Ecole de Magie")) {
     			//d.setColor("TODO"); // Le joueur choisit la couleur
     		}
-    	});*/
+    	});
 		super.getCharacter().collectRentMoney();
-    }
+    }*/
     /**
          * Fonction pour récupérer le Role permettant 
-         * d'avoir le plus d'argent lors de la collecte d'argent des quartiers
+         * d'avoir le plus d'argent
          * On utilisera hidden que si le joueur est le 
          * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
-         * TODO utliser le parametre hidden
          */
-    public Optional<Role> roleToOptimizeCoins(ArrayList<Role> lefts,Role hidden){
-        
-        if(city.getSizeOfCity()==0){
-            //une autre 
-            return Optional.empty();
-        }
-        else{
-            ArrayList<String> availableColors=new ArrayList<>();
-            lefts.stream().map(d -> d.getColor()).forEach(s->{
-                if(s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse") ){
-                    availableColors.add(s);
-                }
-            });
-            String bestColor=this.city.mostPotentiallyPayingColor(availableColors);
-            
-            for(Role r:lefts){
-                if(r.getColor().equals(bestColor)){
-                    return Optional.of(r);
-                }
-            }
-            return Optional.empty();
-        }
-        
-        
-    }
+    /**
+	 * Fonction pour récupérer le Role permettant d'avoir le plus d'argent lors de
+	 * la collecte d'argent des quartiers On utilisera hidden que si le joueur est
+	 * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true TODO
+	 * utliser le parametre hidden
+	 */
+	public Optional<Role> roleToOptimizeCoins(ArrayList<Role> lefts, Role hidden) {
+
+		if (city.getSizeOfCity() == 0) {
+			// une autre
+			return Optional.empty();
+		} else {
+			ArrayList<String> availableColors = new ArrayList<>();
+			lefts.stream().map(d -> d.getColor()).forEach(s -> {
+				if (s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse")) {
+					availableColors.add(s);
+				}
+			});
+			String bestColor = this.city.mostPotentiallyPayingColor(availableColors);
+
+			for (Role r : lefts) {
+				if (r.getColor().equals(bestColor)) {
+					return Optional.of(r);
+				}
+			}
+			return Optional.empty();
+		}
+
+	}
 
     Role pickTargetRole(){
         Role character = this.getCharacter();

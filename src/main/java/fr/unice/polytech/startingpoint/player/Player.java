@@ -176,24 +176,32 @@ public class Player {
 		}
 
 		this.collectMoneyFromDistricts();
-
+		
+		boolean buildFirst = isBuildingFirst();
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
 				this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
-			
 			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
-			this.discard(districts);
-			this.hand.addAll(districts);
-			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
-					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
-			//TODO one of the districts is named "Cour des miracles"
-			//Changement de couleur à n'importe quel tour, tant que pas dernier
+			if (buildFirst) {
+				if (getCity().containsWonder("Observatoire") && getBoard().numberOfCardsOfDeck() >= 1) {// TODO test
+					districts.add(getBoard().draw());
+					System.out.println("		Joueur " + id + " possède et peut utiliser l'observatoire");
+					discardWonderEffect(districts, "Observatoire");
+				}
+				if (!getCity().containsWonder("Bibliotheque")) {// TODO test
+					discard(districts);
+				} else {
+					System.out.println("		Joueur " + id + " possède et peut utiliser la bibliothèque");
+				}
+			} else {
+				discard(districts);
+			}
 		}
 
-		if(isBuildingFirst()) {
+		if(buildFirst) {
 			action();
 			specialMove();
 		}
@@ -244,7 +252,11 @@ public class Player {
 		}
 	}
 
-
+	public void discardWonderEffect(ArrayList<District> d, String wonder){
+		if(!d.isEmpty()){
+			getBoard().getDeck().putbackOne(d.remove(0)); }
+	}
+	
 	/**
 	 * Méthode pour collecter l'argent des districts
 	 */

@@ -36,8 +36,8 @@ public class WizardTest {
 
     @Test
     void exchangeWithPlayerTest(){
-        Role wizard = board.getRole(2);
-        Role merchant = board.getRole(5);
+        Role wizard = board.getRole("Wizard");
+        Role merchant = board.getRole("Merchant");
         player.setCharacter(wizard);
         target.setCharacter(merchant);
         target.takeCardsAtBeginning();
@@ -50,7 +50,7 @@ public class WizardTest {
 
     @Test
     void exchangeWithDeckTest(){
-        Role wizard = board.getRole(2);
+        Role wizard = board.getRole("Wizard");
         player.setCharacter(wizard);
         player.takeCardsAtBeginning();
         ArrayList<District> cardsToExchange = new ArrayList<District>(player.getHand().toList());

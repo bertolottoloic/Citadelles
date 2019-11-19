@@ -117,4 +117,8 @@ public class Board{
         return player;
     }
 
+	public Role getRole(String roleName) {
+		return this.dealRoles.getRole(roleName);
+	}
+
 }

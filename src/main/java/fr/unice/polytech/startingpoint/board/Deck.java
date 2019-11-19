@@ -8,7 +8,7 @@ import java.util.Collections;
 public class Deck{
     private ArrayList <District> list;
     public Deck(){
-        list= DistrictsInput.getDistricts();
+        list= new DistrictsInput().getDistricts();
 
         this.shuffle();//We shuffle the districts
     }

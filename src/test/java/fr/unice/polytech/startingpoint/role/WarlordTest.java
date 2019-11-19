@@ -35,7 +35,7 @@ public class WarlordTest {
 
     @Test
     void warlordTest(){
-        Role warlord = board.getRole(7);
+        Role warlord = board.getRole("Warlord");
         player.setCharacter(warlord);
         target.takeCardsAtBeginning();
         player.takeCoinsFromBank(10);

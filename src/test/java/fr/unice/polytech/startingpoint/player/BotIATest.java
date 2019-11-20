@@ -63,7 +63,7 @@ class BotIATest{
 		bot.setBoard(new Board());
 		bot.addMoney(4);
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis, "Observatoire");
+		bot.discardWonderEffect(dis);
 		assertEquals(1, dis.size());
 		assertEquals(2, dis.get(0).getCost());
 
@@ -76,7 +76,7 @@ class BotIATest{
 		dis.add(d3);
 		
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis, "Observatoire");
+		bot.discardWonderEffect(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d3));
 		
@@ -89,10 +89,10 @@ class BotIATest{
 		dis.add(d3);
 		
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis, "Observatoire");
+		bot.discardWonderEffect(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
-		
+	
 		dis.clear();
 		d1 = new District(5, 3, "religion", "quartier1");
 		d2 = new District(1, 6, "religion", "quartier2");
@@ -102,7 +102,7 @@ class BotIATest{
 		dis.add(d3);
 		
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis, "Observatoire");
+		bot.discardWonderEffect(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
 		
@@ -113,7 +113,7 @@ class BotIATest{
 		dis.add(d2);
 		
 		assertEquals(2, dis.size());
-		bot.discardWonderEffect(dis, "Observatoire");
+		bot.discardWonderEffect(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
 	}

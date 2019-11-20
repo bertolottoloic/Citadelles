@@ -30,6 +30,33 @@ public class BotIA extends Player{
     }
 
     /**
+     * Cette fonction permet d'attribuer
+     * des probabilités pour permettre au joueur 
+     * de deviner le rôle qu'ont les autres joueurs
+     *  Ex: Au cours de la distribution
+     *  si on a a choisir parmi des personnages (p1,p2,p3)
+     * Cela veut dire que tous les joueurs ayant choisi
+     * avant n'ont pas pris (p1,p2,p3) d'où
+     * la probabilité pour qu'ils aient (p1,p2 ou p3)
+     * comme role est 0
+     * 
+     * TODO : une méthode similaire pour les joueurs suivants
+     */
+
+    public void attributeProbsToPreviousPlayer(){
+        ArrayList<Player> pl=board.getPlayers();
+        ArrayList<Role> lefts=board.getDealRoles().getLeftRoles();
+
+        for (Player player : pl) {
+            if(player.alreadyChosenRole){
+                for (Role role : lefts) {
+                    matches.setProbability(player.getId(), role.toString(), 0);
+                }
+            }
+            
+        }
+    }
+    /**
      * Fonction qui modifie choisit pour le
      * joueur le Role passé en paramètre doit être modifié quand il faudra
      * utiliser le Role caché
@@ -96,60 +123,13 @@ public class BotIA extends Player{
             }
         }
     }
-    
-    @Override
-	public void discardWonderEffect(ArrayList<District> d, String wonder){
-    	ArrayList<District> disToDiscard = new ArrayList<>();
-    	if(d.size() > 2){
-    		if(wonder.equals("Observatoire")) {
-                d.sort((a,b)->
-                    Integer.compare(a.getCost(),b.getCost())
-                );
-    			d.forEach(theD -> {
-    				if(theD.getCost() > getGold()) {
-    					disToDiscard.add(theD);
-    				}
-    			});
-    			
-    			switch(disToDiscard.size()) {
-    				case 0:
-    					getBoard().getDeck().putbackOne(d.get(2));
-        				d.remove(d.get(2));
-        				getBoard().getDeck().putbackOne(d.get(1));
-        				d.remove(d.get(1));
-    					break;
-    				case 1:
-    					getBoard().getDeck().putbackOne(disToDiscard.get(0));
-    					d.remove(disToDiscard.get(0));
-    					getBoard().getDeck().putbackOne(d.get(1));
-    					d.remove(1);
-    					break;
-    				case 2:
-    					d.removeAll(disToDiscard);
-    					getBoard().getDeck().putbackMany(disToDiscard);
-    					break;
-    				case 3:
-    					d.remove(disToDiscard.get(2));
-    					getBoard().getDeck().putbackOne(disToDiscard.get(2));
-    					d.remove(disToDiscard.get(1));
-    					getBoard().getDeck().putbackOne(disToDiscard.get(1));
-    					break;
-    				default:
-    					discard(d);
-    			}
-    		} else {
-    			//TODO: Manufacture
-    		}
-    	} else {
-    		discard(d);
-    	}
-    }
 
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2 || 
-        		hand.highValuedDistrict(getGold()) || 
-        		city.getSizeOfCity() == 7;
+    	return getGold() < 2 
+    			|| hand.highValuedDistrict(getGold())
+    			|| city.getSizeOfCity() == 7
+    			|| board.getDeck().numberOfCards() < 4;
     }
     
     /**
@@ -175,6 +155,14 @@ public class BotIA extends Player{
         }
         else
         {return false;}
+    }
+    
+    @Override
+	protected boolean isUsingFabric() {
+    	return hand.isEmpty()
+    			&& getGold() >= 5 
+    			&& city.getSizeOfCity() < 7
+    			&& hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
     }
     
     /**
@@ -258,6 +246,7 @@ public class BotIA extends Player{
         return target;
     }
 
+    //TODO
     District pickRandomDistrict() {
         ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
         if(!hand.isEmpty()) {

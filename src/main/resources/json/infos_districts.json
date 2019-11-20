@@ -158,6 +158,14 @@
         "value":6,
         "cost":6,
         "nb":1,
-        "nom":"Bibliothèque"
+        "nom":"Bibliotheque"
+    },
+    {
+        
+        "color":"merveille",
+        "value":5,
+        "cost":5,
+        "nb":1,
+        "nom":"Manufacture"
     }
 ]

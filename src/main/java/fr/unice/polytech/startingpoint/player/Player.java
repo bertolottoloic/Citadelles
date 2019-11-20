@@ -36,6 +36,9 @@ public class Player {
 	/*Attribut permettant de savoir si le joueur a posé son huitième quartier en premier */
 	private boolean firstToFinish=false;
 
+	/*Attribut permettant d'attribuer des probabilités de possession de personnage*/
+	protected MatchingProb matches;
+
 	/**
 	 * 
 	 * @param id
@@ -407,8 +410,15 @@ public class Player {
 		character.setPlayer(this);
 	}
 
+	/**Dans cette méthode on crée et on initialise le MatchingProb
+	 * 
+	 */
 	public void setBoard(Board board) {
 		this.board = board;
+		if(this.board.getPlayers()!=null){
+			matches=new MatchingProb(this.board.getPlayers());
+		}
+		
 	}
 
 	public int getGold() {

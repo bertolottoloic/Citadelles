@@ -30,6 +30,33 @@ public class BotIA extends Player{
     }
 
     /**
+     * Cette fonction permet d'attribuer
+     * des probabilités pour permettre au joueur 
+     * de deviner le rôle qu'ont les autres joueurs
+     *  Ex: Au cours de la distribution
+     *  si on a a choisir parmi des personnages (p1,p2,p3)
+     * Cela veut dire que tous les joueurs ayant choisi
+     * avant n'ont pas pris (p1,p2,p3) d'où
+     * la probabilité pour qu'ils aient (p1,p2 ou p3)
+     * comme role est 0
+     * 
+     * TODO : une méthode similaire pour les joueurs suivants
+     */
+
+    public void attributeProbsToPreviousPlayer(){
+        ArrayList<Player> pl=board.getPlayers();
+        ArrayList<Role> lefts=board.getDealRoles().getLeftRoles();
+
+        for (Player player : pl) {
+            if(player.alreadyChosenRole){
+                for (Role role : lefts) {
+                    matches.setProbability(player.getId(), role.toString(), 0);
+                }
+            }
+            
+        }
+    }
+    /**
      * Fonction qui modifie choisit pour le
      * joueur le Role passé en paramètre doit être modifié quand il faudra
      * utiliser le Role caché
@@ -213,6 +240,7 @@ public class BotIA extends Player{
         return target;
     }
 
+    //TODO
     District pickRandomDistrict() {
         ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
         if(!hand.isEmpty()) {

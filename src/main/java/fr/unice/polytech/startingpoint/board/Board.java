@@ -48,8 +48,7 @@ public class Board{
             return 0;
     }
     public District draw() {
-        District district=deck.withdraw();
-        return district;
+        return deck.withdraw();
     }
 
     public void deposit(int cost) {

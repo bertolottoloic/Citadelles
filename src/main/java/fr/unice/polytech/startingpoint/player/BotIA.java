@@ -96,60 +96,13 @@ public class BotIA extends Player{
             }
         }
     }
-    
-    @Override
-	public void discardWonderEffect(ArrayList<District> d, String wonder){
-    	ArrayList<District> disToDiscard = new ArrayList<>();
-    	if(d.size() > 2){
-    		if(wonder.equals("Observatoire")) {
-                d.sort((a,b)->
-                    Integer.compare(a.getCost(),b.getCost())
-                );
-    			d.forEach(theD -> {
-    				if(theD.getCost() > getGold()) {
-    					disToDiscard.add(theD);
-    				}
-    			});
-    			
-    			switch(disToDiscard.size()) {
-    				case 0:
-    					getBoard().getDeck().putbackOne(d.get(2));
-        				d.remove(d.get(2));
-        				getBoard().getDeck().putbackOne(d.get(1));
-        				d.remove(d.get(1));
-    					break;
-    				case 1:
-    					getBoard().getDeck().putbackOne(disToDiscard.get(0));
-    					d.remove(disToDiscard.get(0));
-    					getBoard().getDeck().putbackOne(d.get(1));
-    					d.remove(1);
-    					break;
-    				case 2:
-    					d.removeAll(disToDiscard);
-    					getBoard().getDeck().putbackMany(disToDiscard);
-    					break;
-    				case 3:
-    					d.remove(disToDiscard.get(2));
-    					getBoard().getDeck().putbackOne(disToDiscard.get(2));
-    					d.remove(disToDiscard.get(1));
-    					getBoard().getDeck().putbackOne(disToDiscard.get(1));
-    					break;
-    				default:
-    					discard(d);
-    			}
-    		} else {
-    			//TODO: Manufacture
-    		}
-    	} else {
-    		discard(d);
-    	}
-    }
 
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2 || 
-        		hand.highValuedDistrict(getGold()) || 
-        		city.getSizeOfCity() == 7;
+    	return getGold() < 2 
+    			|| hand.highValuedDistrict(getGold())
+    			|| city.getSizeOfCity() == 7
+    			|| board.getDeck().numberOfCards() < 4;
     }
     
     /**
@@ -175,6 +128,14 @@ public class BotIA extends Player{
         }
         else
         {return false;}
+    }
+    
+    @Override
+	protected boolean isUsingFabric() {
+    	return hand.isEmpty()
+    			&& getGold() >= 5 
+    			&& city.getSizeOfCity() < 7
+    			&& hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
     }
     
     /**

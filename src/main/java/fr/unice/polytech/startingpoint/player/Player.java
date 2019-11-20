@@ -191,6 +191,7 @@ public class Player {
 		this.collectMoneyFromDistricts();
 		
 		boolean buildFirst = isBuildingFirst();
+		boolean fabricUsed = isUsingFabric();
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
@@ -201,8 +202,8 @@ public class Player {
 			if (buildFirst) {
 				if (getCity().containsWonder("Observatoire") && getBoard().numberOfCardsOfDeck() >= 1) {// TODO test
 					districts.add(getBoard().draw());
-					System.out.println("		Joueur " + id + " possède et peut utiliser l'observatoire");
-					discardWonderEffect(districts, "Observatoire");
+					System.out.println("Joueur " + id + " possède et peut utiliser l'observatoire");
+					discard(districts);
 				}
 				if (!getCity().containsWonder("Bibliotheque")) {// TODO test
 					discard(districts);
@@ -212,8 +213,21 @@ public class Player {
 			} else {
 				discard(districts);
 			}
+			hand.addAll(districts);
+			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
+					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
 		}
 
+		if(getBoard().numberOfCardsOfDeck() >= 1 
+				&& fabricUsed 
+				&& getCity().containsWonder("Manufacture")
+				&& gold >= 3) {
+			gold -= 3;
+			board.deposit(3);
+			ArrayList<District> districts=getBoard().withdrawMany(3);
+			hand.addAll(districts);
+		}
+		
 		if(buildFirst) {
 			action();
 			specialMove();
@@ -229,6 +243,9 @@ public class Player {
 		return true;
 	}
 
+	protected boolean isUsingFabric() {
+		return true;
+	}
 	/**
 	 * Méthode pour remettre au default les valeurs 
 	 * changées par le tour qui vient d'être joué
@@ -267,7 +284,7 @@ public class Player {
 		}
 	}
 
-	public void discardWonderEffect(ArrayList<District> d, String wonder){
+	public void discardWonderEffect(ArrayList<District> d){
 		if(!d.isEmpty()){
 			getBoard().getDeck().putbackOne(d.remove(0)); }
 	}

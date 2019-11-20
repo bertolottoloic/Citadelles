@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,5 +114,40 @@ public class RoleTest {
         assertEquals(null,warlord.getPlayer());
         assertEquals(1,warlord.getNumberDistrictBuildable());
         assertEquals(2,warlord.getNumberGold());
+    }
+
+    @Test
+    void getNumberDistrictBibliothequeTest(){
+        Role r=new Warlord();
+        Player p=new BotIA(5);
+        p.addMoney(8);
+        
+        r.setPlayer(p);
+
+        assertEquals(2, r.getNumberDistrictPickable());
+        assertEquals(1, r.getNumberDistrictKeepable());
+        //Pour ne pas créer un board on récupère la city
+        p.getCity().add(new District(2, 2, "orange", "Bibliotheque"));
+
+        assertEquals(2, r.getNumberDistrictPickable());
+        assertEquals(2, r.getNumberDistrictKeepable());
+    }
+
+    @Test
+    void getNumberDistrictObservatoireTest(){
+        Role r=new Warlord();
+        Player p=new BotIA(5);
+        p.addMoney(8);
+        
+        r.setPlayer(p);
+
+        assertEquals(2, r.getNumberDistrictPickable());
+        assertEquals(1, r.getNumberDistrictKeepable());
+        //Pour ne pas créer un board on récupère la référence de city
+        p.getCity().add(new District(2, 2, "orange", "Observatoire"));
+
+        assertEquals(3, r.getNumberDistrictPickable());
+        assertEquals(1, r.getNumberDistrictKeepable());
+
     }
 }

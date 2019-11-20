@@ -274,6 +274,8 @@ public class BotIA extends Player{
 	    return board.getRole(6);
     }
 
+
+
     Role targetToChooseForThief(){
 	    if(unknownRole.size()==2 && board.getCrown().getCrownOwner().getGold()>2){
 	        if(unknownRole.get(0)==board.getRole(0)) return unknownRole.get(1);

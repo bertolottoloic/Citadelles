@@ -167,5 +167,12 @@
         "cost":5,
         "nb":1,
         "nom":"Manufacture"
+    },
+    {
+        "color":"merveille-soldatesque-noblesse-religion-commerce",
+        "value":6,
+        "cost":6,
+        "nb":1,
+        "nom":"Ecole de Magie"
     }
 ]

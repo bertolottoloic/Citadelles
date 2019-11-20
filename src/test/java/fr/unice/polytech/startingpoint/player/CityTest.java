@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +88,13 @@ public class CityTest {
         assertEquals(2, city.nbOcurrencesOf("merveille"));
         assertEquals(1, city.nbOcurrencesOf("noblesse"));
         assertEquals(0, city.nbOcurrencesOf("commerce"));
+    }
+    
+    @Test
+    void testContainsWonder() {
+    	assertFalse(city.containsWonder("Caserne"));
+		city.add(new District(2, 2, "merveille", "Caserne"));
+		assertTrue(city.containsWonder("Caserne"));
     }
 
 }

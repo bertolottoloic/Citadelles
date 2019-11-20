@@ -2,10 +2,12 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.player.MatchingProb;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class BotIA extends Player{
     private Random random=new Random();
@@ -79,7 +81,8 @@ public class BotIA extends Player{
         targetToRob=targetToChooseForThief();
         targetToExchangeHandWith=pickTargetPlayer();
         targetToDestroyDistrict = pickTargetPlayer();
-        districtToDestroy = pickRandomDistrict();
+        if(targetToDestroyDistrict!=null) districtToDestroy = pickDistrict(targetToDestroyDistrict);
+        else districtToDestroy = null;
         super.specialMove();
     }
 
@@ -247,40 +250,33 @@ public class BotIA extends Player{
     }
 
     //TODO
-    District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
-        if(!hand.isEmpty()) {
-            District d = hand.get(0);
-            for (District d1 : hand) {
-                if (d1.getCost() < d.getCost()) d = d1;
-            }
-            return d;
+    District pickDistrict(Player target) {
+        ArrayList<District> city = new ArrayList<District>(target.getCity().getListDistricts());
+        if(!city.isEmpty()) {
+           return city.stream().min(
+                (a,b)->Integer.compare(a.getCost(), b.getCost())
+            ).get();
         }
         return null;
     }
 
     Role targetToChooseForMurderer(){
-	    Role target;
-	    if(hidden!=null){
-	        switch(hidden.getPosition()) {
-                case 7:
-                    target = board.getRole(5);
-                    break;
-                default:
-                    target = board.getRole(6);
-                    break;
-            }
-            return target;
-        }
-	    return board.getRole(6);
+        Set<String> targets = matches.possibleRolesFor(board.getPlayerWithTheBiggestCity().getId());
+        return board.getRole(targets.stream().findFirst().get());
     }
 
     Role targetToChooseForThief(){
-	    if(unknownRole.size()==2 && board.getCrown().getCrownOwner().getGold()>2){
-	        if(unknownRole.get(0)==board.getRole(0)) return unknownRole.get(1);
-	        return unknownRole.get(0);
+        Set<String> targets = matches.possibleRolesFor(richestPlayer().getId());
+        return board.getRole(targets.stream().findFirst().get());
+    }
+
+    Player richestPlayer(){
+        Player target = this.nextPlayer;
+        for(Player p:board.getPlayers()){
+            if(p.getGold()>target.getGold() && p!=this){
+                target = p;
+            }
         }
-	    Random r = new Random();
-	    return board.getRole(r.nextInt(knownRole.size()));
+        return target;
     }
 }

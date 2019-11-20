@@ -112,31 +112,35 @@ public class BotIAHighCost extends Player {
         if(district.getCost()<=getGold()){
             return district;
         }
-        else{return null;}
+        else{
+            return null;
+        }
     }
 
-    @Override
-    public void discard(ArrayList<District> d){
-        District discard;
+    public void discard(ArrayList<District> d,int golds){
         if(d.size()>=2){
-            if(d.get(0).getCost()>getGold()){discard=d.get(0);}
-            else if(d.get(1).getCost()>getGold()){discard=d.get(1);}
-            else {
-                if(d.get(0).getCost()>d.get(1).getCost()){discard=d.get(1);}
-                else{discard=d.get(0);}
+            d.sort((a,b)->
+                    Integer.compare(a.getCost(),b.getCost())
+            );
+            while(d.size()>1){//On ne garde qu'une carte
+                if(d.get(0).getCost()>golds){
+                    getBoard().getDeck().putbackOne(d.remove(0));
+                }
+                else{
+                    getBoard().getDeck().putbackOne(d.remove(d.size()-1));
+                }
             }
-            d.remove(discard);
-            getBoard().getDeck().putbackOne(discard);
         }
         //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
 
     @Override
     public boolean coinsOrDistrict() {
-        if(getHand().size()<2){
-            return false;}
-        else
-            { return true;}
+        return getGold() < 2
+                || hand.nbBadCards(getGold())<=hand.size()
+                || city.getSizeOfCity() >= 6
+                || board.getDeck().numberOfCards() < 4
+                || hand.size()>2;
     }
 
     @Override

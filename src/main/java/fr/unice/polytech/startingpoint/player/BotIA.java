@@ -6,6 +6,7 @@ import fr.unice.polytech.startingpoint.role.Role;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class BotIA extends Player{
     private Random random=new Random();
@@ -16,6 +17,12 @@ public class BotIA extends Player{
 
     @Override
     public void chooseRole() {
+        for(Role r : board.getDealRoles().getLeftRoles()){
+            if(r.equals("Architect")){
+                chooseRole(r);
+                return;
+            }
+        }
         Optional<Role> tmpRole=this.roleToOptimizeCoins(
             board.getDealRoles().getLeftRoles(), 
             board.getDealRoles().getHidden()    
@@ -79,14 +86,15 @@ public class BotIA extends Player{
         targetToRob=targetToChooseForThief();
         targetToExchangeHandWith=pickTargetPlayer();
         targetToDestroyDistrict = pickTargetPlayer();
-        districtToDestroy = pickRandomDistrict();
+        if(targetToDestroyDistrict!=null) districtToDestroy = pickDistrict(targetToDestroyDistrict);
+        else districtToDestroy = null;
         super.specialMove();
     }
 
     @Override
     protected void action() {
             if(!getHand().isEmpty()) {
-                District toBuild = whatToBuild();
+                District toBuild = whatToBuild(getCharacter(),getHand(),getGold());
                 if (toBuild != null) {
                     addToTheCity(toBuild);
                 }
@@ -126,23 +134,38 @@ public class BotIA extends Player{
 
     @Override
     public boolean coinsOrDistrict() {
-    	return getGold() < 2 
-    			|| hand.highValuedDistrict(getGold())
-    			|| city.getSizeOfCity() == 7
-    			|| board.getDeck().numberOfCards() < 4;
+        return getGold() < 2
+                || hand.nbBadCards(getGold())<=hand.size()/2
+                || city.getSizeOfCity() >= 6
+                || board.getDeck().numberOfCards() < 4
+                || hand.size()>2;
     }
     
     /**
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
      */
-    District whatToBuild(){
-        District lowerCost = hand.lowCostDistrict();
-        if(lowerCost.getCost()<=getGold()){
-            return lowerCost;
+    District whatToBuild(Role role, Hand hand,int golds){
+        if(role.toString().equals("Architect")) {  //si architecte alors strategie du build low cost
+            District lowerCost = hand.lowCostDistrict();
+            if (lowerCost.getCost() <= golds) {
+                return lowerCost;
+            } else {
+                return null;
+            }
         }
-        else{return null;}
+        else{
+            District district = hand.highCostDistrict(golds);
+            if(district.getCost()<=golds){
+                return district;
+            }
+            else{
+                return null;
+            }
+        }
     }
+
+
 
     @Override
     protected boolean isBuildingFirst() {
@@ -213,22 +236,6 @@ public class BotIA extends Player{
 
 	}
 
-    Role pickTargetRole(){
-        Role target;
-        switch(this.getCharacter().getPosition()){
-            case 1:
-                target = targetToChooseForMurderer();
-                break;
-            case 2:
-                target = board.getRole(5);
-                break;
-            default :
-                target = null;
-                break;
-        }
-        return target;
-    }
-    
     Player pickTargetPlayer(){
         Role character = this.getCharacter();
         Player target;
@@ -247,41 +254,35 @@ public class BotIA extends Player{
     }
 
     //TODO
-    District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
-        if(!hand.isEmpty()) {
-            District d = hand.get(0);
-            for (District d1 : hand) {
-                if (d1.getCost() < d.getCost()) d = d1;
-            }
-            return d;
+    District pickDistrict(Player target) {
+        ArrayList<District> city = new ArrayList<District>(target.getCity().getListDistricts());
+        if(!city.isEmpty()) {
+           return city.stream().min(
+                (a,b)->Integer.compare(a.getCost(), b.getCost())
+            ).get();
         }
         return null;
     }
 
     Role targetToChooseForMurderer(){
-	    Role target;
-	    if(hidden!=null){
-	        switch(hidden.getPosition()) {
-                case 7:
-                    target = board.getRole(5);
-                    break;
-                default:
-                    target = board.getRole(6);
-                    break;
-            }
-        }
-	    return board.getRole(6);
+        Set<String> targets = matches.possibleRolesFor(board.getPlayerWithTheBiggestCity().getId());
+        return board.getRole(targets.stream().findFirst().get());
     }
 
 
 
     Role targetToChooseForThief(){
-	    if(unknownRole.size()==2 && board.getCrown().getCrownOwner().getGold()>2){
-	        if(unknownRole.get(0)==board.getRole(0)) return unknownRole.get(1);
-	        return unknownRole.get(0);
+        Set<String> targets = matches.possibleRolesFor(richestPlayer().getId());
+        return board.getRole(targets.stream().findFirst().get());
+    }
+
+    Player richestPlayer(){
+        Player target = this.nextPlayer;
+        for(Player p:board.getPlayers()){
+            if(p.getGold()>target.getGold() && p!=this){
+                target = p;
+            }
         }
-	    Random r = new Random();
-	    return board.getRole(r.nextInt(knownRole.size()));
+        return target;
     }
 }

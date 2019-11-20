@@ -8,10 +8,11 @@ import fr.unice.polytech.startingpoint.player.Player;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
-    public static HashMap<Integer,Integer> stats=new HashMap<>();
+    private static HashMap<Integer,Integer> stats=new HashMap<>();
 
     public static void main(String... args) throws FileNotFoundException,IOException {
         int n=0;
@@ -25,12 +26,19 @@ public class Main {
             Player p3 = new BotIA(3);
             Player p4 = new BotIAHighCost(4);
 
-            Manager manager = new Manager();
+            Manager manager = new Manager();          
             manager.letsPlay(p1, p2, p3, p4);
+            countWinner(manager.getWinner());
             n++;
 
         }
         System.out.println(stats.toString());
+    }
+
+    private static void countWinner(ArrayList<Player> winner) {
+        for(Player p :winner){
+            stats.put(p.getId(),stats.get(p.getId())+1);
+        }
     }
 
     /*public static void main(String... args) throws FileNotFoundException,IOException {

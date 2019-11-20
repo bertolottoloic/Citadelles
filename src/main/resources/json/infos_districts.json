@@ -174,5 +174,12 @@
         "cost":6,
         "nb":1,
         "nom":"Ecole de Magie"
+    },
+    {
+        "color":"merveille",
+        "value":3,
+        "cost":3,
+        "nb":2,
+        "nom":"Donjon"
     }
 ]

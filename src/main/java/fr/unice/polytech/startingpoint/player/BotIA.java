@@ -16,6 +16,12 @@ public class BotIA extends Player{
 
     @Override
     public void chooseRole() {
+        for(Role r : board.getDealRoles().getLeftRoles()){
+            if(r.equals("Architect")){
+                chooseRole(r);
+                return;
+            }
+        }
         Optional<Role> tmpRole=this.roleToOptimizeCoins(
             board.getDealRoles().getLeftRoles(), 
             board.getDealRoles().getHidden()    
@@ -86,7 +92,7 @@ public class BotIA extends Player{
     @Override
     protected void action() {
             if(!getHand().isEmpty()) {
-                District toBuild = whatToBuild();
+                District toBuild = whatToBuild(getCharacter(),getHand(),getGold());
                 if (toBuild != null) {
                     addToTheCity(toBuild);
                 }
@@ -127,7 +133,7 @@ public class BotIA extends Player{
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
-                || hand.nbBadCards(getGold())<=hand.size()
+                || hand.nbBadCards(getGold())<=hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || board.getDeck().numberOfCards() < 4
                 || hand.size()>2;
@@ -137,13 +143,27 @@ public class BotIA extends Player{
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
      */
-    District whatToBuild(){
-        District lowerCost = hand.lowCostDistrict();
-        if(lowerCost.getCost()<=getGold()){
-            return lowerCost;
+    District whatToBuild(Role role, Hand hand,int golds){
+        if(role.toString().equals("Architect")) {  //si architecte alors strategie du build low cost
+            District lowerCost = hand.lowCostDistrict();
+            if (lowerCost.getCost() <= golds) {
+                return lowerCost;
+            } else {
+                return null;
+            }
         }
-        else{return null;}
+        else{
+            District district = hand.highCostDistrict(golds);
+            if(district.getCost()<=golds){
+                return district;
+            }
+            else{
+                return null;
+            }
+        }
     }
+
+
 
     @Override
     protected boolean isBuildingFirst() {

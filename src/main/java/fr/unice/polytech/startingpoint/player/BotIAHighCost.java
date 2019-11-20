@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
-
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.role.Warlord;
 import fr.unice.polytech.startingpoint.role.Wizard;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Random;
 
 public class BotIAHighCost extends Player {
     private Random random=new Random();
@@ -199,4 +199,5 @@ public class BotIAHighCost extends Player {
         }
         return null;
     }
+
 }

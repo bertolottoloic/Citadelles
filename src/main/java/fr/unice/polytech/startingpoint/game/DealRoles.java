@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class DealRoles{
-    private ArrayList<Role> leftRoles;
+    private ArrayList<Role> leftRoles = new ArrayList<>();
     private ArrayList<Role> roles = new ArrayList<>();
     private ArrayList<Role> visible = new ArrayList<>();
     private Role hidden;
@@ -23,29 +23,25 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
-
     public void  readyToDistribute(){
         ArrayList<Role> al = new ArrayList<Role>(roles);
-
         Collections.shuffle(al);
         this.hidden=al.remove(0);
         Collections.shuffle(al);
-        visible.add(al.remove(0)); //Le Roi ne peut pas etre le Role Visible
-        //Je crois qu'il faut choisir d'abord les visibles
-
-        leftRoles=al;
-
+        if(al.get(0) instanceof King) visible.add(al.remove(1)); //Le Roi ne peut pas etre le Role Visible
+        else visible.add(al.remove(0));//Je crois qu'il faut choisir d'abord les visibles
+        leftRoles.addAll(al);
     }
-
 
     public void reInitializeRoles(){
         for(Role r:roles){
             r.reInitialize();
         }
-
+        leftRoles.removeAll(leftRoles);
+        visible.removeAll(visible);
     }
     public ArrayList<Role> getRoles(){
-        return new ArrayList<Role>(this.roles);
+        return this.roles;
     }
 
     public Role getRole(int index){
@@ -60,7 +56,7 @@ public class DealRoles{
         return this.leftRoles;
     }
 
-    ArrayList<Role> getVisible(){
+    public ArrayList<Role> getVisible(){
         return this.visible;
     }
 

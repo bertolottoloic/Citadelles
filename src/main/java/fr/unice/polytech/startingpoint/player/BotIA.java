@@ -26,7 +26,7 @@ public class BotIA extends Player{
         else{
             super.chooseRole();
         }
-        
+
     }
 
     /**
@@ -39,6 +39,7 @@ public class BotIA extends Player{
         if(!alreadyChosenRole && board.getDealRoles().getLeftRoles().remove(chosen) ){
                 this.setCharacter(chosen);
                 alreadyChosenRole=true;
+                super.roleInformations();
                 if(nextPlayer!=null){
                     nextPlayer.chooseRole();
                 }   
@@ -47,8 +48,8 @@ public class BotIA extends Player{
 
     @Override
     public void specialMove() {
-        targetToKill=pickTargetRole();
-        targetToRob=pickTargetRole();
+        targetToKill=targetToChooseForMurderer();
+        targetToRob=targetToChooseForThief();
         targetToExchangeHandWith=pickTargetPlayer();
         targetToDestroyDistrict = pickTargetPlayer();
         districtToDestroy = pickRandomDistrict();
@@ -225,15 +226,13 @@ public class BotIA extends Player{
 	}
 
     Role pickTargetRole(){
-        Role character = this.getCharacter();
-        ArrayList<Role> roles = this.getBoard().getRoles();
         Role target;
-        switch(character.getPosition()){
+        switch(this.getCharacter().getPosition()){
             case 1:
-                target = roles.get(6);
+                target = targetToChooseForMurderer();
                 break;
             case 2:
-                target = roles.get(5);
+                target = board.getRole(5);
                 break;
             default :
                 target = null;
@@ -269,5 +268,29 @@ public class BotIA extends Player{
             return d;
         }
         return null;
+    }
+
+    Role targetToChooseForMurderer(){
+	    Role target;
+	    if(hidden!=null){
+	        switch(hidden.getPosition()) {
+                case 7:
+                    target = board.getRole(5);
+                    break;
+                default:
+                    target = board.getRole(6);
+                    break;
+            }
+        }
+	    return board.getRole(6);
+    }
+
+    Role targetToChooseForThief(){
+	    if(unknownRole.size()==2 && board.getCrown().getCrownOwner().getGold()>2){
+	        if(unknownRole.get(0)==board.getRole(0)) return unknownRole.get(1);
+	        return unknownRole.get(0);
+        }
+	    Random r = new Random();
+	    return board.getRole(r.nextInt(knownRole.size()));
     }
 }

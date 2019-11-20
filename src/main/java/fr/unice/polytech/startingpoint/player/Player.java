@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.role.Warlord;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class Player {
 	private final int id;
@@ -29,6 +29,9 @@ public class Player {
 	private ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
+	protected ArrayList<Role> knownRole = new ArrayList<Role>();
+	protected ArrayList<Role> unknownRole = new ArrayList<Role>();
+	protected Role hidden;
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	protected boolean alreadyChosenRole;
@@ -144,12 +147,22 @@ public class Player {
 			setCharacter(board.getDealRoles().getLeftRoles().remove(0));
 			alreadyChosenRole=true;
 			//appelle le prochain player
+			roleInformations();
 			if(nextPlayer!=null){
 				nextPlayer.chooseRole();
 			}
 			
 		}
     }
+
+    public void roleInformations(){
+		knownRole.addAll(board.getDealRoles().getLeftRoles());
+		knownRole.addAll(board.getDealRoles().getVisible());
+		unknownRole.addAll(board.getRoles());
+		unknownRole.removeAll(knownRole);
+		unknownRole.remove(character);
+		if(unknownRole.size()==1) hidden = unknownRole.remove(0);
+	}
 
     public boolean coinsOrDistrict(){
 		return true;
@@ -230,7 +243,9 @@ public class Player {
 		targetToExchangeHandWith=null;
 		targetToKill=null;
 		targetToRob=null;
-
+		knownRole.removeAll(knownRole);
+		unknownRole.removeAll(unknownRole);
+		hidden = null;
 		// forgot something ??
 	}
 

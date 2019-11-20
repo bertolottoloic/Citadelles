@@ -281,6 +281,7 @@ public class BotIA extends Player{
                     target = board.getRole(6);
                     break;
             }
+            return target;
         }
 	    return board.getRole(6);
     }

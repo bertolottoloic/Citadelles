@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.role.Role;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,4 +117,24 @@ class BotIATest{
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
 	}
+
+	@Test
+	void targetToChooseForMurder(){
+		DealRoles dealRoles = new DealRoles();
+		ArrayList<Role> roles = new ArrayList<Role>(dealRoles.getRoles());
+		ArrayList<Role> visible = new ArrayList<>();
+		Role hidden;
+		hidden = roles.remove(6);
+		visible.add(roles.remove(4));
+		DealRoles dr = mock(DealRoles.class);
+		when(dr.getLeftRoles()).thenReturn(roles);
+		when(dr.getVisible()).thenReturn(visible);
+		dealRoles.readyToDistribute();
+		bot.setCharacter(roles.remove(0));
+		Board board = new Board();
+		board.setDealRoles(dr);
+		bot.setBoard(board);
+		assertEquals(dealRoles.getRole(5),bot.targetToChooseForMurderer());
+	}
+
 }

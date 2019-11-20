@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.player.MatchingProb;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -216,22 +215,6 @@ public class BotIA extends Player{
 
 	}
 
-    Role pickTargetRole(){
-        Role target;
-        switch(this.getCharacter().getPosition()){
-            case 1:
-                target = targetToChooseForMurderer();
-                break;
-            case 2:
-                target = board.getRole(5);
-                break;
-            default :
-                target = null;
-                break;
-        }
-        return target;
-    }
-    
     Player pickTargetPlayer(){
         Role character = this.getCharacter();
         Player target;

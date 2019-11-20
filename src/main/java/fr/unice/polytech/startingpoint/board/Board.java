@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.board;
 
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
@@ -104,9 +105,14 @@ public class Board{
 
     public Player getPlayerWithTheBiggestCity(){
         Player player = this.getPlayers().get(0);
+        if(player.getCharacter() instanceof Bishop) player = player.getNextPlayer();
         for(Player players : this.getPlayers()) {
-            if(players.getCity().getSizeOfCity()>player.getCity().getSizeOfCity()){
-                player = players;
+            if(!(players.getCharacter() instanceof Bishop)){
+                if(players.getCity().getSizeOfCity()>player.getCity().getSizeOfCity()){
+                    player = players;
+                } else if(players.getCity().getSizeOfCity()==player.getCity().getSizeOfCity() && players.getCity().getTotalValue()>player.getCity().getTotalValue()){
+                    player = players;
+                }
             }
         }
         return player;

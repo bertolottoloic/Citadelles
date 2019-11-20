@@ -1,7 +1,10 @@
 package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.role.Role;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,24 +20,35 @@ class BotIATest{
     District d2 = new District(6,6, "merveille","rue");
     Hand hand = new Hand();
 
-   @Test
-   void coinsOrDistrictTest() {
-	   assertTrue(bot.coinsOrDistrict());
-	   City c= mock(City.class);
-	   when(c.getSizeOfCity()).thenReturn(7);
-	   bot.setCity(c);
-	   assertTrue(bot.coinsOrDistrict());
-	   when(c.getSizeOfCity()).thenReturn(6);
-	   bot.addMoney(3);
-	   assertFalse(bot.coinsOrDistrict());
-	   hand.add(d1);
-	   hand.add(d2);
-	   bot.setHand(hand);
-	   assertTrue(bot.coinsOrDistrict());	   
-   }
+    @Test
+    void coinsOrDistrictTest() {
+ 	   assertTrue(bot.coinsOrDistrict());
+ 	   
+ 	   City c= mock(City.class);
+ 	   when(c.getSizeOfCity()).thenReturn(7);
+ 	   bot.setCity(c);
+ 	   assertTrue(bot.coinsOrDistrict());
+ 	   
+ 	   bot.addMoney(10);
+ 	   when(c.getSizeOfCity()).thenReturn(5);
+ 	   bot.setBoard(new Board());
+ 	   Deck d = bot.getBoard().getDeck();
+ 	   d.getList().clear();
+ 	   d.getList().add(new District(3,4,"religion", "random1"));
+ 	   d.getList().add(new District(3,4,"religion", "random2"));
+ 	   d.getList().add(new District(3,4,"religion", "random3"));
+ 	   d.getList().add(new District(3,4,"religion", "random4"));
+ 	   d.getList().add(new District(3,4,"religion", "random5"));
+ 	   assertTrue(bot.coinsOrDistrict());
+ 	   
+ 	   hand.add(d1);
+ 	   hand.add(new District(2, 2, "unecouleur", "random6"));
+ 	   bot.setHand(hand);
+ 	   assertFalse(bot.coinsOrDistrict());
+    }
    
 	@Test
-	void discardWonderEffectTest() {
+	void discardWonderTest() {
 		ArrayList<District> dis = new ArrayList<>();
 		District d1 = new District(5, 3, "religion", "quartier1");
 		District d2 = new District(6, 6, "religion", "quartier2");
@@ -46,7 +60,7 @@ class BotIATest{
 		bot.setBoard(new Board());
 		bot.addMoney(4);
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis);
+		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertEquals(2, dis.get(0).getCost());
 
@@ -59,7 +73,7 @@ class BotIATest{
 		dis.add(d3);
 		
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis);
+		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d3));
 		
@@ -72,7 +86,7 @@ class BotIATest{
 		dis.add(d3);
 		
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis);
+		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
 	
@@ -85,7 +99,7 @@ class BotIATest{
 		dis.add(d3);
 		
 		assertEquals(3, dis.size());
-		bot.discardWonderEffect(dis);
+		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
 		
@@ -96,8 +110,28 @@ class BotIATest{
 		dis.add(d2);
 		
 		assertEquals(2, dis.size());
-		bot.discardWonderEffect(dis);
+		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
 	}
+
+	@Test
+	void targetToChooseForMurder(){
+		DealRoles dealRoles = new DealRoles();
+		ArrayList<Role> roles = new ArrayList<Role>(dealRoles.getRoles());
+		ArrayList<Role> visible = new ArrayList<>();
+		Role hidden;
+		hidden = roles.remove(6);
+		visible.add(roles.remove(4));
+		DealRoles dr = mock(DealRoles.class);
+		when(dr.getLeftRoles()).thenReturn(roles);
+		when(dr.getVisible()).thenReturn(visible);
+		dealRoles.readyToDistribute();
+		bot.setCharacter(roles.remove(0));
+		Board board = new Board();
+		board.setDealRoles(dr);
+		bot.setBoard(board);
+		assertEquals(dealRoles.getRole(5),bot.targetToChooseForMurderer());
+	}
+
 }

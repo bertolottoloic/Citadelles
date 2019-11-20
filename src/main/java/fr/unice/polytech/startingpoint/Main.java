@@ -26,7 +26,7 @@ public class Main {
             Player p3 = new BotIA(3);
             Player p4 = new BotIAHighCost(4);
 
-            Manager manager = new Manager();
+            Manager manager = new Manager();          
             manager.letsPlay(p1, p2, p3, p4);
             countWinner(manager.getWinner());
             n++;

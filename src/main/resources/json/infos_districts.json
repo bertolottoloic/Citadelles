@@ -167,5 +167,13 @@
         "cost":5,
         "nb":1,
         "nom":"Manufacture"
+    },
+    {
+
+        "color":"merveille",
+        "value":3,
+        "cost":3,
+        "nb":2,
+        "nom":"Donjon"
     }
 ]

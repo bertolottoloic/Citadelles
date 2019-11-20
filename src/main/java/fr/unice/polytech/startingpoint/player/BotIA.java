@@ -126,10 +126,11 @@ public class BotIA extends Player{
 
     @Override
     public boolean coinsOrDistrict() {
-    	return getGold() < 2 
-    			|| hand.highValuedDistrict(getGold())
-    			|| city.getSizeOfCity() == 7
-    			|| board.getDeck().numberOfCards() < 4;
+        return getGold() < 2
+                || hand.nbBadCards(getGold())<=hand.size()
+                || city.getSizeOfCity() >= 6
+                || board.getDeck().numberOfCards() < 4
+                || hand.size()>2;
     }
     
     /**

@@ -4,15 +4,11 @@ import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 class BotIATest{
 
@@ -20,17 +16,6 @@ class BotIATest{
     District d1 = new District(3,4,"religion", "quartier");
     District d2 = new District(6,6, "merveille","rue");
     Hand hand = new Hand();
-
-    
-
-   /* @Test
-    void discardTest(){
-        hand=new ArrayList<>();
-        hand.add(d2);
-        hand.add(d1);
-        bot.discard(hand);
-        assertEquals(d1,hand.get(0));
-    }*/
 
    @Test
    void coinsOrDistrictTest() {

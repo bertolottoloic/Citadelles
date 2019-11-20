@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.role.Warlord;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class Player {
 	private final int id;
@@ -29,6 +29,9 @@ public class Player {
 	private ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
+	protected ArrayList<Role> knownRole = new ArrayList<Role>();
+	protected ArrayList<Role> unknownRole = new ArrayList<Role>();
+	protected Role hidden;
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	protected boolean alreadyChosenRole;
@@ -147,12 +150,22 @@ public class Player {
 			setCharacter(board.getDealRoles().getLeftRoles().remove(0));
 			alreadyChosenRole=true;
 			//appelle le prochain player
+			roleInformations();
 			if(nextPlayer!=null){
 				nextPlayer.chooseRole();
 			}
 			
 		}
     }
+
+    public void roleInformations(){
+		knownRole.addAll(board.getDealRoles().getLeftRoles());
+		knownRole.addAll(board.getDealRoles().getVisible());
+		unknownRole.addAll(board.getRoles());
+		unknownRole.removeAll(knownRole);
+		unknownRole.remove(character);
+		if(unknownRole.size()==1) hidden = unknownRole.remove(0);
+	}
 
     public boolean coinsOrDistrict(){
 		return true;
@@ -179,24 +192,46 @@ public class Player {
 		}
 
 		this.collectMoneyFromDistricts();
-
+		
+		boolean buildFirst = isBuildingFirst();
+		boolean fabricUsed = isUsingFabric();
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
 				this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
-			
 			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
-			this.discard(districts);
-			this.hand.addAll(districts);
+			if (buildFirst) {
+				if (getCity().containsWonder("Observatoire") && getBoard().numberOfCardsOfDeck() >= 1) {// TODO test
+					districts.add(getBoard().draw());
+					System.out.println("Joueur " + id + " possède et peut utiliser l'observatoire");
+					discard(districts);
+				}
+				if (!getCity().containsWonder("Bibliotheque")) {// TODO test
+					discard(districts);
+				} else {
+					System.out.println("		Joueur " + id + " possède et peut utiliser la bibliothèque");
+				}
+			} else {
+				discard(districts);
+			}
+			hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
-			//TODO one of the districts is named "Cour des miracles"
-			//Changement de couleur à n'importe quel tour, tant que pas dernier
 		}
 
-		if(isBuildingFirst()) {
+		if(getBoard().numberOfCardsOfDeck() >= 1 
+				&& fabricUsed 
+				&& getCity().containsWonder("Manufacture")
+				&& gold >= 3) {
+			gold -= 3;
+			board.deposit(3);
+			ArrayList<District> districts=getBoard().withdrawMany(3);
+			hand.addAll(districts);
+		}
+		
+		if(buildFirst) {
 			action();
 			specialMove();
 		}
@@ -211,6 +246,9 @@ public class Player {
 		return true;
 	}
 
+	protected boolean isUsingFabric() {
+		return true;
+	}
 	/**
 	 * Méthode pour remettre au default les valeurs 
 	 * changées par le tour qui vient d'être joué
@@ -225,7 +263,9 @@ public class Player {
 		targetToExchangeHandWith=null;
 		targetToKill=null;
 		targetToRob=null;
-
+		knownRole.removeAll(knownRole);
+		unknownRole.removeAll(unknownRole);
+		hidden = null;
 		// forgot something ??
 	}
 
@@ -247,7 +287,11 @@ public class Player {
 		}
 	}
 
-
+	public void discardWonderEffect(ArrayList<District> d){
+		if(!d.isEmpty()){
+			getBoard().getDeck().putbackOne(d.remove(0)); }
+	}
+	
 	/**
 	 * Méthode pour collecter l'argent des districts
 	 */

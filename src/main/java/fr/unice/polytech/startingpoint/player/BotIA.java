@@ -26,7 +26,7 @@ public class BotIA extends Player{
         else{
             super.chooseRole();
         }
-        
+
     }
 
     /**
@@ -66,16 +66,17 @@ public class BotIA extends Player{
         if(!alreadyChosenRole && board.getDealRoles().getLeftRoles().remove(chosen) ){
                 this.setCharacter(chosen);
                 alreadyChosenRole=true;
+                super.roleInformations();
                 if(nextPlayer!=null){
                     nextPlayer.chooseRole();
-                }	
-		}
+                }   
+        }
     }
 
     @Override
     public void specialMove() {
-        targetToKill=pickTargetRole();
-        targetToRob=pickTargetRole();
+        targetToKill=targetToChooseForMurderer();
+        targetToRob=targetToChooseForThief();
         targetToExchangeHandWith=pickTargetPlayer();
         targetToDestroyDistrict = pickTargetPlayer();
         districtToDestroy = pickRandomDistrict();
@@ -101,7 +102,7 @@ public class BotIA extends Player{
                 fois
                 */
                 support.firePropertyChange("gameOver",gameOver , true);
-		        this.gameOver=true;//inutile en fait : c'est là pour le principe
+                this.gameOver=true;//inutile en fait : c'est là pour le principe
             }
         
     }
@@ -121,20 +122,16 @@ public class BotIA extends Player{
                 getBoard().getDeck().putbackOne(d.remove(d.size()-1));
             }
         }
-        //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
 
-    
-
-     
-    
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2 || hand.highValuedDistrict(getGold());
+    	return getGold() < 2 
+    			|| hand.highValuedDistrict(getGold())
+    			|| city.getSizeOfCity() == 7
+    			|| board.getDeck().numberOfCards() < 4;
     }
-
     
-
     /**
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
@@ -152,7 +149,7 @@ public class BotIA extends Player{
         if(getCharacter().toString().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
         else if(getCharacter().toString().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().nbTooExpensivesDistricts(getGold());
+            int countBadCards=getHand().nbTooExpensiveDistricts(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}
         }
@@ -160,61 +157,70 @@ public class BotIA extends Player{
         {return false;}
     }
     
+    @Override
+	protected boolean isUsingFabric() {
+    	return hand.isEmpty()
+    			&& getGold() >= 5 
+    			&& city.getSizeOfCity() < 7
+    			&& hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
+    }
+    
     /**
      * A override en cas de possession de la carte Ecole de Magie
      */
-    @Override
+   /* @Override
     void collectMoneyFromDistricts(){
-    	/*getCity().forEach((District d) -> {
+    	getCity().forEach((District d) -> {
     		if(d.getNom().equals("Ecole de Magie")) {
     			//d.setColor("TODO"); // Le joueur choisit la couleur
     		}
-    	});*/
+    	});
 		super.getCharacter().collectRentMoney();
-    }
+    }*/
     /**
          * Fonction pour récupérer le Role permettant 
-         * d'avoir le plus d'argent lors de la collecte d'argent des quartiers
+         * d'avoir le plus d'argent
          * On utilisera hidden que si le joueur est le 
          * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
-         * TODO utliser le parametre hidden
          */
-    public Optional<Role> roleToOptimizeCoins(ArrayList<Role> lefts,Role hidden){
-        
-        if(city.getSizeOfCity()==0){
-            //une autre 
-            return Optional.empty();
-        }
-        else{
-            ArrayList<String> availableColors=new ArrayList<>();
-            lefts.stream().map(d -> d.getColor()).forEach(s->{
-                if(s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse") ){
-                    availableColors.add(s);
-                }
-            });
-            String bestColor=this.city.mostPotentiallyPayingColor(availableColors);
-            
-            for(Role r:lefts){
-                if(r.getColor().equals(bestColor)){
-                    return Optional.of(r);
-                }
-            }
-            return Optional.empty();
-        }
-        
-        
-    }
+    /**
+	 * Fonction pour récupérer le Role permettant d'avoir le plus d'argent lors de
+	 * la collecte d'argent des quartiers On utilisera hidden que si le joueur est
+	 * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true TODO
+	 * utliser le parametre hidden
+	 */
+	public Optional<Role> roleToOptimizeCoins(ArrayList<Role> lefts, Role hidden) {
+
+		if (city.getSizeOfCity() == 0) {
+			// une autre
+			return Optional.empty();
+		} else {
+			ArrayList<String> availableColors = new ArrayList<>();
+			lefts.stream().map(d -> d.getColor()).forEach(s -> {
+				if (s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse")) {
+					availableColors.add(s);
+				}
+			});
+			String bestColor = this.city.mostPotentiallyPayingColor(availableColors);
+
+			for (Role r : lefts) {
+				if (r.getColor().equals(bestColor)) {
+					return Optional.of(r);
+				}
+			}
+			return Optional.empty();
+		}
+
+	}
 
     Role pickTargetRole(){
-        Role character = this.getCharacter();
-        ArrayList<Role> roles = this.getBoard().getRoles();
         Role target;
-        switch(character.getPosition()){
+        switch(this.getCharacter().getPosition()){
             case 1:
-                target = roles.get(1);
+                target = targetToChooseForMurderer();
                 break;
             case 2:
-                target = roles.get(5);
+                target = board.getRole(5);
                 break;
             default :
                 target = null;
@@ -251,5 +257,29 @@ public class BotIA extends Player{
             return d;
         }
         return null;
+    }
+
+    Role targetToChooseForMurderer(){
+	    Role target;
+	    if(hidden!=null){
+	        switch(hidden.getPosition()) {
+                case 7:
+                    target = board.getRole(5);
+                    break;
+                default:
+                    target = board.getRole(6);
+                    break;
+            }
+        }
+	    return board.getRole(6);
+    }
+
+    Role targetToChooseForThief(){
+	    if(unknownRole.size()==2 && board.getCrown().getCrownOwner().getGold()>2){
+	        if(unknownRole.get(0)==board.getRole(0)) return unknownRole.get(1);
+	        return unknownRole.get(0);
+        }
+	    Random r = new Random();
+	    return board.getRole(r.nextInt(knownRole.size()));
     }
 }

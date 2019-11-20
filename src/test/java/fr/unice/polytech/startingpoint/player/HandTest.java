@@ -19,7 +19,7 @@ public class HandTest {
     @Test
     void nbTooExpensivesDistrictsTest(){
         hand.add(d1); hand.add(d2); hand.add(d2);
-        assertEquals(2,hand.nbTooExpensivesDistricts(4));
+        assertEquals(2,hand.nbTooExpensiveDistricts(4));
     }
 
     @Test

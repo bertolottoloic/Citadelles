@@ -62,7 +62,7 @@ public class Hand {
      * Compte le nombre de district dont le cout est plus eleve que le nombre de piece d'or posseder par le joueur
      * @return int : nombre de district
      */
-    public int nbTooExpensivesDistricts(int golds){
+    public int nbTooExpensiveDistricts(int golds){
         int n=0;
         for(District d : districts) {
             if (golds < d.getCost()) {

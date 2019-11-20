@@ -1,12 +1,12 @@
 package fr.unice.polytech.startingpoint.board;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Board{
     private Deck deck;
@@ -16,7 +16,6 @@ public class Board{
     private DealRoles dealRoles;
 
     public Board(){
-        this.crown=new Crown();
         this.deck=new Deck();
         this.bank = new Bank();
     }
@@ -24,7 +23,7 @@ public class Board{
     Bank getBank() {
         return bank;
     }
-    Crown getCrown() {
+    public Crown getCrown() {
         return crown;
     }
     public Deck getDeck() {
@@ -120,5 +119,9 @@ public class Board{
 	public Role getRole(String roleName) {
 		return this.dealRoles.getRole(roleName);
 	}
+
+	public void setCrown(Crown c){
+        this.crown = c;
+    }
 
 }

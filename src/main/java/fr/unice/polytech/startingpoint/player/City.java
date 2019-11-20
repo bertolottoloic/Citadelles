@@ -96,4 +96,8 @@ public class City {
         return districts.toString();
     }
 
+	public boolean containsWonder(String wonder) {
+		return districts.stream().anyMatch(d -> d.getNom().equals(wonder));
+	}
+
 }

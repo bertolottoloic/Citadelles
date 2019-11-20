@@ -143,5 +143,29 @@
         "cost":6,
         "nb":1,
         "nom":"Dracoport"
+    },
+    {
+        
+        "color":"merveille",
+        "value":5,
+        "cost":5,
+        "nb":1,
+        "nom":"Observatoire"
+    },
+    {
+        
+        "color":"merveille",
+        "value":6,
+        "cost":6,
+        "nb":1,
+        "nom":"Bibliotheque"
+    },
+    {
+        
+        "color":"merveille",
+        "value":5,
+        "cost":5,
+        "nb":1,
+        "nom":"Manufacture"
     }
 ]

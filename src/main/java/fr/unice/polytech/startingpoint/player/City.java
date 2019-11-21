@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -98,6 +99,10 @@ public class City {
 
 	public boolean containsWonder(String wonder) {
 		return districts.stream().anyMatch(d -> d.getNom().equals(wonder));
+	}
+
+	public Collection<District> toList() {
+		return districts;
 	}
 
 }

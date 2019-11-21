@@ -192,9 +192,11 @@ public class Player {
 		}
 
 		this.collectMoneyFromDistricts();
+		isUsingLabo();
 		
 		boolean buildFirst = isBuildingFirst();
 		boolean fabricUsed = isUsingFabric();
+		
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
@@ -248,6 +250,10 @@ public class Player {
 
 	protected boolean isUsingFabric() {
 		return true;
+	}
+	
+	protected void isUsingLabo() {
+		
 	}
 	/**
 	 * Méthode pour remettre au default les valeurs 

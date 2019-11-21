@@ -181,6 +181,22 @@ public class BotIA extends Player{
     }
     
     @Override
+    protected void isUsingLabo() { //TODO test
+       	if(city.containsWonder("Laboratoire")) {
+       		ArrayList<District> list = hand.cardsAboveGold(getGold());
+       		if(!list.isEmpty()
+       				&& city.getSizeOfCity() >= 6) {
+       			District dis = hand.highCostDistrict(getGold());
+       			if(!list.contains(dis)) {
+       				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+       				board.getDeck().putbackOne(dis);
+       				takeCoinsFromBank(1);
+       			}
+       		}
+      	}
+    }
+    
+    @Override
 	protected boolean isUsingFabric() {
     	return hand.isEmpty()
     			&& getGold() >= 5 
@@ -268,6 +284,8 @@ public class BotIA extends Player{
         Set<String> targets = matches.possibleRolesFor(board.getPlayerWithTheBiggestCity().getId());
         return board.getRole(targets.stream().findFirst().get());
     }
+
+
 
     Role targetToChooseForThief(){
         Set<String> targets = matches.possibleRolesFor(richestPlayer().getId());

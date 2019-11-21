@@ -8,17 +8,17 @@ import java.util.ArrayList;
 public abstract class Role {
      protected Player player;
      private final int position;
-     int numberDistrictBuildable = 1;
+     protected int numberDistrictBuildable = 1;
     /**
      * Nombre de pieces qu'on peut retirer de la banque
      * n'inclut pas le nombre de pieces qu'on
      * gagne grace au matching Role.color==Disctrict.color
      */
-     int numberGold = 2;
+     protected int numberGold = 2;
     /**
      * Permet de savoir si un Role est volé
      */
-     boolean isStolen = false;
+     protected boolean isStolen = false;
     /**
      * Permet de savoir si on est tué
      */
@@ -84,7 +84,7 @@ public abstract class Role {
         ArrayList<District> districts=this.player.getCity().getListDistricts();
 
         for(District d:districts){
-            if(d.getColor().equals(this.getColor())){
+            if(d.getColor().contains(this.getColor())){
                 //Que se passe t-il si il y a pas assez d'argent dans la banque?
                 this.player.takeCoinsFromBank(1);
             }
@@ -119,8 +119,22 @@ public abstract class Role {
         return this.numberDistrictBuildable;
     }
 
+    //TODO test
     public int getNumberDistrictPickable() {
-        return numberDistrictPickable;
+        if(player.getCity().toList().stream()
+            .filter(d-> d.getNom().equals("Bibliotheque")).findAny().isPresent()){
+                return 2;
+        }
+        else if(player.getCity().toList().stream()
+        .filter(d-> d.getNom().equals("Observatoire")).findAny().isPresent()){
+            return 3;
+        }
+        else{
+            return numberDistrictPickable;
+        }
+
+        
+        
     }
 
     public int getNumberGold(){
@@ -157,6 +171,26 @@ public abstract class Role {
 
      void setColor(String color) {
         this.color = color;
+    }
+
+    //TODO test
+    public int getNumberDistrictKeepable() {
+        if(player.getCity().toList().stream()
+            .filter(d-> d.getNom().equals("Bibliotheque")).findAny().isPresent()){
+                return 2;
+        }
+        else if(player.getHand().toList().stream()
+        .filter(d-> d.getNom().equals("Observatoire")).findAny().isPresent()){
+            return 1;
+        }
+        else{
+            return numberDistrictKeepable;
+        }
+        
+    }
+
+    public void setNumberDistrictKeepable(int numberDistrictKeepable) {
+        this.numberDistrictKeepable = numberDistrictKeepable;
     }
 
     

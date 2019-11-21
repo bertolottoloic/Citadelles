@@ -181,15 +181,16 @@ public class BotIA extends Player{
     }
     
     @Override
-    protected void isUsingLabo() { //TODO test
+    protected void isUsingLabo() { 
        	if(city.containsWonder("Laboratoire")) {
        		ArrayList<District> list = hand.cardsAboveGold(getGold());
        		if(!list.isEmpty()
        				&& city.getSizeOfCity() >= 6) {
        			District dis = hand.highCostDistrict(getGold());
-       			if(!list.contains(dis)) {
+       			if(!list.contains(dis) && dis != null) {
        				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
        				board.getDeck().putbackOne(dis);
+       				hand.remove(dis);
        				takeCoinsFromBank(1);
        			}
        		}
@@ -198,8 +199,7 @@ public class BotIA extends Player{
     
     @Override
 	protected boolean isUsingFabric() {
-    	return hand.isEmpty()
-    			&& getGold() >= 5 
+    	return getGold() >= 5 
     			&& city.getSizeOfCity() < 7
     			&& hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
     }

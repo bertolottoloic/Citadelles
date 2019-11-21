@@ -162,7 +162,7 @@ class BotIATest{
 	}
 
 	@Test
-	void isBuildingFirst(){
+	void isBuildingFirstTest(){
 		Role role = mock(Role.class);
 		bot.setCharacter(role);
 		hand.add(d1);
@@ -180,5 +180,50 @@ class BotIATest{
 		assertFalse(bot.isBuildingFirst());
 
 	}
+	
+	@Test
+	void isUsingFabricTest() {
+		assertFalse(bot.isUsingFabric());
 
+		bot.setBoard(new Board());
+		bot.takeCoinsFromBank(5);
+		assertTrue(bot.isUsingFabric());
+				
+		hand.add(d2);
+		bot.setHand(hand);
+		assertTrue(bot.isUsingFabric());
+		
+		City c = mock(City.class);
+		when(c.getSizeOfCity()).thenReturn(8);
+		bot.setCity(c);
+		assertFalse(bot.isUsingFabric());
+	}
+	
+	@Test
+	void isUsingLaboTest() {
+		City c = mock(City.class);
+		when(c.containsWonder("Laboratoire")).thenReturn(true);
+		bot.setCity(c);
+		
+		bot.setHand(hand);
+		hand.add(d1);
+		hand.add(d2);
+		hand.add(new District(8, 10, "exemple", "rue"));
+		bot.setBoard(new Board());
+		bot.takeCoinsFromBank(5);
+		assertFalse(hand.cardsAboveGold(bot.getGold()).isEmpty());
+		
+		when(c.getSizeOfCity()).thenReturn(8);
+		District tmpDis = hand.highCostDistrict(bot.getGold());
+		assertFalse(hand.cardsAboveGold(bot.getGold()).contains(tmpDis));
+		
+		int tmpDeckNb = bot.getBoard().numberOfCardsOfDeck();
+		int tmpGold = bot.getGold();
+		int tmpHandSize = bot.getHand().size();
+		bot.isUsingLabo();
+		
+		assertEquals(tmpDeckNb + 1, bot.getBoard().numberOfCardsOfDeck());
+		assertEquals(tmpGold + 1, bot.getGold());
+		assertEquals(tmpHandSize - 1, bot.getHand().size());
+	}
 }

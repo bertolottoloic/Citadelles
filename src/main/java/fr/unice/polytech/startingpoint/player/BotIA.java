@@ -94,7 +94,7 @@ public class BotIA extends Player{
     @Override
     protected void action() {
             if(!getHand().isEmpty()) {
-                District toBuild = whatToBuild(getCharacter(),getHand(),getGold());
+                District toBuild = whatToBuild(getGold());
                 if (toBuild != null) {
                     addToTheCity(toBuild);
                 }
@@ -145,18 +145,18 @@ public class BotIA extends Player{
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
      */
-    District whatToBuild(Role role, Hand hand,int golds){
-        if(role.toString().equals("Architect")) {  //si architecte alors strategie du build low cost
+    District whatToBuild(int limit){
+        if(getCharacter().toString().equals("Architect")) {  //si architecte alors strategie du build low cost
             District lowerCost = hand.lowCostDistrict();
-            if (lowerCost.getCost() <= golds) {
+            if (lowerCost.getCost() <= limit) {
                 return lowerCost;
             } else {
                 return null;
             }
         }
         else{
-            District district = hand.highCostDistrict(golds);
-            if(district.getCost()<=golds){
+            District district = hand.highCostDistrict(limit);
+            if(district.getCost()<=limit){
                 return district;
             }
             else{

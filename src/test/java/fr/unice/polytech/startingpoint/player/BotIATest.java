@@ -15,10 +15,11 @@ import static org.mockito.Mockito.when;
 
 class BotIATest{
 
-    BotIA bot = new BotIA(1);
+    BotIA bot=new BotIA(1);
     District d1 = new District(3,4,"religion", "quartier");
     District d2 = new District(6,6, "merveille","rue");
-    Hand hand = new Hand();
+    Hand hand=new Hand();
+
 
     @Test
     void coinsOrDistrictTest() {
@@ -132,6 +133,19 @@ class BotIATest{
 		board.setDealRoles(dr);
 		bot.setBoard(board);
 		assertEquals(dealRoles.getRole(5),bot.targetToChooseForMurderer());
+	}
+
+	@Test
+	void whatToBuildTest(){
+
+
+    	Role role = mock(Role.class);
+    	when(role.toString()).thenReturn("Architect");
+    	bot.setCharacter(role);
+    	hand.add(d1);
+    	hand.add(d2);
+    	bot.setHand(hand);
+    	assertEquals(d1,bot.whatToBuild(10));
 	}
 
 }

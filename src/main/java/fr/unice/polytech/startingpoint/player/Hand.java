@@ -96,7 +96,13 @@ public class Hand {
         return count;
     }
     
-    
+    public ArrayList<District> cardsAboveGold(int gold){ //TODO test
+    	ArrayList<District> res = new ArrayList<>();
+    	districts.forEach(d -> {
+    		if(d.getCost() - gold == 1) res.add(d);
+    	});
+    	return res;
+    }
     
 
 

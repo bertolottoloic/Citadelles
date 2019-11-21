@@ -28,7 +28,7 @@ public class DealRoles{
         Collections.shuffle(al);
         this.hidden=al.remove(0);
         Collections.shuffle(al);
-        if(al.get(0) instanceof King) visible.add(al.remove(1)); //Le Roi ne peut pas etre le Role Visible
+        if(al.get(0).equals("King")) visible.add(al.remove(1)); //Le Roi ne peut pas etre le Role Visible
         else visible.add(al.remove(0));//Je crois qu'il faut choisir d'abord les visibles
         leftRoles.addAll(al);
     }

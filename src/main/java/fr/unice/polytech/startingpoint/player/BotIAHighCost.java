@@ -2,8 +2,6 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
-import fr.unice.polytech.startingpoint.role.Wizard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +84,7 @@ public class BotIAHighCost extends Player {
     @Override
     protected void action() {
         if(!getHand().isEmpty()) {
-            District toBuild = whatToBuild();
+            District toBuild = whatToBuild(getGold());
             if (toBuild != null) {
                 addToTheCity(toBuild);
             }
@@ -107,9 +105,9 @@ public class BotIAHighCost extends Player {
     }
 
 
-    District whatToBuild(){
-        District district = getHand().highCostDistrict(getGold());
-        if(district.getCost()<=getGold()){
+    District whatToBuild(int limit){
+        District district = getHand().highCostDistrict(limit);
+        if(district.getCost()<=limit){
             return district;
         }
         else{
@@ -145,9 +143,9 @@ public class BotIAHighCost extends Player {
 
     @Override
     protected boolean isBuildingFirst() {
-        if(getCharacter() instanceof Wizard){ //pioche 3 cartes avant de jouer
+        if(getCharacter().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
-        else if(getCharacter() instanceof Warlord){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+        else if(getCharacter().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=getHand().nbBadCards(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}

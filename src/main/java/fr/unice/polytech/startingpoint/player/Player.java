@@ -2,9 +2,7 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -105,7 +103,7 @@ public class Player {
 	 * @param toDelete
 	 */
 	public void deleteDistrictFromCity(District toDelete){
-		if(!(character instanceof Bishop)){
+		if(!(character.equals("Bishop"))){
 			city.removeDistrict(toDelete);
 		}
 	}
@@ -287,7 +285,7 @@ public class Player {
 	public void specialMove() {
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();
-		if(character instanceof Warlord && districtToDestroy!=null){
+		if(character.equals("Warlord") && districtToDestroy!=null){
 			gold-=districtToDestroy.getCost();
 			board.deposit(districtToDestroy.getCost());
 		}

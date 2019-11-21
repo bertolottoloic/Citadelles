@@ -181,5 +181,12 @@
         "cost":3,
         "nb":2,
         "nom":"Donjon"
+    },
+    {
+        "color":"merveille",
+        "value":5,
+        "cost":5,
+        "nb":2,
+        "nom":"Laboratoire"
     }
 ]

@@ -198,7 +198,5 @@ public abstract class Role {
         this.numberDistrictKeepable = numberDistrictKeepable;
     }
 
-    
-
 
 }

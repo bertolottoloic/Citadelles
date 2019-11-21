@@ -2,8 +2,6 @@ package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
-import fr.unice.polytech.startingpoint.role.Wizard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +84,7 @@ public class BotIAHighCost extends Player {
     @Override
     protected void action() {
         if(!getHand().isEmpty()) {
-            District toBuild = whatToBuild();
+            District toBuild = whatToBuild(getGold());
             if (toBuild != null) {
                 addToTheCity(toBuild);
             }
@@ -107,9 +105,9 @@ public class BotIAHighCost extends Player {
     }
 
 
-    District whatToBuild(){
-        District district = getHand().highCostDistrict(getGold());
-        if(district.getCost()<=getGold()){
+    District whatToBuild(int limit){
+        District district = getHand().highCostDistrict(limit);
+        if(district.getCost()<=limit){
             return district;
         }
         else{

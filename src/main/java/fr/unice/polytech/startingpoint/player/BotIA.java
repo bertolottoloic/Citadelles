@@ -1,24 +1,21 @@
 package fr.unice.polytech.startingpoint.player;
 
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Set;
+
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-
 public class BotIA extends Player{
-    private Random random=new Random();
-
-    public BotIA(int id){
+    public BotIA(int id) {
         super(id);
     }
 
     @Override
     public void chooseRole() {
         for(Role r : board.getDealRoles().getLeftRoles()){
-            if(r.equals("Architect")){
+            if(r.toString().equals("Architect")){
                 chooseRole(r);
                 return;
             }
@@ -94,7 +91,7 @@ public class BotIA extends Player{
     @Override
     protected void action() {
             if(!getHand().isEmpty()) {
-                District toBuild = whatToBuild(getCharacter(),getHand(),getGold());
+                District toBuild = whatToBuild(getGold());
                 if (toBuild != null) {
                     addToTheCity(toBuild);
                 }
@@ -145,18 +142,18 @@ public class BotIA extends Player{
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
      */
-    District whatToBuild(Role role, Hand hand,int golds){
-        if(role.toString().equals("Architect")) {  //si architecte alors strategie du build low cost
+    District whatToBuild(int limit){
+        if(getCharacter().toString().equals("Architect")) {  //si architecte alors strategie du build low cost
             District lowerCost = hand.lowCostDistrict();
-            if (lowerCost.getCost() <= golds) {
+            if (lowerCost.getCost() <= limit) {
                 return lowerCost;
             } else {
                 return null;
             }
         }
         else{
-            District district = hand.highCostDistrict(golds);
-            if(district.getCost()<=golds){
+            District district = hand.highCostDistrict(limit);
+            if(district.getCost()<=limit){
                 return district;
             }
             else{
@@ -181,10 +178,23 @@ public class BotIA extends Player{
     }
     
     @Override
-    public boolean isUsingFabric() {
-        return hand.isEmpty() && getGold() >= 5 && city.getSizeOfCity() < 7
-                && hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
+    protected void isUsingLabo() { 
+       	if(city.containsWonder("Laboratoire")) {
+       		ArrayList<District> list = hand.cardsAboveGold(getGold());
+       		if(!list.isEmpty()
+       				&& city.getSizeOfCity() >= 6) {
+       			District dis = hand.highCostDistrict(getGold());
+       			if(!list.contains(dis) && dis != null) {
+       				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+       				board.getDeck().putbackOne(dis);
+       				hand.remove(dis);
+       				takeCoinsFromBank(1);
+       			}
+       		}
+      	}
     }
+    
+    
     
     /**
      * A override en cas de possession de la carte Ecole de Magie

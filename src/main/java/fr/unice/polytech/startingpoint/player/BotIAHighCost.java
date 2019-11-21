@@ -145,9 +145,9 @@ public class BotIAHighCost extends Player {
 
     @Override
     protected boolean isBuildingFirst() {
-        if(getCharacter() instanceof Wizard){ //pioche 3 cartes avant de jouer
+        if(getCharacter().toString().equals("Wizard")){ //pioche 3 cartes avant de jouer
             return true;}
-        else if(getCharacter() instanceof Warlord){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+        else if(getCharacter().toString().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=getHand().nbBadCards(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}

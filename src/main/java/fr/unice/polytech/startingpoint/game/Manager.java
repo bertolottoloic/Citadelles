@@ -73,7 +73,6 @@ public class Manager implements PropertyChangeListener {
         board.setPlayers(list);
         dealRoles = new DealRoles();
         board.setDealRoles(dealRoles);
-        board.setCrown(crown);
 
         for (Player p : players) {
             p.addPropertyChangeListener(this);

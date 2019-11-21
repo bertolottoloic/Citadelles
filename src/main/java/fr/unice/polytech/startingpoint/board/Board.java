@@ -12,7 +12,6 @@ import java.util.Arrays;
 public class Board{
     private Deck deck;
     private Bank bank;
-    private Crown crown;
     private ArrayList<Player> players;
     private DealRoles dealRoles;
 
@@ -23,9 +22,6 @@ public class Board{
 
     Bank getBank() {
         return bank;
-    }
-    public Crown getCrown() {
-        return crown;
     }
     public Deck getDeck() {
         return deck;
@@ -93,6 +89,7 @@ public class Board{
         return dealRoles;
     }
 
+    //TODO deplace to Bot
     public Player getPlayerWithTheBiggestHand(){
         Player player = this.getPlayers().get(0);
         for(Player players : this.getPlayers()) {
@@ -103,6 +100,7 @@ public class Board{
         return player;
     }
 
+    //TODO deplace and rewrite
     public Player getPlayerWithTheBiggestCity(){
         Player player = this.getPlayers().get(0);
         if(player.getCharacter() instanceof Bishop) player = player.getNextPlayer();
@@ -122,8 +120,5 @@ public class Board{
 		return this.dealRoles.getRole(roleName);
 	}
 
-	public void setCrown(Crown c){
-        this.crown = c;
-    }
 
 }

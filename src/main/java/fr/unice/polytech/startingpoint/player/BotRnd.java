@@ -66,7 +66,8 @@ public class BotRnd extends Player{
     @Override
     public boolean coinsOrDistrict() {
         if(random.nextInt(2)==1){
-        return true;}
+            return true;
+        }
         else
             {return false;}
     }

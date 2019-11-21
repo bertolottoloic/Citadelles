@@ -14,7 +14,6 @@ public class Merchant extends Role {
 
     @Override
     public void useSpecialPower() {
-        // TODO Auto-generated method stub
     }
 
     

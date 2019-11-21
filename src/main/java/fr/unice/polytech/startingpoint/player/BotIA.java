@@ -181,11 +181,9 @@ public class BotIA extends Player{
     }
     
     @Override
-	protected boolean isUsingFabric() {
-    	return hand.isEmpty()
-    			&& getGold() >= 5 
-    			&& city.getSizeOfCity() < 7
-    			&& hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
+    public boolean isUsingFabric() {
+        return hand.isEmpty() && getGold() >= 5 && city.getSizeOfCity() < 7
+                && hand.nbTooExpensiveDistricts(getGold()) == getHand().size();
     }
     
     /**

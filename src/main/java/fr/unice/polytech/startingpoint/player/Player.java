@@ -41,6 +41,7 @@ public class Player {
 
 	/*Attribut permettant d'attribuer des probabilités de possession de personnage*/
 	protected MatchingProb matches;
+	private boolean usingFabricPower=false;
 
 	/**
 	 * 
@@ -194,7 +195,6 @@ public class Player {
 		this.collectMoneyFromDistricts();
 		
 		boolean buildFirst = isBuildingFirst();
-		boolean fabricUsed = isUsingFabric();
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
@@ -221,15 +221,7 @@ public class Player {
 					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
 		}
 
-		if(getBoard().numberOfCardsOfDeck() >= 1 
-				&& fabricUsed 
-				&& getCity().containsWonder("Manufacture")
-				&& gold >= 3) {
-			gold -= 3;
-			board.deposit(3);
-			ArrayList<District> districts=getBoard().withdrawMany(3);
-			hand.addAll(districts);
-		}
+		
 		
 		if(buildFirst) {
 			action();
@@ -246,8 +238,28 @@ public class Player {
 		return true;
 	}
 
-	protected boolean isUsingFabric() {
-		return true;
+	/**
+	 * Cette fonction permet au player de décider si il 
+	 * veut utiliser le pouvoir de la manufacture ou pas
+	 * cette fonction renvoie un boolean utilisé par 
+	 * Role pour déterminer le  nombre que renverra les 
+	 * méthodes getNumberDistrictPickable et getNumberDistrictKeepable
+	 * 
+	 * @return 
+	 */
+	public boolean isUsingFabric() {
+		if(!this.usingFabricPower){
+			boolean resultat=getBoard().numberOfCardsOfDeck() >= 1 
+				&& getCity().containsWonder("Manufacture")
+				&& gold >= 3; 
+			if(resultat){
+				this.gold -= 3;
+				board.deposit(3);
+				this.usingFabricPower=true;
+			}
+			
+		}
+		return this.usingFabricPower;
 	}
 	/**
 	 * Méthode pour remettre au default les valeurs 
@@ -257,6 +269,7 @@ public class Player {
 	 *
 	 */
 	public void reInitializeForNextTurn(){
+		usingFabricPower=false;
 		alreadyChosenRole=false;
 		character=null;
 		targetToDestroyDistrict=null;
@@ -342,6 +355,7 @@ public class Player {
 
 	}
 
+
 	
 	/**
 	 * Cette méthode permet de compter les points en fin de partie
@@ -367,6 +381,9 @@ public class Player {
          return points;
 	}
 
+	public boolean hasTheDistrict(String districtName){
+		return this.city.containsWonder(districtName);
+	}
 	
 
 	/**

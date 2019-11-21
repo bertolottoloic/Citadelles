@@ -119,14 +119,19 @@ public abstract class Role {
         return this.numberDistrictBuildable;
     }
 
-    //TODO test
+    /**
+     * Les districts merveilles Manufacture Bibliotheque et Observatoire
+     * agissent sur le nombre de DistrictPickable et DistrictKeepable
+     * @return
+     */
     public int getNumberDistrictPickable() {
-        if(player.getCity().toList().stream()
-            .filter(d-> d.getNom().equals("Bibliotheque")).findAny().isPresent()){
+        if(player.hasTheDistrict("Manufacture") && player.isUsingFabric()){
+            return 3;
+        }
+        else if(player.hasTheDistrict("Bibliotheque")){
                 return 2;
         }
-        else if(player.getCity().toList().stream()
-        .filter(d-> d.getNom().equals("Observatoire")).findAny().isPresent()){
+        else if(player.hasTheDistrict("Observatoire")){
             return 3;
         }
         else{
@@ -173,14 +178,14 @@ public abstract class Role {
         this.color = color;
     }
 
-    //TODO test
     public int getNumberDistrictKeepable() {
-        if(player.getCity().toList().stream()
-            .filter(d-> d.getNom().equals("Bibliotheque")).findAny().isPresent()){
+        if(player.hasTheDistrict("Manufacture")&& player.isUsingFabric()){
+            return 3;
+        }
+        else if(player.hasTheDistrict("Bibliotheque")){
                 return 2;
         }
-        else if(player.getHand().toList().stream()
-        .filter(d-> d.getNom().equals("Observatoire")).findAny().isPresent()){
+        else if(player.hasTheDistrict("Observatoire")){
             return 1;
         }
         else{

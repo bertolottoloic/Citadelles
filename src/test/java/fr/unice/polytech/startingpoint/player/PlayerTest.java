@@ -43,13 +43,6 @@ class PlayerTest {
 	}
     
     @Test
-    void testTakeCoinsAtBeginning(){
-    	assertEquals(0, player.getGold());
-    	player.takeCoinsAtBeginning();
-    	assertEquals(2, player.getGold());
-    }
-    
-    @Test
     void testPickNewDistrict(){
         assertEquals(0, player.getHand().size());
         player.pickNewDistrict(new District(3,3,"noblesse","Eglise"));

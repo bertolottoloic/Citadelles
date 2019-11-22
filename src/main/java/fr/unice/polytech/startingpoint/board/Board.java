@@ -36,19 +36,15 @@ public class Board{
         return deck.withdrawMany(i);
     }
 
-    public int withdraw(int i) {
-            if (bank.canWithdraw(i)){
-                bank.withdraw(i);
-                return i;
-            }
-            return 0;
+    public boolean withdraw(int i,Player player) {
+            return bank.withdraw(i, player);
     }
     public District draw() {
         return deck.withdraw();
     }
 
-    public void deposit(int cost) {
-        bank.deposit(cost);
+    public boolean deposit(int cost, Player player) {
+        return bank.deposit(cost,player);
     }
 
     public ArrayList<District> exchangeMany(ArrayList<District> hand) {
@@ -61,11 +57,12 @@ public class Board{
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+        bank.setBourses(players);
     }
     public void setPlayers(Player ... players) {
         this.players=new ArrayList<>();
         this.players.addAll(Arrays.asList(players));
-
+        bank.setBourses(this.players);
     }
 
     public ArrayList<Player> getPlayers() {
@@ -119,5 +116,12 @@ public class Board{
 		return this.dealRoles.getRole(roleName);
 	}
 
+	public int getPlayerMoney(Player player) {
+        return bank.getPlayerMoney(player);
+	}
+
+    public void distributeCoinsAtBeggining(){
+        bank.distributeCoinsAtBeggining();
+    }
 
 }

@@ -104,9 +104,15 @@ public class Player {
 	 * @param toDelete
 	 */
 	public void deleteDistrictFromCity(District toDelete){
-		if(!(character.toString().equals("Bishop"))){
+		if(character!=null){
+			if(!(character.toString().equals("Bishop"))){
+				city.removeDistrict(toDelete);
+			}
+		}
+		else{
 			city.removeDistrict(toDelete);
 		}
+		
 	}
 	
 	/**
@@ -248,8 +254,7 @@ public class Player {
 	 */
 	public boolean isUsingFabric() {
 		if(!this.usingFabricPower){
-			boolean resultat=getBoard().numberOfCardsOfDeck() >= 1 
-				&& getCity().containsWonder("Manufacture")
+			boolean resultat=getCity().containsWonder("Manufacture")
 				&& gold >= 3; 
 			if(resultat){
 				this.gold -= 3;

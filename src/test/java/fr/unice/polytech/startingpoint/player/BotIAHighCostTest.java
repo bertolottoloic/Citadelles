@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.player;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,8 @@ class BotIAHighCostTest{
 
 
     BotIAHighCost bot;
-    District d1 = new District(3,4,"religion", "quartier");
-    District d2 = new District(6,6, "merveille","rue");
+    District d1 = new District(3,4,DistrictColor.Religion, "quartier");
+    District d2 = new District(6,6, DistrictColor.Wonder,"rue");
     Hand hand;
 
     @BeforeEach
@@ -43,15 +44,15 @@ class BotIAHighCostTest{
         bot.setBoard(new Board());
         Deck d = bot.getBoard().getDeck();
         d.getList().clear();
-        d.getList().add(new District(3,4,"religion", "random1"));
-        d.getList().add(new District(3,4,"religion", "random2"));
-        d.getList().add(new District(3,4,"religion", "random3"));
-        d.getList().add(new District(3,4,"religion", "random4"));
-        d.getList().add(new District(3,4,"religion", "random5"));
+        d.getList().add(new District(3,4,DistrictColor.Religion, "random1"));
+        d.getList().add(new District(3,4,DistrictColor.Religion, "random2"));
+        d.getList().add(new District(3,4,DistrictColor.Religion, "random3"));
+        d.getList().add(new District(3,4,DistrictColor.Religion, "random4"));
+        d.getList().add(new District(3,4,DistrictColor.Religion, "random5"));
         assertTrue(bot.coinsOrDistrict());
 
         hand.add(d1);
-        hand.add(new District(2, 2, "unecouleur", "random6"));
+        hand.add(new District(2, 2, DistrictColor.Commerce, "random6"));
         bot.setHand(hand);
         assertTrue(bot.coinsOrDistrict());
     }

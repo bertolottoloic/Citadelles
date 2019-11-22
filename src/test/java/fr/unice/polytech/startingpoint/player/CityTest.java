@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 
 public class CityTest {
     City city;
@@ -20,9 +21,9 @@ public class CityTest {
     void testAdd(){
         city.add(null);
         assertEquals(0, city.getSizeOfCity());
-        city.add(new District(4,4,"noblesse","Palais"));
+        city.add(new District(4,4,DistrictColor.Noble,"Palais"));
         assertEquals(1, city.getSizeOfCity());
-        city.add(new District(4,4,"noblesse","Palais"));
+        city.add(new District(4,4,DistrictColor.Noble,"Palais"));
         assertEquals(1, city.getSizeOfCity());
 
     }
@@ -30,70 +31,70 @@ public class CityTest {
     @Test
     void testGetTotalValue(){
         assertEquals(0, city.getTotalValue());
-        city.add(new District(2,2,"noblesse","Chateau"));
+        city.add(new District(2,2,DistrictColor.Noble,"Chateau"));
         assertEquals(2, city.getTotalValue());
     }
 
     @Test
 	void testCityContainsAllColors(){
 		
-		city.add(new District(2, 2, "merveille", "Poudlard"));
-		city.add(new District(2, 2, "soldatesque", "Caserne"));
-		city.add(new District(2, 2, "noblesse", "Chateau"));
-		city.add(new District(2, 2, "religion", "Eglise"));
+		city.add(new District(2, 2, DistrictColor.Wonder, "Poudlard"));
+		city.add(new District(2, 2, DistrictColor.Warlord, "Caserne"));
+		city.add(new District(2, 2, DistrictColor.Noble, "Chateau"));
+		city.add(new District(2, 2, DistrictColor.Religion, "Eglise"));
 
 		assertEquals(false, city.containsAllColors());
 
-		city.add(new District(2, 2, "commerce", "Casino"));
+		city.add(new District(2, 2, DistrictColor.Commerce, "Casino"));
 
 		assertEquals(true, city.containsAllColors());
     }
     
     @Test
 	void testCityContainsAllColors2(){
-		city.add(new District(2, 2, "merveille", "Poudlard"));
-		city.add(new District(2, 2, "merveille", "Caserne"));
-		city.add(new District(2, 2, "noblesse", "Chateau"));
-		city.add(new District(2, 2, "religion", "Eglise"));
+		city.add(new District(2, 2, DistrictColor.Wonder, "Poudlard"));
+		city.add(new District(2, 2, DistrictColor.Warlord, "Caserne"));
+		city.add(new District(2, 2, DistrictColor.Noble, "Chateau"));
+		city.add(new District(2, 2, DistrictColor.Religion, "Eglise"));
 
 		assertEquals(false, city.containsAllColors());
 
-		city.add(new District(2, 2, "commerce", "Casino"));
+		city.add(new District(2, 2, DistrictColor.Commerce, "Casino"));
 		
-		assertEquals(false, city.containsAllColors());
+		assertEquals(true, city.containsAllColors());
     }
     
     @Test
     void testMostPotentiallyPayingColor(){
         assertEquals(null,city.mostPotentiallyPayingColor());
-        city.add(new District(2, 2, "merveille", "Poudlard"));
-        city.add(new District(2, 2, "merveille", "Caserne"));
+        city.add(new District(2, 2, DistrictColor.Wonder, "Poudlard"));
+        city.add(new District(2, 2, DistrictColor.Warlord, "Caserne"));
         
 
-        city.add(new District(2, 2, "noblesse", "Chateau"));
-        city.add(new District(2, 2, "noblesse", "Palais"));
-        city.add(new District(2, 2, "religion", "Eglise"));
+        city.add(new District(2, 2, DistrictColor.Noble, "Chateau"));
+        city.add(new District(2, 2, DistrictColor.Noble, "Palais"));
+        city.add(new District(2, 2, DistrictColor.Religion, "Eglise"));
         
-        assertEquals("noblesse",city.mostPotentiallyPayingColor());
+        assertEquals(DistrictColor.Noble,city.mostPotentiallyPayingColor());
         
     }
 
     @Test
     void testNbOfOccurences(){
-        city.add(new District(2, 2, "merveille", "Poudlard"));
-		city.add(new District(2, 2, "merveille", "Caserne"));
-		city.add(new District(2, 2, "noblesse", "Chateau"));
-        city.add(new District(2, 2, "religion", "Eglise"));
+        city.add(new District(2, 2, DistrictColor.Wonder, "Poudlard"));
+		city.add(new District(2, 2, DistrictColor.Wonder, "Caserne"));
+		city.add(new District(2, 2, DistrictColor.Noble, "Chateau"));
+        city.add(new District(2, 2, DistrictColor.Religion, "Eglise"));
         
-        assertEquals(2, city.nbOcurrencesOf("merveille"));
-        assertEquals(1, city.nbOcurrencesOf("noblesse"));
-        assertEquals(0, city.nbOcurrencesOf("commerce"));
+        assertEquals(2, city.nbOcurrencesOf(DistrictColor.Wonder));
+        assertEquals(1, city.nbOcurrencesOf(DistrictColor.Noble));
+        assertEquals(0, city.nbOcurrencesOf(DistrictColor.Commerce));
     }
     
     @Test
     void testContainsWonder() {
     	assertFalse(city.containsWonder("Caserne"));
-		city.add(new District(2, 2, "merveille", "Caserne"));
+		city.add(new District(2, 2, DistrictColor.Wonder, "Caserne"));
 		assertTrue(city.containsWonder("Caserne"));
     }
 

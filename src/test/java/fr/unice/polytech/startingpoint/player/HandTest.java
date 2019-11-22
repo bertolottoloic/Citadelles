@@ -2,16 +2,15 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 
 public class HandTest {
-    District d1 = new District(3,4,"religion", "quartier");
-    District d2 = new District(6,6, "merveille","rue");
+    District d1 = new District(3,4,DistrictColor.Religion, "quartier");
+    District d2 = new District(6,6, DistrictColor.Wonder,"rue");
     Hand hand;
 
     @BeforeEach
@@ -41,8 +40,8 @@ public class HandTest {
    @Test
    void nbBadCardsTest() {
 	   hand.add(d2);
-       hand.add(new District(1, 2, "uneCouleur", "cul-de-sac"));
-       hand.add(new District(5, 2, "uneCouleur", "rue"));
+       hand.add(new District(1, 2, DistrictColor.Commerce, "cul-de-sac"));
+       hand.add(new District(5, 2, DistrictColor.Warlord, "rue"));
        assertEquals(2, hand.nbBadCards(5));
    }
    

@@ -196,18 +196,7 @@ public class BotIA extends Player{
     
     
     
-    /**
-     * A override en cas de possession de la carte Ecole de Magie
-     */
-   /* @Override
-    void collectMoneyFromDistricts(){
-    	getCity().forEach((District d) -> {
-    		if(d.getNom().equals("Ecole de Magie")) {
-    			//d.setColor("TODO"); // Le joueur choisit la couleur
-    		}
-    	});
-		super.getCharacter().collectRentMoney();
-    }*/
+    
     /**
          * Fonction pour récupérer le Role permettant 
          * d'avoir le plus d'argent

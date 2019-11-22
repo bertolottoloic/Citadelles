@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.player;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,8 @@ import static org.mockito.Mockito.when;
 class BotIATest{
 
     BotIA bot;
-    District d1 = new District(3,4,"religion", "quartier");
-    District d2 = new District(6,6, "merveille","rue");
+    District d1 = new District(3,4,DistrictColor.Religion, "quartier");
+    District d2 = new District(6,6, DistrictColor.Wonder,"rue");
     Hand hand;
 
 
@@ -187,11 +188,11 @@ class BotIATest{
 
 		bot.setBoard(new Board());
 		bot.takeCoinsFromBank(5);
-		assertTrue(bot.isUsingFabric());
+		assertFalse(bot.isUsingFabric());
 				
 		hand.add(d2);
 		bot.setHand(hand);
-		assertTrue(bot.isUsingFabric());
+		assertFalse(bot.isUsingFabric());
 		
 		City c = mock(City.class);
 		when(c.getSizeOfCity()).thenReturn(8);
@@ -208,7 +209,7 @@ class BotIATest{
 		bot.setHand(hand);
 		hand.add(d1);
 		hand.add(d2);
-		hand.add(new District(8, 10, "exemple", "rue"));
+		hand.add(new District(8, 10, DistrictColor.Commerce, "rue"));
 		bot.setBoard(new Board());
 		bot.takeCoinsFromBank(5);
 		assertFalse(hand.cardsAboveGold(bot.getGold()).isEmpty());

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 
 public class City {
     private ArrayList<District> districts=new ArrayList<>();
@@ -22,13 +23,13 @@ public class City {
      * de couleur payante
      * @return la couleur la plus rentable
      */
-    public String mostPotentiallyPayingColor(){
+    public DistrictColor mostPotentiallyPayingColor(){
         if(districts.isEmpty()){
             return null;
         }
         else{
             
-            return List.of("soldatesque","commerce","noblesse","religion").stream().max((a,b)->
+            return List.of(DistrictColor.Warlord,DistrictColor.Commerce,DistrictColor.Noble,DistrictColor.Religion).stream().max((a,b)->
                 Long.compare(nbOcurrencesOf(a) , nbOcurrencesOf(b))
             ).get();
 
@@ -50,18 +51,21 @@ public class City {
 
     }
 
-    public int nbOcurrencesOf(String color) {
-       return (int)districts.stream().filter(d -> d.getColor().equals(color)).count();
+    public int nbOcurrencesOf(DistrictColor color) {
+       return (int)districts.stream().filter(d -> d.hasColor(color)).count();
     }
+    public int nbOcurrencesOf(String color) {
+        return (int)districts.stream().filter(d -> d.hasColor(color)).count();
+     }
 
 	public void removeDistrict(District toDelete) {
         districts.remove(toDelete);
     }
     
     public boolean containsAllColors(){
-		HashSet<String> s=new HashSet<String>();
+        HashSet<String> s=new HashSet<String>();
 		districts.forEach((c)->{
-			s.add(c.getColor());
+			s.addAll(c.getColorsList());
 
 		});
 		return s.size()==5;
@@ -98,11 +102,13 @@ public class City {
     }
 
 	public boolean containsWonder(String wonder) {
-		return districts.stream().anyMatch(d -> d.getNom().equals(wonder));
+		return districts.stream().anyMatch(d -> d.getName().equals(wonder));
 	}
 
 	public Collection<District> toList() {
 		return districts;
 	}
+
+    
 
 }

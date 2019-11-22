@@ -88,7 +88,7 @@ public class Board{
         return dealRoles;
     }
 
-    //TODO deplace to Bot
+    //TODO deplace to Bot ??
     public Player getPlayerWithTheBiggestHand(){
         Player player = this.getPlayers().get(0);
         for(Player players : this.getPlayers()) {
@@ -99,12 +99,12 @@ public class Board{
         return player;
     }
 
-    //TODO deplace and rewrite
+    //TODO deplace and rewrite ??
     public Player getPlayerWithTheBiggestCity(){
         Player player = this.getPlayers().get(0);
-        if(player.getCharacter().equals("Bishop")) player = player.getNextPlayer();
+        if(player.getCharacter().toString().equals("Bishop")) player = player.getNextPlayer();
         for(Player players : this.getPlayers()) {
-            if(!(players.getCharacter().equals("Bishop"))){
+            if(!(players.getCharacter().toString().equals("Bishop"))){
                 if(players.getCity().getSizeOfCity()>player.getCity().getSizeOfCity()){
                     player = players;
                 } else if(players.getCity().getSizeOfCity()==player.getCity().getSizeOfCity() && players.getCity().getTotalValue()>player.getCity().getTotalValue()){

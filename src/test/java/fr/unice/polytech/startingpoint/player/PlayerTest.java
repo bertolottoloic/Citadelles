@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.King;
@@ -58,10 +59,10 @@ class PlayerTest {
 
     @Test
     void testAddToTheCity(){
-        assertEquals(false, player.addToTheCity(new District(3,3,"noblesse","Eglise")));
+        assertEquals(false, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
         player.addMoney(3);
-        assertEquals(true, player.addToTheCity(new District(3,3,"noblesse","Eglise")));
-        assertEquals(false, player.addToTheCity(new District(3,3,"noblesse","Eglise")));
+        assertEquals(true, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
+        assertEquals(false, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
     }
     
     @Test
@@ -75,13 +76,13 @@ class PlayerTest {
     void testDeleteDistrictFromCity(){
     	assertEquals(0, player.getCity().getSizeOfCity());
     	player.addMoney(3);
-    	player.addToTheCity(new District(3,3,"noblesse","Eglise"));
+    	player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise"));
     	assertEquals(1, player.getCity().getSizeOfCity());
     	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
     	assertEquals(0, player.getCity().getSizeOfCity());
     	
     	player.addMoney(3);
-    	player.addToTheCity(new District(3,3,"noblesse","Eglise"));
+    	player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise"));
     	player.setCharacter(new Bishop());
     	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
     	assertEquals(1, player.getCity().getSizeOfCity());

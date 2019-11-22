@@ -1,12 +1,10 @@
 package fr.unice.polytech.startingpoint.player;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
 
 public class BotIAHighCost extends Player {
     private Random random=new Random();
@@ -19,7 +17,7 @@ public class BotIAHighCost extends Player {
     public void chooseRole() {
         if(!alreadyChosenRole){
             ArrayList<Role> leftRoles=board.getDealRoles().getLeftRoles();
-            String maxColor=bestColorDistrict();
+            String maxColor=hand.bestColorDistrict();
             Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
             board.getDealRoles().getLeftRoles().remove(choosenRole);
             setCharacter(choosenRole);
@@ -37,7 +35,7 @@ public class BotIAHighCost extends Player {
         switch (color){
             case "religion": position=5;
             break;
-            case "militaire": position =8;
+            case "soldatesque": position =8;
             break;
             case "noble": position =4;
             break;
@@ -52,24 +50,7 @@ public class BotIAHighCost extends Player {
 
     }
 
-    String bestColorDistrict(){
-        HashMap<String,Integer> countColors=new HashMap<String, Integer>();
-        countColors.put("religion",0);
-        countColors.put("commerce",0);
-        countColors.put("militaire",0);
-        countColors.put("noblesse",0);
-        countColors.put("merveille",0);
-        for (District d : getHand().toList()){
-             int count = countColors.containsKey(d.getColor()) ? countColors.get(d.getColor()) : 0;
-            countColors.put(d.getColor(), count + 1);
-        }
-        for (String color :countColors.keySet()){
-            if(countColors.get(color)==Collections.max(countColors.values())){
-                return color;
-            }
-        }
-        return "commerce";
-    }
+    
 
     @Override
     public void specialMove() {

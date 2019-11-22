@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Warlord;
 
@@ -48,9 +49,9 @@ class BotRndTest {
 	@Test
 	void testAction() {
 		b1.addMoney(10);
-		b1.pickNewDistrict(new District(3, 2, "blue", "Église"));
-		b1.pickNewDistrict(new District(2, 2, "orange", "Chateau"));
-		b1.pickNewDistrict(new District(6, 2, "violet", "Pont"));
+		b1.pickNewDistrict(new District(3, 2, DistrictColor.Religion, "Église"));
+		b1.pickNewDistrict(new District(2, 2, DistrictColor.Noble, "Chateau"));
+		b1.pickNewDistrict(new District(6, 2, DistrictColor.Warlord, "Pont"));
 		assertTrue(b1.city.isEmpty());
 		b1.action();
 		assertEquals(1, b1.city.getSizeOfCity());

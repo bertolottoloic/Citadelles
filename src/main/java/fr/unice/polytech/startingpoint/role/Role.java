@@ -84,7 +84,7 @@ public abstract class Role {
         ArrayList<District> districts=this.player.getCity().getListDistricts();
 
         for(District d:districts){
-            if(d.getColor().contains(this.getColor())){
+            if(d.hasColor(color)){
                 //Que se passe t-il si il y a pas assez d'argent dans la banque?
                 this.player.takeCoinsFromBank(1);
             }
@@ -174,8 +174,12 @@ public abstract class Role {
         return color;
     }
 
-     void setColor(String color) {
+    void setColor(String color) {
         this.color = color;
+    }
+
+    void setColor(DistrictColor color) {
+        this.color = color.toString();
     }
 
     public int getNumberDistrictKeepable() {

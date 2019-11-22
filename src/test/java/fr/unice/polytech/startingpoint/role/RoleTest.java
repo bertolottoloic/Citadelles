@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.role;
 
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -127,7 +128,7 @@ public class RoleTest {
         assertEquals(2, r.getNumberDistrictPickable());
         assertEquals(1, r.getNumberDistrictKeepable());
         //Pour ne pas créer un board on récupère la city
-        p.getCity().add(new District(2, 2, "orange", "Bibliotheque"));
+        p.getCity().add(new District(2, 2, DistrictColor.Wonder, "Bibliotheque"));
 
         assertEquals(2, r.getNumberDistrictPickable());
         assertEquals(2, r.getNumberDistrictKeepable());
@@ -144,7 +145,7 @@ public class RoleTest {
         assertEquals(2, r.getNumberDistrictPickable());
         assertEquals(1, r.getNumberDistrictKeepable());
         //Pour ne pas créer un board on récupère la référence de city
-        p.getCity().add(new District(2, 2, "orange", "Observatoire"));
+        p.getCity().add(new District(2, 2, DistrictColor.Wonder, "Observatoire"));
 
         assertEquals(3, r.getNumberDistrictPickable());
         assertEquals(1, r.getNumberDistrictKeepable());

@@ -1,11 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
+
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
-
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotIA extends Player{
     public BotIA(int id) {
@@ -165,11 +165,11 @@ public class BotIA extends Player{
 
 
     @Override
-    protected boolean isBuildingFirst() {
-        if(getCharacter().toString().equals("Wizard")){ //pioche 3 cartes avant de jouer
+    protected boolean isUsingPowerFirst() {
+        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
             return true;}
-        else if(getCharacter().toString().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().nbTooExpensiveDistricts(getGold());
+        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+            int countBadCards=getHand().nbBadCards(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}
         }

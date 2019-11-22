@@ -170,14 +170,14 @@ class BotIATest{
 		bot.setHand(hand);
 
 		when(role.toString()).thenReturn("Wizard");
-		assertTrue(bot.isBuildingFirst());
+		assertTrue(bot.isUsingPowerFirst());
 
 		when(role.toString()).thenReturn("Warlord");
 		bot.addMoney(10);
-		assertTrue(bot.isBuildingFirst());
+		assertTrue(bot.isUsingPowerFirst());
 
 		when(role.toString()).thenReturn("Bishop");
-		assertFalse(bot.isBuildingFirst());
+		assertFalse(bot.isUsingPowerFirst());
 
 	}
 	

@@ -73,7 +73,7 @@ public class BotRnd extends Player{
     }
 
     @Override
-    protected boolean isBuildingFirst() {
+    protected boolean isUsingPowerFirst() {
         if(random.nextInt(2)==1){
             return true;}
         else

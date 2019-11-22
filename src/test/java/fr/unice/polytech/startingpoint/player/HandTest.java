@@ -51,4 +51,15 @@ public class HandTest {
        hand.add(d1);
        assertEquals(1, hand.cardsAboveGold(5).size());
    }
+
+   @Test
+    void bestColorDistrictTest(){
+        assertEquals("commerce",hand.bestColorDistrict());
+        hand.add(d1);
+        assertEquals("religion",hand.bestColorDistrict());
+        hand.add(d2);
+        hand.add(new District(5, 2, DistrictColor.Wonder, "rue"));
+        assertEquals("merveille",hand.bestColorDistrict());
+
+    }
 }

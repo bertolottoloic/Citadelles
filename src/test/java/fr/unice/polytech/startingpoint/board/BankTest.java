@@ -5,13 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.unice.polytech.startingpoint.player.Player;
+
 public class BankTest {
     Bank b=new Bank();
+    Player p;
 
     @BeforeEach
     public void setUp() {
 
         b=new Bank();
+        p=new Player(1);
        
     }
 
@@ -29,11 +33,11 @@ public class BankTest {
 
     @Test
    public void withdrawTest(){
-        assertEquals(true,b.withdraw(7));
+        assertEquals(true,b.withdraw(7,p));
 
         assertEquals(23,b.getCurrNbCoins());
 
-        assertEquals(false,b.withdraw(25));
+        assertEquals(false,b.withdraw(25,p));
 
         assertEquals(23,b.getCurrNbCoins());
 
@@ -41,11 +45,11 @@ public class BankTest {
 
     @Test
     public void depositTest(){
-        assertEquals(true, b.deposit(0));
+        assertEquals(true, b.deposit(0,p));
 
-        assertEquals(false, b.deposit(-1));
+        assertEquals(false, b.deposit(-1,p));
 
-        assertEquals(false, b.deposit(1));
+        assertEquals(false, b.deposit(1,p));
     }
 
 

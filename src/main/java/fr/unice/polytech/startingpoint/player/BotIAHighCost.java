@@ -96,13 +96,14 @@ public class BotIAHighCost extends Player {
         }
     }
 
-    public void discard(ArrayList<District> d,int golds){
+    @Override
+    public void discard(ArrayList<District> d){
         if(d.size()>=2){
             d.sort((a,b)->
                     Integer.compare(a.getCost(),b.getCost())
             );
             while(d.size()>1){//On ne garde qu'une carte
-                if(d.get(0).getCost()>golds){
+                if(d.get(0).getCost()>getGold()){
                     getBoard().getDeck().putbackOne(d.remove(0));
                 }
                 else{
@@ -116,17 +117,17 @@ public class BotIAHighCost extends Player {
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
-                || hand.nbBadCards(getGold())<=hand.size()
+                || hand.nbBadCards(getGold())<=hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || board.getDeck().numberOfCards() < 4
                 || hand.size()>2;
     }
 
     @Override
-    protected boolean isBuildingFirst() {
-        if(getCharacter().toString().equals("Wizard")){ //pioche 3 cartes avant de jouer
+    protected boolean isUsingPowerFirst() {
+        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
             return true;}
-        else if(getCharacter().toString().equals("Warlord")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=getHand().nbBadCards(getGold());
             if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
             else{return true;}

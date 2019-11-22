@@ -70,11 +70,11 @@ public class Player {
 	 * takeCoinsFromBank avant d'avoir les personnages on 
 	 * obtient NullPointerException
 	 */
-	public void takeCoinsAtBeginning(){
+	/*public void takeCoinsAtBeginning(){
 		getBoard().withdraw(2);
 		System.out.println("Joueur "+id+" retire "+2+" de la banque. ");
 		gold+=2;
-	}
+	}*/
 	public void pickNewDistrict(District d) {
 		hand.add(d);
 	}
@@ -83,9 +83,7 @@ public class Player {
 		if(city.alreadyContains(theDistrict)){
 			return false;
 		}
-		if(gold - theDistrict.getCost() >= 0) {
-			gold -= theDistrict.getCost();
-			getBoard().deposit(theDistrict.getCost());
+		if(getBoard().deposit(theDistrict.getCost(),this)) {
 			city.add(theDistrict);
 			hand.remove(theDistrict);
 			System.out.println("Joueur "+id+" construit \n"+theDistrict.toString());
@@ -99,20 +97,25 @@ public class Player {
 		gold+= amount;
 	}
 
+	public int getGold(){
+		return board.getPlayerMoney(this);
+	}
+
 	/**
 	 * Destruction de district dans city
 	 * @param toDelete
 	 */
 	public void deleteDistrictFromCity(District toDelete){
 		if(character!=null){
-			if(!(character.toString().equals("Bishop"))){
+			if(!character.toString().equals("Bishop") && !toDelete.getName().equals("Donjon")){
 				city.removeDistrict(toDelete);
 			}
 		}
 		else{
-			city.removeDistrict(toDelete);
+			if(!toDelete.getName().equals("Donjon")){
+				city.removeDistrict(toDelete);
+			}
 		}
-		
 	}
 	
 	/**
@@ -121,10 +124,8 @@ public class Player {
 	 * par celle ci cela permet de savoir si l'argent voulue est disponible
 	 */
 	public void takeCoinsFromBank(int nb){
-		int pickGold = board.withdraw(nb);
-		if(pickGold>0) {
+		if(board.withdraw(nb,this)){
 			System.out.println("Joueur "+id+" retire " + nb + " de la banque. ");
-			gold+=nb;
 		}
 	}
 
@@ -199,7 +200,7 @@ public class Player {
 		this.collectMoneyFromDistricts();
 		isUsingLabo();
 		
-		boolean buildFirst = isBuildingFirst();
+		boolean buildFirst = isUsingPowerFirst();
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
@@ -239,7 +240,7 @@ public class Player {
 		
 	}
 
-	protected boolean isBuildingFirst() {
+	protected boolean isUsingPowerFirst() {
 		return true;
 	}
 
@@ -258,7 +259,7 @@ public class Player {
 				&& gold >= 3; 
 			if(resultat){
 				this.gold -= 3;
-				board.deposit(3);
+				board.deposit(3,this);
 				this.usingFabricPower=true;
 			}
 			
@@ -304,7 +305,7 @@ public class Player {
 		character.useSpecialPower();
 		if(character.toString().equals("Warlord") && districtToDestroy!=null){
 			gold-=districtToDestroy.getCost();
-			board.deposit(districtToDestroy.getCost());
+			board.deposit(districtToDestroy.getCost(),this);
 		}
 	}
 
@@ -325,7 +326,7 @@ public class Player {
 		return "**********\n"
 			+ "Player #" + id + "\n"
 			+ "Current role: " + character +"\n"
-			+ "Amount of gold: " + gold + "\n"
+			+ "Amount of gold: " + getGold() + "\n"
 			+ "City :" + city +"\n";
 	}
 	/**
@@ -490,9 +491,6 @@ public class Player {
 		
 	}
 
-	public int getGold() {
-		return gold;
-	}
 
 	public Hand getHand(){return hand;}
 	

@@ -18,7 +18,8 @@ public class Warlord extends Role {
 
     @Override
     public void useSpecialPower() {
-        if(this.player.getDistrictToDestroy()!= null && this.player.getDistrictToDestroy().getCost()<this.player.getGold() && !this.player.getDistrictToDestroy().getName().equals("Donjon")) {
+        //TODO pourquoi cette vérif ??
+        if(this.player.getDistrictToDestroy()!= null && this.player.getDistrictToDestroy().getCost()<this.player.getGold()) {
             action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
         }
     }

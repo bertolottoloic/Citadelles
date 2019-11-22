@@ -104,7 +104,7 @@ public class Player {
 	 * @param toDelete
 	 */
 	public void deleteDistrictFromCity(District toDelete){
-		if(!(character.toString().equals("Bishop"))){
+		if(!(character.toString().equals("Bishop")) && toDelete.getNom().equals("Donjon")){
 			city.removeDistrict(toDelete);
 		}
 	}

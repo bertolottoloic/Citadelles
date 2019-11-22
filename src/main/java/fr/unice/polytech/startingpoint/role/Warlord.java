@@ -17,7 +17,7 @@ public class Warlord extends Role {
 
     @Override
     public void useSpecialPower() {
-        if(this.player.getDistrictToDestroy()!= null && this.player.getDistrictToDestroy().getCost()<this.player.getGold() && !this.player.getDistrictToDestroy().getNom().equals("Donjon")) {
+        if(this.player.getDistrictToDestroy()!= null && this.player.getDistrictToDestroy().getCost()<this.player.getGold()) {
             action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
         }
     }

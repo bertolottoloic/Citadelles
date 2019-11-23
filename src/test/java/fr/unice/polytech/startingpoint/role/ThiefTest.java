@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.role;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,30 +19,31 @@ public class ThiefTest {
     Player target;
     Board board;
     DealRoles dealRoles;
+    Bank bank;
 
     @BeforeEach
     void setUp(){
         player=new Player(1);
         target = new Player(2);
+        bank=new Bank();
         ArrayList<Player> players = new ArrayList<>();
         players.add(player);
         players.add(target);
         dealRoles = new DealRoles();
-        board = new Board();
-        board.setDealRoles(dealRoles);
-        player.setBoard(board);
-        target.setBoard(board);
+        bank.setBourses(players);
+        player.setDealRoles(dealRoles);
+        target.setDealRoles(dealRoles);
     }
 
     @Test
     void thiefTest(){
-        Role thief = board.getRole("Thief");
-        Role merchant = board.getRole("Merchant");
+        Role thief = dealRoles.getRole("Thief");
+        Role merchant = dealRoles.getRole("Merchant");
         player.setCharacter(thief);
         target.setCharacter(merchant);
-        target.setBoard(board);
+
         player.setTargetToRob(merchant);
-        target.addMoney(4);
+        bank.withdraw(4, player);
         thief.useSpecialPower();
         target.playTurn();
         assertEquals(player,thief.getPlayer());

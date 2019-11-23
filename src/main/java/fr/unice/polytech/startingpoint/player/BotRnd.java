@@ -41,7 +41,7 @@ public class BotRnd extends Player{
                     i++;
                 }
             }
-            if(checkFinishBuilding() || getBoard().numberOfCardsOfDeck()<=0){
+            if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
                 /*
                 Notez que si il reste encore des cartes dans le deck et
                 que le joueur a bien atteint  les 8 districts sans être le premier à
@@ -59,7 +59,7 @@ public class BotRnd extends Player{
     @Override
     public void discard(ArrayList<District> d){
         if(!d.isEmpty()){
-            getBoard().getDeck().putbackOne(d.remove(0));
+            this.deck.putbackOne(d.remove(0));
         }
     }
 
@@ -81,7 +81,7 @@ public class BotRnd extends Player{
     }
 
     Role pickRandomTargetRole(){
-        return getBoard().getRole(random.nextInt(8));
+        return  this.dealRoles.getRole(random.nextInt(8));
     }
     Player pickRandomTargetPlayer(){
         return getBoard().getPlayers().get(random.nextInt(4));

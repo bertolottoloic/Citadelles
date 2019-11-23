@@ -1,8 +1,12 @@
 package fr.unice.polytech.startingpoint.player;
 
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.board.Bank;
+
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -11,6 +15,7 @@ import java.util.ArrayList;
 public class Player {
 	private final int id;
 	private Role character;
+	@Deprecated
 	private int gold;
 	protected Hand hand;
 	protected City city;
@@ -40,6 +45,10 @@ public class Player {
 	/*Attribut permettant d'attribuer des probabilités de possession de personnage*/
 	protected MatchingProb matches;
 	private boolean usingFabricPower=false;
+	protected Bank bank;
+	protected Deck deck;
+	protected DealRoles dealRoles;
+	
 
 	/**
 	 * 
@@ -61,20 +70,9 @@ public class Player {
     }
 	
 	public void takeCardsAtBeginning(){
-		hand.addAll(board.withdrawMany(4));//constante à retirer
+		hand.addAll(deck.withdrawMany(4));//constante à retirer
 	}
-	/**
-	 * En tout début de partie chacun prend deux pièces avant 
-	 * même de prendre son personnage
-	 * D'où cette méthode puisque si on appelle
-	 * takeCoinsFromBank avant d'avoir les personnages on 
-	 * obtient NullPointerException
-	 */
-	/*public void takeCoinsAtBeginning(){
-		getBoard().withdraw(2);
-		System.out.println("Joueur "+id+" retire "+2+" de la banque. ");
-		gold+=2;
-	}*/
+	
 	public void pickNewDistrict(District d) {
 		hand.add(d);
 	}
@@ -83,7 +81,7 @@ public class Player {
 		if(city.alreadyContains(theDistrict)){
 			return false;
 		}
-		if(getBoard().deposit(theDistrict.getCost(),this)) {
+		if(bank.deposit(theDistrict.getCost(),this)) {
 			city.add(theDistrict);
 			hand.remove(theDistrict);
 			System.out.println("Joueur "+id+" construit \n"+theDistrict.toString());
@@ -92,13 +90,13 @@ public class Player {
 		return false;
 	}
 	
-	
+	@Deprecated
 	public void addMoney(int amount) {
 		gold+= amount;
 	}
 
 	public int getGold(){
-		return board.getPlayerMoney(this);
+		return bank.getPlayerMoney(this);
 	}
 
 	/**
@@ -124,7 +122,7 @@ public class Player {
 	 * par celle ci cela permet de savoir si l'argent voulue est disponible
 	 */
 	public void takeCoinsFromBank(int nb){
-		if(board.withdraw(nb,this)){
+		if(bank.withdraw(nb,this)){
 			System.out.println("Joueur "+id+" retire " + nb + " de la banque. ");
 		}
 	}
@@ -142,8 +140,10 @@ public class Player {
 	
 	void surrenderToThief(){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
-			board.getRole("Thief").getPlayer().addMoney(gold);//donne l'argent au player de Thief
-			gold=0;//plus d'argent apres le vol
+			Player thief=dealRoles.getRole("Thief").getPlayer();
+			if(thief!=null){
+				bank.transferFromTo(this, thief);//donne l'argent au player de Thief
+			}
 	}
 
 	/**
@@ -153,10 +153,9 @@ public class Player {
 	 */
 	public void chooseRole(){
 		if(!alreadyChosenRole){
-			setCharacter(board.getDealRoles().getLeftRoles().remove(0));
+			setCharacter(dealRoles.getLeftRoles().remove(0));
 			alreadyChosenRole=true;
 			//appelle le prochain player
-			roleInformations();
 			if(nextPlayer!=null){
 				nextPlayer.chooseRole();
 			}
@@ -164,10 +163,11 @@ public class Player {
 		}
     }
 
+	@Deprecated
     public void roleInformations(){
-		knownRole.addAll(board.getDealRoles().getLeftRoles());
-		knownRole.addAll(board.getDealRoles().getVisible());
-		unknownRole.addAll(board.getRoles());
+		knownRole.addAll(this.dealRoles.getLeftRoles());
+		knownRole.addAll(this.dealRoles.getVisible());
+		unknownRole.addAll(this.dealRoles.getRoles());
 		unknownRole.removeAll(knownRole);
 		unknownRole.remove(character);
 		if(unknownRole.size()==1) hidden = unknownRole.remove(0);
@@ -207,28 +207,13 @@ public class Player {
 				this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
-			ArrayList<District> districts=getBoard().withdrawMany(this.character.getNumberDistrictPickable());
-			if (buildFirst) {
-				if (getCity().containsWonder("Observatoire") && getBoard().numberOfCardsOfDeck() >= 1) {// TODO test
-					districts.add(getBoard().draw());
-					System.out.println("Joueur " + id + " possède et peut utiliser l'observatoire");
-					discard(districts);
-				}
-				if (!getCity().containsWonder("Bibliotheque")) {// TODO test
-					discard(districts);
-				} else {
-					System.out.println("		Joueur " + id + " possède et peut utiliser la bibliothèque");
-				}
-			} else {
-				discard(districts);
-			}
+			ArrayList<District> districts=this.deck.withdrawMany(this.character.getNumberDistrictPickable());
+			discard(districts);
 			hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
-					"Il reste "+getBoard().numberOfCardsOfDeck()+" districts dans le deck.");
+					"Il reste "+this.deck.numberOfCards()+" districts dans le deck.");
 		}
-
-		
-		
+	
 		if(buildFirst) {
 			action();
 			specialMove();
@@ -259,7 +244,7 @@ public class Player {
 				&& gold >= 3; 
 			if(resultat){
 				this.gold -= 3;
-				board.deposit(3,this);
+				this.bank.deposit(3,this);
 				this.usingFabricPower=true;
 			}
 			
@@ -293,7 +278,7 @@ public class Player {
 
 	public void discard(ArrayList<District> d){
 		if(!d.isEmpty()){
-			getBoard().getDeck().putbackOne(d.remove(0)); }
+			this.deck.putbackOne(d.remove(0)); }
 	}
 
 	protected void action() {
@@ -302,16 +287,12 @@ public class Player {
 
 	public void specialMove() {
 		System.out.println("Joueur "+id+" active son effet de rôle");
-		character.useSpecialPower();
-		if(character.toString().equals("Warlord") && districtToDestroy!=null){
-			gold-=districtToDestroy.getCost();
-			board.deposit(districtToDestroy.getCost(),this);
-		}
+		character.useSpecialPower();	
 	}
 
 	public void discardWonderEffect(ArrayList<District> d){
 		if(!d.isEmpty()){
-			getBoard().getDeck().putbackOne(d.remove(0)); }
+			this.deck.putbackOne(d.remove(0)); }
 	}
 	
 	/**
@@ -509,6 +490,30 @@ public class Player {
 	 */
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public Bank getBank() {
+		return bank;
+	}
+
+	public void setBank(Bank bank) {
+		this.bank = bank;
+	}
+
+	public void setDeck(Deck d) {
+		this.deck=d;
+	}
+
+	public DealRoles getDealRoles() {
+		return dealRoles;
+	}
+
+	public void setDealRoles(DealRoles dealRoles) {
+		this.dealRoles = dealRoles;
+	}
+
+	public Deck getDeck() {
+		return deck;
 	}
 
 }

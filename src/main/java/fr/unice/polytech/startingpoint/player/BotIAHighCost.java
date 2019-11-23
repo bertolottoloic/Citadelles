@@ -16,10 +16,10 @@ public class BotIAHighCost extends Player {
     @Override
     public void chooseRole() {
         if(!alreadyChosenRole){
-            ArrayList<Role> leftRoles=board.getDealRoles().getLeftRoles();
+            ArrayList<Role> leftRoles=this.dealRoles.getLeftRoles();
             String maxColor=hand.bestColorDistrict();
             Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
-            board.getDealRoles().getLeftRoles().remove(choosenRole);
+            this.dealRoles.getLeftRoles().remove(choosenRole);
             setCharacter(choosenRole);
             alreadyChosenRole=true;
             //appelle le prochain player
@@ -71,7 +71,7 @@ public class BotIAHighCost extends Player {
             }
         }
 
-        if(checkFinishBuilding() || getBoard().numberOfCardsOfDeck()<=0){
+        if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
                 /*
                 Notez que si il reste encore des cartes dans le deck et
                 que le joueur a bien atteint  les 8 districts sans être le premier à
@@ -104,10 +104,10 @@ public class BotIAHighCost extends Player {
             );
             while(d.size()>1){//On ne garde qu'une carte
                 if(d.get(0).getCost()>getGold()){
-                    getBoard().getDeck().putbackOne(d.remove(0));
+                    this.deck.putbackOne(d.remove(0));
                 }
                 else{
-                    getBoard().getDeck().putbackOne(d.remove(d.size()-1));
+                    this.deck.putbackOne(d.remove(d.size()-1));
                 }
             }
         }
@@ -119,7 +119,7 @@ public class BotIAHighCost extends Player {
         return getGold() < 2
                 || hand.nbBadCards(getGold())<=hand.size()/2
                 || city.getSizeOfCity() >= 6
-                || board.getDeck().numberOfCards() < 4
+                || this.deck.numberOfCards() < 4
                 || hand.size()>2;
     }
 
@@ -139,7 +139,7 @@ public class BotIAHighCost extends Player {
 
     Role pickTargetRole(){
         Role character = this.getCharacter();
-        ArrayList<Role> roles = this.getBoard().getRoles();
+        ArrayList<Role> roles = this.dealRoles.getRoles();
         Role target;
         switch(character.getPosition()){
             case 1:

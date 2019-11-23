@@ -1,22 +1,24 @@
 package fr.unice.polytech.startingpoint.role;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
 
 import fr.unice.polytech.startingpoint.player.*;
 
 public class MerchantTest {
     Player player;
-    Board board;
+    Bank bank;
     @BeforeEach
     void setUp(){
         player=new Player(1);
-        board = new Board();
-        player.setBoard(board);
+        bank=new Bank();
+        bank.setBourses(List.of(player));
     }
 
     @Test

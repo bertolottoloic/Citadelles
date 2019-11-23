@@ -13,6 +13,9 @@ public class Warlord extends Role {
 
     void action(Player target, District toDestroy){
         target.deleteDistrictFromCity(toDestroy);
+        //le joueur paie le prix du district -1
+		this.player.getBank().deposit(toDestroy.getCost()-1,this.player);
+		
         System.out.println(this+" (joueur numéro "+this.player.getId()+") détruit le district \n"+this.player.getDistrictToDestroy()+" du joueur numéro "+this.player.getTargetToDestroyDistrict().getId());
     }
 

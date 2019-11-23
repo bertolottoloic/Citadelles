@@ -1,7 +1,9 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Crown;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
 
@@ -10,15 +12,18 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class Manager implements PropertyChangeListener {
     private int i=1;
     private Crown crown = new Crown();
     private Board board = new Board();
+    private Deck deck=new Deck();
+    private Bank bank=new Bank();
     private Boolean gameOver = false;
-    DealRoles dealRoles;
+    private DealRoles dealRoles;
 
-    ArrayList<Player> winner = new ArrayList<>();
+    private ArrayList<Player> winner = new ArrayList<>();
 
     /**
      * Tout ce qui est commun à un tour complet de table excluant ce qui ce passe en
@@ -72,11 +77,13 @@ public class Manager implements PropertyChangeListener {
         ArrayList<Player> list = new ArrayList<>(Arrays.asList(players));
         board.setPlayers(list);
         dealRoles = new DealRoles();
-        board.setDealRoles(dealRoles);
-        board.distributeCoinsAtBeggining();
+        bank.setBourses(List.of(players));
+        bank.distributeCoinsAtBeggining();
         for (Player p : players) {
             p.addPropertyChangeListener(this);
             p.setBoard(board);
+            p.setDeck(deck);
+            p.setDealRoles(dealRoles);
             p.takeCardsAtBeginning();
         }
 
@@ -91,6 +98,7 @@ public class Manager implements PropertyChangeListener {
         }
 
         endGame(players);
+        printResults(players);
 
     }
 
@@ -104,7 +112,7 @@ public class Manager implements PropertyChangeListener {
         System.out.println(res);
     }
 
-    void endGame(Player... players) {
+    public void endGame(Player... players) {
 
         int maxScore = -1;
         for (Player p : players) {
@@ -118,7 +126,7 @@ public class Manager implements PropertyChangeListener {
             }
 
         }
-        printResults(players);
+        
     }
 
     @Override

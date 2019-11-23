@@ -7,11 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
@@ -21,6 +24,8 @@ class BotRndTest {
 
 	BotRnd b1, b2, b3, b4;
 	Board board;
+	Bank bank;
+	Deck deck;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -29,9 +34,13 @@ class BotRndTest {
 		b3 = new BotRnd(3);
 		b4 = new BotRnd(4);
 		board = new Board();
+		bank=new Bank();
+		deck=new Deck();
 		board.setPlayers(new ArrayList<Player>(Arrays.asList(b1, b2, b3, b4)));
-		board.setDealRoles(new DealRoles());
+		b1.setDealRoles(new DealRoles());
+		bank.setBourses(List.of(b1,b2,b3,b4));
 		b1.setBoard(board);
+		b1.setDeck(deck);
 		b1.setCharacter(new Warlord());
 	}
 
@@ -48,7 +57,7 @@ class BotRndTest {
 	
 	@Test
 	void testAction() {
-		b1.addMoney(10);
+		bank.withdraw(10, b1);
 		b1.pickNewDistrict(new District(3, 2, DistrictColor.Religion, "Église"));
 		b1.pickNewDistrict(new District(2, 2, DistrictColor.Noble, "Chateau"));
 		b1.pickNewDistrict(new District(6, 2, DistrictColor.Warlord, "Pont"));
@@ -59,7 +68,7 @@ class BotRndTest {
 		assertEquals(2, b1.city.getSizeOfCity());
 		b1.action();
 		assertEquals(2, b1.city.getSizeOfCity());
-		b1.getBoard().getDeck().getList().clear();
+		b1.getDeck().getList().clear();
 		b1.action();
 		assertTrue(b1.gameOver);
 	}

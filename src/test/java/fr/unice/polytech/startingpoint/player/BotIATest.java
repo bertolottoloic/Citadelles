@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.player;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -19,13 +21,20 @@ class BotIATest{
     BotIA bot;
     District d1 = new District(3,4,DistrictColor.Religion, "quartier");
     District d2 = new District(6,6, DistrictColor.Wonder,"rue");
-    Hand hand;
+	Hand hand;
+	Bank bank;
+	Deck deck;
 
 
     @BeforeEach
 	void setup(){
 		bot=new BotIA(1);
 		hand=new Hand();
+		bank=new Bank();
+		deck=new Deck();
+
+		bot.setDeck(deck);
+		bank.setBourses(List.of(bot));
 	}
 
     @Test
@@ -36,11 +45,11 @@ class BotIATest{
  	   when(c.getSizeOfCity()).thenReturn(7);
  	   bot.setCity(c);
  	   assertTrue(bot.coinsOrDistrict());
- 	   
- 	   bot.addMoney(10);
+		
+		
+ 	   bank.deposit(10, bot);
  	   when(c.getSizeOfCity()).thenReturn(5);
- 	   bot.setBoard(new Board());
- 	   Deck d = bot.getBoard().getDeck();
+ 	   Deck d = bot.getDeck();
  	   d.getList().clear();
  	   d.getList().add(new District(3,4,"religion", "random1"));
  	   d.getList().add(new District(3,4,"religion", "random2"));
@@ -66,7 +75,6 @@ class BotIATest{
 		dis.add(d3);
 		
 		bot.setBoard(new Board());
-		bot.addMoney(4);
 		assertEquals(3, dis.size());
 		bot.discard(dis);
 		assertEquals(1, dis.size());
@@ -155,7 +163,6 @@ class BotIATest{
 		assertTrue(bot.isUsingPowerFirst());
 
 		when(role.toString()).thenReturn("Warlord");
-		bot.addMoney(10);
 		assertTrue(bot.isUsingPowerFirst());
 
 		when(role.toString()).thenReturn("Bishop");
@@ -199,12 +206,12 @@ class BotIATest{
 		District tmpDis = hand.highCostDistrict(bot.getGold());
 		assertFalse(hand.cardsAboveGold(bot.getGold()).contains(tmpDis));
 		
-		int tmpDeckNb = bot.getBoard().numberOfCardsOfDeck();
+		int tmpDeckNb = bot.getDeck().numberOfCards();
 		int tmpGold = bot.getGold();
 		int tmpHandSize = bot.getHand().size();
 		bot.isUsingLabo();
 		
-		assertEquals(tmpDeckNb + 1, bot.getBoard().numberOfCardsOfDeck());
+		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
 	}

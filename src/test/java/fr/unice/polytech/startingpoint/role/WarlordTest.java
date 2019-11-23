@@ -1,49 +1,52 @@
 package fr.unice.polytech.startingpoint.role;
 
-import fr.unice.polytech.startingpoint.board.Board;
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.game.DealRoles;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import fr.unice.polytech.startingpoint.player.*;
-
-import java.util.ArrayList;
+import fr.unice.polytech.startingpoint.board.Bank;
+import fr.unice.polytech.startingpoint.board.Deck;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.player.Player;
 
 public class WarlordTest {
     Player player;
     Player target;
-    Board board;
     DealRoles dealRoles;
+    Deck deck;
+    Bank bank;
 
     @BeforeEach
     void setUp(){
         player=new Player(1);
         target=new Player(2);
-        board = new Board();
         dealRoles = new DealRoles();
-        board.setDealRoles(dealRoles);
+        deck=new Deck();
+        bank=new Bank();
         ArrayList<Player> players = new ArrayList<>();
+        
         players.add(player);
         players.add(target);
-        player.setBoard(board);
-        target.setBoard(board);
+        bank.setBourses(players);
+        players.forEach(p->p.setDealRoles(dealRoles));
+        players.forEach(p->p.setDeck(deck));
     }
 
     @Test
     void warlordTest(){
-        Role warlord = board.getRole("Warlord");
+        Role warlord = dealRoles.getRole("Warlord");
         player.setCharacter(warlord);
-        target.takeCardsAtBeginning();
         player.takeCoinsFromBank(10);
         target.takeCoinsFromBank(10);
-        target.addToTheCity(target.getHand().toList().get(0));
+        District d=deck.withdraw();
+        target.addToTheCity(d);
         ArrayList<District> city = target.getCity().getListDistricts();
         player.setTargetToDestroyDistrict(target);
-        player.setDistrictToDestroy(target.getCity().getListDistricts().get(0));
+        player.setDistrictToDestroy(d);
         player.specialMove();
         assertEquals(8,warlord.getPosition());
         assertEquals(player,warlord.getPlayer());

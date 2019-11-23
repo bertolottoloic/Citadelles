@@ -7,10 +7,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
@@ -30,11 +32,17 @@ class BotIAHighCostTest{
     District d1 = new District(3,4,DistrictColor.Religion, "quartier");
     District d2 = new District(6,6, DistrictColor.Wonder,"rue");
     Hand hand;
+    Bank bank;
+    Deck deck;
 
     @BeforeEach
     void setup() {
+        deck=new Deck();
+        bank=new Bank();
         hand = new Hand();
         bot = new BotIAHighCost(1);
+        bank.setBourses(List.of(bot));
+        bot.setDeck(deck);
         hand.add(d1);
         hand.add(d2);
     }
@@ -48,7 +56,7 @@ class BotIAHighCostTest{
         bot.setCity(c);
         assertTrue(bot.coinsOrDistrict());
 
-        bot.addMoney(10);
+        bank.deposit(10, bot);
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setBoard(new Board());
 
@@ -60,7 +68,7 @@ class BotIAHighCostTest{
         bot.setHand(h);
         assertFalse(bot.coinsOrDistrict());
 
-        Deck d = bot.getBoard().getDeck();
+        Deck d = bot.getDeck();
         d.getList().clear();
         assertTrue(bot.coinsOrDistrict());
 
@@ -99,7 +107,7 @@ class BotIAHighCostTest{
         dis.add(d3);
 
         bot.setBoard(new Board());
-        bot.addMoney(4);
+        bot.takeCoinsFromBank(4);
         assertEquals(3, dis.size());
         bot.discard(dis);
         assertEquals(1, dis.size());
@@ -187,7 +195,7 @@ class BotIAHighCostTest{
         assertFalse(bot.isUsingPowerFirst());
 
         when(role.toString()).thenReturn("Architect");
-        bot.addMoney(10);
+        bot.takeCoinsFromBank(10);
         assertTrue(bot.isUsingPowerFirst());
 
         when(role.toString()).thenReturn("Bishop");

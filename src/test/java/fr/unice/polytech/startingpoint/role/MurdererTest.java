@@ -27,7 +27,10 @@ public class MurdererTest {
         players.add(target);
         dealRoles = new DealRoles();
         board = new Board();
-        board.setDealRoles(dealRoles);
+
+        player.setDealRoles(dealRoles);
+        target.setDealRoles(dealRoles);
+
         player.setBoard(board);
         target.setBoard(board);
     }

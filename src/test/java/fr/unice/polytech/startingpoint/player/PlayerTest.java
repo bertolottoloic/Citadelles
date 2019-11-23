@@ -6,10 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
@@ -23,17 +27,25 @@ class PlayerTest {
 
 	Player player;
 	Board board;
+	Bank bank;
+	Deck d;
 	DealRoles dl;
+	Player p2;
 	
     @BeforeEach
     void setUp(){
         player = new Player(1);
-        
-        board = new Board();
+        p2 = new Player(3);
+		board = new Board();
+		bank=new Bank();
+		d=new Deck();
         dl = new DealRoles();
-		board.setDealRoles(dl);
+		//board.setDealRoles(dl);
+		bank.setBourses(List.of(player,p2));
+		player.setDeck(d);
+		player.setDealRoles(dl);
         dl.readyToDistribute();
-        player.setBoard(board);
+        //player.setBoard(board);
     }
     
     @Test
@@ -53,28 +65,28 @@ class PlayerTest {
     @Test
     void testAddToTheCity(){
         assertEquals(false, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
-        player.addMoney(3);
+        bank.withdraw(3, player);
         assertEquals(true, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
         assertEquals(false, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
     }
     
     @Test
     public void testAddMoney() {
-    	assertEquals(0, player.getGold());
-    	player.addMoney(5);
+		assertEquals(0, player.getGold());
+		bank.withdraw(5, player);
     	assertEquals(5, player.getGold());
 	}
     
     @Test
     void testDeleteDistrictFromCity(){
-    	assertEquals(0, player.getCity().getSizeOfCity());
-    	player.addMoney(3);
+		assertEquals(0, player.getCity().getSizeOfCity());
+		bank.withdraw(3, player);
     	player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise"));
     	assertEquals(1, player.getCity().getSizeOfCity());
     	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
     	assertEquals(0, player.getCity().getSizeOfCity());
     	
-    	player.addMoney(3);
+    	bank.withdraw(3, player);
     	player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise"));
     	player.setCharacter(new Bishop());
     	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
@@ -104,10 +116,10 @@ class PlayerTest {
     
     @Test
     void testSurrenderToThief(){
-    	player.addMoney(6);
+    	bank.withdraw(6, player);
     	
-    	Player p2 = new Player(3);
-    	Role r = player.getBoard().getRole("Thief");
+    	
+    	Role r =dl.getRole("Thief");
     	r.setPlayer(p2);
     	
     	assertEquals(6, player.getGold());
@@ -120,7 +132,7 @@ class PlayerTest {
     @Test
     void testChooseRole(){   	
     	assertEquals(null, player.getCharacter());
-    	player.getBoard().getDealRoles().readyToDistribute();
+    	dl.readyToDistribute();
     	player.chooseRole();
     	assertNotNull(player.getCharacter());
     }
@@ -144,7 +156,7 @@ class PlayerTest {
     @Test
     void testCollectMoneyFromDistricts() {
     	player.setCharacter(new King());
-    	player.addMoney(5);
+    	bank.withdraw(5, player);
     	player.addToTheCity(new District(3,3,"noblesse","Chateau"));
     	
     	assertEquals(2, player.getGold());
@@ -156,7 +168,7 @@ class PlayerTest {
     @Test
     void testPoints() {
     	assertEquals(0, player.points());
-    	player.addMoney(20);//assez d'argent
+    	bank.withdraw(20, player);//assez d'argent
     	player.addToTheCity(new District(3,3,"noblesse","Chateau"));
 		assertEquals(3, player.points());
 		

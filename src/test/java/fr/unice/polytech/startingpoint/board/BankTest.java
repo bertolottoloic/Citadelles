@@ -2,20 +2,25 @@ package fr.unice.polytech.startingpoint.board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.player.Player;
 
 public class BankTest {
-    Bank b=new Bank();
+    Bank b;
     Player p;
+    Player p2;
 
     @BeforeEach
     public void setUp() {
 
         b=new Bank();
         p=new Player(1);
+        p2=new Player(2);
+        b.setBourses(List.of(p,p2));
        
     }
 
@@ -26,6 +31,7 @@ public class BankTest {
     
     @Test
    public void canWithdrawTest(){
+       
         assertEquals(false,b.canWithdraw(31));
         assertEquals(true,b.canWithdraw(0));
         assertEquals(false,b.canWithdraw(-1));
@@ -50,6 +56,16 @@ public class BankTest {
         assertEquals(false, b.deposit(-1,p));
 
         assertEquals(false, b.deposit(1,p));
+    }
+
+    @Test
+    public void transferFromToTest(){
+        b.withdraw(7, p);
+        assertEquals(0, p2.getGold());
+        assertEquals(7, p.getGold());
+        b.transferFromTo(p, p2);
+        assertEquals(7, p2.getGold());
+        assertEquals(0, p.getGold());
     }
 
 

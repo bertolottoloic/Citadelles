@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.role;
 
+import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
@@ -18,31 +19,34 @@ public class RoleTest {
     Player player;
     Player target;
     Board board;
+    Bank bank;
     DealRoles dealRoles;
 
     @BeforeEach
     void setUp(){
         player=new Player(1);
         target = new Player(2);
+        bank=new Bank();
         ArrayList<Player> players = new ArrayList<>();
         players.add(player);
         players.add(target);
         dealRoles = new DealRoles();
         board = new Board();
-        board.setDealRoles(dealRoles);
+        bank.setBourses(players);
+        players.forEach(p->p.setDealRoles(dealRoles));
     }
 
     
 
     @Test
     void murdererTest(){
-        Role murderer = board.getRole("Murderer");
-        Role merchant = board.getRole("Merchant");
+        Role murderer = dealRoles.getRole("Murderer");
+        Role merchant = dealRoles.getRole("Merchant");
         player.setCharacter(murderer);
         target.setCharacter(merchant);
         player.setTargetToKill(merchant);
         player.getCharacter().useSpecialPower();
-        assertEquals(1,board.getRole("Murderer").getPosition());
+        assertEquals(1,dealRoles.getRole("Murderer").getPosition());
         assertEquals(player,murderer.getPlayer());
         assertEquals(1,murderer.getNumberDistrictBuildable());
         assertEquals(2,murderer.getNumberGold());
@@ -51,13 +55,14 @@ public class RoleTest {
 
     @Test
     void thiefTest(){
-        Role thief = board.getRole("Thief");
-        Role merchant = board.getRole("Merchant");
+        Role thief = dealRoles.getRole("Thief");
+        Role merchant = dealRoles.getRole("Merchant");
         player.setCharacter(thief);
         target.setCharacter(merchant);
         target.setBoard(board);
         player.setTargetToRob(merchant);
-        target.addMoney(4);
+        
+        bank.withdraw(4, player);
         thief.useSpecialPower();
         target.playTurn();
         assertEquals(player,thief.getPlayer());
@@ -120,15 +125,14 @@ public class RoleTest {
     @Test
     void getNumberDistrictBibliothequeTest(){
         Role r=new Warlord();
-        Player p=new BotIA(5);
-        p.addMoney(8);
         
-        r.setPlayer(p);
+        player.takeCoinsFromBank(8);
+        player.setCharacter(r);
 
         assertEquals(2, r.getNumberDistrictPickable());
         assertEquals(1, r.getNumberDistrictKeepable());
         //Pour ne pas créer un board on récupère la city
-        p.getCity().add(new District(2, 2, DistrictColor.Wonder, "Bibliotheque"));
+        player.getCity().add(new District(2, 2, DistrictColor.Wonder, "Bibliotheque"));
 
         assertEquals(2, r.getNumberDistrictPickable());
         assertEquals(2, r.getNumberDistrictKeepable());
@@ -137,15 +141,14 @@ public class RoleTest {
     @Test
     void getNumberDistrictObservatoireTest(){
         Role r=new Warlord();
-        Player p=new BotIA(5);
-        p.addMoney(8);
+        player.takeCoinsFromBank(8);
         
-        r.setPlayer(p);
+        player.setCharacter(r);
 
         assertEquals(2, r.getNumberDistrictPickable());
         assertEquals(1, r.getNumberDistrictKeepable());
         //Pour ne pas créer un board on récupère la référence de city
-        p.getCity().add(new District(2, 2, DistrictColor.Wonder, "Observatoire"));
+        player.getCity().add(new District(2, 2, DistrictColor.Wonder, "Observatoire"));
 
         assertEquals(3, r.getNumberDistrictPickable());
         assertEquals(1, r.getNumberDistrictKeepable());

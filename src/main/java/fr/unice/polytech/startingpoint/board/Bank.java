@@ -1,25 +1,28 @@
 package fr.unice.polytech.startingpoint.board;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import fr.unice.polytech.startingpoint.player.*;
+import java.util.List;
+
+import fr.unice.polytech.startingpoint.player.Player;
 
 
-class Bank{
+public class Bank{
     private final int  NBCOINS=30;
     private int currNbCoins=NBCOINS;
-    private HashMap<Player,Integer> bourses;
+    private HashMap<Player,Integer> bourses=new HashMap<>();
 
-    Bank(){
+    public Bank(){
         
     }
 
     /**
-     * @param bourses the bourses to set
+     * @param players 
      */
-    void setBourses(ArrayList<Player> players) {
+    public void setBourses(List<Player> players) {
         bourses = new HashMap<>();
         for(Player player : players){
             bourses.put(player,0);
+            player.setBank(this);
         }
     }
 
@@ -50,12 +53,16 @@ class Bank{
         }
     }
 
+    /**
+     * Fonction pour enlever l'argent du compte du joueur
+     * @param nb
+     * @param player
+     * @return
+     */
     public boolean deposit(int nb,Player player){
-        if((currNbCoins+nb) <=NBCOINS && nb>=0 && bourses.get(player)>nb){
+        if((currNbCoins+nb) <=NBCOINS && nb>=0 && bourses.get(player)>=nb){
             currNbCoins+=nb;
-            int retireMoney = bourses.get(player);
-            retireMoney -= nb;
-            bourses.put(player,retireMoney);
+            bourses.computeIfPresent(player, (k,v)->v-nb);
             return true;
         }
         else{
@@ -67,10 +74,22 @@ class Bank{
 	public int getPlayerMoney(Player player) {
 		return bourses.get(player);
     }
-    
+    /**
+	 * En tout début de partie chacun prend deux pièces avant 
+	 * même de prendre son personnage
+	 * D'où cette méthode
+	 */
     public void distributeCoinsAtBeggining(){
         for(Player p : bourses.keySet()){
             bourses.put(p,2);
         }
     }
+
+    public void transferFromTo(Player from,Player to){
+        bourses.computeIfPresent(to, (k,v)->v+bourses.get(from));
+        bourses.put(from, 0);
+    }
+
+
+
 }

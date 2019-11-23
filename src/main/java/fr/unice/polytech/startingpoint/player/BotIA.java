@@ -14,15 +14,15 @@ public class BotIA extends Player{
 
     @Override
     public void chooseRole() {
-        for(Role r : board.getDealRoles().getLeftRoles()){
+        for(Role r : this.dealRoles.getLeftRoles()){
             if(r.toString().equals("Architect")){
                 chooseRole(r);
                 return;
             }
         }
         Optional<Role> tmpRole=this.roleToOptimizeCoins(
-            board.getDealRoles().getLeftRoles(), 
-            board.getDealRoles().getHidden()    
+            this.dealRoles.getLeftRoles(), 
+            this.dealRoles.getHidden()    
         );
         if(tmpRole.isPresent()){
                 chooseRole(tmpRole.get());
@@ -49,7 +49,7 @@ public class BotIA extends Player{
 
     public void attributeProbsToPreviousPlayer(){
         ArrayList<Player> pl=board.getPlayers();
-        ArrayList<Role> lefts=board.getDealRoles().getLeftRoles();
+        ArrayList<Role> lefts=this.dealRoles.getLeftRoles();
 
         for (Player player : pl) {
             if(player.alreadyChosenRole){
@@ -67,10 +67,10 @@ public class BotIA extends Player{
      * @param chosen
      */
     public void chooseRole(Role chosen){
-        if(!alreadyChosenRole && board.getDealRoles().getLeftRoles().remove(chosen) ){
+        if(!alreadyChosenRole && this.dealRoles.getLeftRoles().remove(chosen) ){
                 this.setCharacter(chosen);
                 alreadyChosenRole=true;
-                super.roleInformations();
+                //super.roleInformations();
                 if(nextPlayer!=null){
                     nextPlayer.chooseRole();
                 }   
@@ -97,7 +97,7 @@ public class BotIA extends Player{
                 }
             }
 
-            if(checkFinishBuilding() || getBoard().numberOfCardsOfDeck()<=0){
+            if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
                 /*
                 Notez que si il reste encore des cartes dans le deck et
                 que le joueur a bien atteint  les 8 districts sans être le premier à
@@ -124,7 +124,7 @@ public class BotIA extends Player{
                 Integer.compare(a.getCost(),b.getCost())
             );
             while(d.size()>1){//On ne garde qu'une carte
-                getBoard().getDeck().putbackOne(d.remove(d.size()-1));
+                this.deck.putbackOne(d.remove(d.size()-1));
             }
         }
     }
@@ -134,7 +134,7 @@ public class BotIA extends Player{
         return getGold() < 2
                 || hand.nbBadCards(getGold())<=hand.size()/2
                 || city.getSizeOfCity() >= 6
-                || board.getDeck().numberOfCards() < 4
+                || this.deck.numberOfCards() < 4
                 || hand.size()>2;
     }
     
@@ -186,7 +186,7 @@ public class BotIA extends Player{
        			District dis = hand.highCostDistrict(getGold());
        			if(!list.contains(dis) && dis != null) {
        				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
-       				board.getDeck().putbackOne(dis);
+       				this.deck.putbackOne(dis);
        				hand.remove(dis);
        				takeCoinsFromBank(1);
        			}
@@ -263,14 +263,14 @@ public class BotIA extends Player{
 
     Role targetToChooseForMurderer(){
         Set<String> targets = matches.possibleRolesFor(board.getPlayerWithTheBiggestCity().getId());
-        return board.getRole(targets.stream().findFirst().get());
+        return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
 
 
     Role targetToChooseForThief(){
         Set<String> targets = matches.possibleRolesFor(richestPlayer().getId());
-        return board.getRole(targets.stream().findFirst().get());
+        return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
     Player richestPlayer(){

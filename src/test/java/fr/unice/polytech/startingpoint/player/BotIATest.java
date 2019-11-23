@@ -47,7 +47,7 @@ class BotIATest{
  	   assertTrue(bot.coinsOrDistrict());
 		
 		
- 	   bank.deposit(10, bot);
+ 	   bank.withdraw(10, bot);
  	   when(c.getSizeOfCity()).thenReturn(5);
  	   Deck d = bot.getDeck();
  	   d.getList().clear();
@@ -152,21 +152,23 @@ class BotIATest{
 	}
 
 	@Test
-	void isBuildingFirstTest(){
+	void isBuildingTest(){
 		Role role = mock(Role.class);
 		bot.setCharacter(role);
+		when(role.toString()).thenReturn("Wizard");
+		assertTrue(bot.isBuildingFirst());
 		hand.add(d1);
 		hand.add(d2);
 		bot.setHand(hand);
-
-		when(role.toString()).thenReturn("Wizard");
-		assertTrue(bot.isUsingPowerFirst());
+		System.out.println(bot.getGold()+"	"+
+		bot.getHand().nbBadCards(bot.getGold()));
+		assertFalse(bot.isBuildingFirst());
 
 		when(role.toString()).thenReturn("Warlord");
-		assertTrue(bot.isUsingPowerFirst());
+		assertTrue(bot.isBuildingFirst());
 
 		when(role.toString()).thenReturn("Bishop");
-		assertFalse(bot.isUsingPowerFirst());
+		assertTrue(bot.isBuildingFirst());
 
 	}
 	

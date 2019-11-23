@@ -1,10 +1,10 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class BotIAHighCost extends Player {
     private Random random=new Random();
@@ -124,16 +124,22 @@ public class BotIAHighCost extends Player {
     }
 
     @Override
-    protected boolean isUsingPowerFirst() {
+    protected boolean isBuildingFirst() {
         if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-            return true;}
+            return false;
+        }
         else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=getHand().nbBadCards(getGold());
-            if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-            else{return true;}
+            if(countBadCards>getHand().size()/2){
+                return false;
+            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+            else{
+                return true;
+            }
         }
-        else
-        {return false;}
+        else {
+            return true;
+        }
     }
 
 

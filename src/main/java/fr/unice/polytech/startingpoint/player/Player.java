@@ -200,7 +200,7 @@ public class Player {
 		this.collectMoneyFromDistricts();
 		isUsingLabo();
 		
-		boolean buildFirst = isUsingPowerFirst();
+		boolean buildFirst = isBuildingFirst();
 		if(coinsOrDistrict()){//on prend au hasard
 			//après c'est l'IA qui doit prendre la décision
 			
@@ -225,7 +225,7 @@ public class Player {
 		
 	}
 
-	protected boolean isUsingPowerFirst() {
+	protected boolean isBuildingFirst() {
 		return true;
 	}
 

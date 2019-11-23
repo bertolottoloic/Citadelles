@@ -165,16 +165,22 @@ public class BotIA extends Player{
 
 
     @Override
-    protected boolean isUsingPowerFirst() {
+    protected boolean isBuildingFirst() {
         if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-            return true;}
+            return false;
+        }
         else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=getHand().nbBadCards(getGold());
-            if(countBadCards>getHand().size()/2){return false;} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-            else{return true;}
+            if(countBadCards>getHand().size()/2){
+                return false;
+            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+            else{
+                return true;
+            }
         }
-        else
-        {return false;}
+        else {
+            return true;
+        }
     }
     
     @Override

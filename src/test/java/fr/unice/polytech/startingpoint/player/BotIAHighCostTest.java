@@ -1,28 +1,16 @@
 package fr.unice.polytech.startingpoint.player;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import fr.unice.polytech.startingpoint.board.*;
+import fr.unice.polytech.startingpoint.role.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import fr.unice.polytech.startingpoint.board.Bank;
-import fr.unice.polytech.startingpoint.board.Board;
-import fr.unice.polytech.startingpoint.board.Deck;
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.board.DistrictColor;
-import fr.unice.polytech.startingpoint.role.Architect;
-import fr.unice.polytech.startingpoint.role.Bishop;
-import fr.unice.polytech.startingpoint.role.King;
-import fr.unice.polytech.startingpoint.role.Merchant;
-import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 class BotIAHighCostTest{
@@ -56,15 +44,15 @@ class BotIAHighCostTest{
         bot.setCity(c);
         assertTrue(bot.coinsOrDistrict());
 
-        bank.deposit(10, bot);
+        bank.withdraw(10,bot);
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setBoard(new Board());
 
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setCity(c);
         Hand h=mock(Hand.class);
-        when(h.nbBadCards(10)).thenReturn(1);
-        when(h.size()).thenReturn(1);
+        when(h.nbBadCards(bot.getGold())).thenReturn(2);
+        when(h.size()).thenReturn(2);
         bot.setHand(h);
         assertFalse(bot.coinsOrDistrict());
 
@@ -92,7 +80,7 @@ class BotIAHighCostTest{
         roles.add(new King());
         assertEquals("King",bot.bestRoleToChoose(roles,"noble").toString());
 
-        assertEquals("Warlord",bot.bestRoleToChoose(roles,"militaire").toString());
+        assertEquals("Warlord",bot.bestRoleToChoose(roles,"soldatesque").toString());
     }
 
 
@@ -124,7 +112,7 @@ class BotIAHighCostTest{
         assertEquals(3, dis.size());
         bot.discard(dis);
         assertEquals(1, dis.size());
-        assertTrue(dis.contains(d3));
+        assertTrue(dis.contains(d1));
 
         dis.clear();
         d1 = new District(3, 3, "religion", "quartier1");
@@ -188,18 +176,18 @@ class BotIAHighCostTest{
         Hand handTest = new Hand();
         bot.setHand(handTest);
         when(role.toString()).thenReturn("Wizard");
-        assertTrue(bot.isUsingPowerFirst());
+        assertTrue(bot.isBuildingFirst());
 
         bot.setHand(hand);
         when(role.toString()).thenReturn("Wizard");
-        assertFalse(bot.isUsingPowerFirst());
+        assertFalse(bot.isBuildingFirst());
 
         when(role.toString()).thenReturn("Architect");
         bot.takeCoinsFromBank(10);
-        assertTrue(bot.isUsingPowerFirst());
+        assertFalse(bot.isBuildingFirst());
 
         when(role.toString()).thenReturn("Bishop");
-        assertFalse(bot.isUsingPowerFirst());
+        assertTrue(bot.isBuildingFirst());
 
     }
 

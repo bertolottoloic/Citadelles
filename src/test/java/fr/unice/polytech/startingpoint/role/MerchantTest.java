@@ -1,15 +1,14 @@
 package fr.unice.polytech.startingpoint.role;
 
-import fr.unice.polytech.startingpoint.board.Bank;
-import fr.unice.polytech.startingpoint.board.Board;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import fr.unice.polytech.startingpoint.player.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import fr.unice.polytech.startingpoint.board.Bank;
+import fr.unice.polytech.startingpoint.player.Player;
 
 public class MerchantTest {
     Player player;

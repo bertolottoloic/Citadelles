@@ -186,14 +186,14 @@
         "color":"merveille",
         "value":5,
         "cost":5,
-        "nb":2,
+        "nb":1,
         "nom":"Laboratoire"
     },
     {
         "color":"merveille",
         "value":5,
         "cost":5,
-        "nb":2,
+        "nb":1,
         "nom":"Cimetiere"
     }
 ]

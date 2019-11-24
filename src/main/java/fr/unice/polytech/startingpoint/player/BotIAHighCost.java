@@ -1,13 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
+import java.util.ArrayList;
+
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 public class BotIAHighCost extends Player {
-    private Random random=new Random();
 
     public BotIAHighCost(int id){
         super(id);
@@ -30,6 +28,7 @@ public class BotIAHighCost extends Player {
         }
     }
 
+    //TODO ???
     Role bestRoleToChoose(ArrayList<Role> roles, String color){
         int position;
         switch (color){
@@ -56,8 +55,8 @@ public class BotIAHighCost extends Player {
     public void specialMove() {
         targetToKill=pickTargetRole();
         targetToRob=pickTargetRole();
-        targetToExchangeHandWith=pickTargetPlayer();
-        targetToDestroyDistrict = pickTargetPlayer();
+        targetToExchangeHandWith=this.board.playerWithTheBiggestHand(this);
+        targetToDestroyDistrict = this.board.playerWithTheBiggestCity(this);
         districtToDestroy = pickRandomDistrict();
         super.specialMove();
     }
@@ -183,16 +182,16 @@ public class BotIAHighCost extends Player {
 		}
 	}
 
+    //
     Role pickTargetRole(){
         Role character = this.getCharacter();
-        ArrayList<Role> roles = this.dealRoles.getRoles();
         Role target;
         switch(character.getPosition()){
             case 1:
-                target = roles.get(1);
+                target = this.dealRoles.getRole("Thief");
                 break;
             case 2:
-                target = roles.get(5);
+                target = this.dealRoles.getRole("Merchant");
                 break;
             default :
                 target = null;
@@ -201,25 +200,10 @@ public class BotIAHighCost extends Player {
         return target;
     }
 
-    Player pickTargetPlayer(){
-        Role character = this.getCharacter();
-        Player target;
-        switch(character.getPosition()){
-            case 3:
-                target = this.getBoard().getPlayerWithTheBiggestHand();
-                break;
-            case 8:
-                target = this.getBoard().getPlayerWithTheBiggestCity();
-                break;
-            default :
-                target = null;
-                break;
-        }
-        return target;
-    }
 
+    //TODO utiliser une stratégie concrète
     District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
+        ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
         if(!hand.isEmpty()) {
             District d = hand.get(0);
             for (District d1 : hand) {

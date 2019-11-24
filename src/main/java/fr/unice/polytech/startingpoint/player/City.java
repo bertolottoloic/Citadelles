@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
@@ -109,6 +110,11 @@ public class City {
 		return districts;
 	}
 
+    public Optional<District> cheaperDistrict(){
+		return districts.stream().min(
+                (a,b)->Integer.compare(a.getCost(), b.getCost())
+            );
+	}
     
 
 }

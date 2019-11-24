@@ -1,8 +1,9 @@
 package fr.unice.polytech.startingpoint.board;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Random;
 
 import fr.unice.polytech.startingpoint.player.Player;
 
@@ -25,31 +26,30 @@ public class Board{
         return players;
     } 
 
-    //TODO deplace to Bot ??
-    public Player getPlayerWithTheBiggestHand(){
-        Player player = this.getPlayers().get(0);
-        for(Player players : this.getPlayers()) {
-            if(players.getHand().size()>player.getHand().size()){
-                player = players;
-            }
-        }
-        return player;
+    public Player playerWithTheBiggestHand(Player except){
+        return this.players.stream().filter(p->p!=except).max(
+            (p1,p2)->Integer.compare(p1.sizeOfHand(),p1.sizeOfHand())
+        ).get();
+        
     }
 
-    //TODO deplace and rewrite ??
-    public Player getPlayerWithTheBiggestCity(){
-        Player player = this.getPlayers().get(0);
-        if(player.getCharacter().toString().equals("Bishop")) player = player.getNextPlayer();
-        for(Player players : this.getPlayers()) {
-            if(!(players.getCharacter().toString().equals("Bishop"))){
-                if(players.getCity().getSizeOfCity()>player.getCity().getSizeOfCity()){
-                    player = players;
-                } else if(players.getCity().getSizeOfCity()==player.getCity().getSizeOfCity() && players.getCity().getTotalValue()>player.getCity().getTotalValue()){
-                    player = players;
-                }
-            }
-        }
-        return player;
+    public Player playerWithTheBiggestCity(Player except){
+        Comparator<Player> critere1=(p1,p2)->Integer.compare(p1.sizeOfCity(),p2.sizeOfCity());
+        Comparator<Player> critere2=(p1,p2)->Integer.compare(p1.totalValueOfCity(),p2.totalValueOfCity());
+        return this.players.stream().filter(p->p!=except).max(
+            critere1.thenComparing(critere2)
+        ).get();
+    }
+  
+    public Player richestPlayer(Player except){
+        return this.players.stream().filter(p->p!=except).max(
+            (p1,p2)->Integer.compare(p1.getGold(),p1.getGold())
+        ).get();
+    }
+
+    public Player randomPlayer(){
+        Random random=new Random();
+        return players.get(random.nextInt(4));
     }
 
 }

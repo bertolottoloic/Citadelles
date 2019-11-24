@@ -1,9 +1,17 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.role.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
+
+import fr.unice.polytech.startingpoint.role.Architect;
+import fr.unice.polytech.startingpoint.role.Bishop;
+import fr.unice.polytech.startingpoint.role.King;
+import fr.unice.polytech.startingpoint.role.Merchant;
+import fr.unice.polytech.startingpoint.role.Murderer;
+import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Thief;
+import fr.unice.polytech.startingpoint.role.Warlord;
+import fr.unice.polytech.startingpoint.role.Wizard;
 
 public class DealRoles{
     private ArrayList<Role> leftRoles = new ArrayList<>();
@@ -45,8 +53,14 @@ public class DealRoles{
         return this.roles;
     }
 
-    public Role getRole(int index){
-        return this.roles.get(index);
+    /**
+     * C'est la position de Role qui est pris en paramètre
+     * maintenant
+     * @param position
+     * @return
+     */
+    public Role getRole(int position){
+        return roles.stream().filter(r->r.getPosition()==position).findFirst().get();
     }
 
     public Role getRole(String roleName){

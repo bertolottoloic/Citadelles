@@ -347,7 +347,6 @@ public class Player {
 	}
 
 
-	
 	/**
 	 * Cette méthode permet de compter les points en fin de partie
 	 * @return le nombre de points
@@ -519,6 +518,17 @@ public class Player {
 
 	public Deck getDeck() {
 		return deck;
+	}
+
+	public int sizeOfHand(){
+		return hand.size();
+	}
+
+	public int sizeOfCity(){
+		return city.getSizeOfCity();
+	}
+	public int totalValueOfCity(){
+		return city.getTotalValue();
 	}
 
 }

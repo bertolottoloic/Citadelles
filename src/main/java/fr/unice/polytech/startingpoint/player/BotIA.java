@@ -1,11 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Role;
-
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
+
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotIA extends Player{
     public BotIA(int id) {
@@ -81,10 +81,12 @@ public class BotIA extends Player{
     public void specialMove() {
         targetToKill=targetToChooseForMurderer();
         targetToRob=targetToChooseForThief();
-        targetToExchangeHandWith=pickTargetPlayer();
-        targetToDestroyDistrict = pickTargetPlayer();
-        if(targetToDestroyDistrict!=null) districtToDestroy = pickDistrict(targetToDestroyDistrict);
-        else districtToDestroy = null;
+        targetToExchangeHandWith=this.pickTargetToExchangeHands();
+        targetToDestroyDistrict = this.pickTargetToDestroy();
+        if(targetToDestroyDistrict!=null) 
+            districtToDestroy = pickDistrict(targetToDestroyDistrict);
+        else 
+            districtToDestroy = null;
         super.specialMove();
     }
 
@@ -271,53 +273,38 @@ public class BotIA extends Player{
 
 	}
 
-    Player pickTargetPlayer(){
-        Role character = this.getCharacter();
-        Player target;
-        switch(character.getPosition()){
-            case 3:
-                target = this.getBoard().getPlayerWithTheBiggestHand();
-                break;
-            case 8:
-                target = this.getBoard().getPlayerWithTheBiggestCity();
-                break;
-            default :
-                target = null;
-                break;
-        }
-        return target;
+    private Player pickTargetToExchangeHands(){
+        return this.getBoard().playerWithTheBiggestHand(this);
+        
+    }   
+    private Player pickTargetToDestroy(){
+        return this.board.playerWithTheBiggestCity(this);
     }
+
+    
 
     //TODO
     District pickDistrict(Player target) {
-        ArrayList<District> city = new ArrayList<District>(target.getCity().getListDistricts());
-        if(!city.isEmpty()) {
-           return city.stream().min(
-                (a,b)->Integer.compare(a.getCost(), b.getCost())
-            ).get();
+        Optional<District> tmp=target.city.cheaperDistrict();
+        if(tmp.isPresent()){
+            return tmp.get();
         }
-        return null;
+        else{
+            return null;
+        }
+        
     }
 
     Role targetToChooseForMurderer(){
-        Set<String> targets = matches.possibleRolesFor(board.getPlayerWithTheBiggestCity().getId());
+        Set<String> targets = matches.possibleRolesFor(this.board.playerWithTheBiggestCity(this).getId());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
 
 
     Role targetToChooseForThief(){
-        Set<String> targets = matches.possibleRolesFor(richestPlayer().getId());
+        Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
-    Player richestPlayer(){
-        Player target = this.nextPlayer;
-        for(Player p:board.getPlayers()){
-            if(p.getGold()>target.getGold() && p!=this){
-                target = p;
-            }
-        }
-        return target;
-    }
 }

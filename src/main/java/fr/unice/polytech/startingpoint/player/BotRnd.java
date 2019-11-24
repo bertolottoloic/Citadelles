@@ -81,13 +81,13 @@ public class BotRnd extends Player{
     }
 
     Role pickRandomTargetRole(){
-        return  this.dealRoles.getRole(random.nextInt(8));
+        return  this.dealRoles.getRole(random.nextInt(8)+1);
     }
     Player pickRandomTargetPlayer(){
-        return getBoard().getPlayers().get(random.nextInt(4));
+        return board.randomPlayer();
     }
     District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().getPlayers().get(random.nextInt(4)).getCity().getListDistricts());
+        ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
         if(!hand.isEmpty()) {
             District d = hand.get(0);
             for (District d1 : hand) {

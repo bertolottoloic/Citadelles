@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
@@ -219,8 +220,23 @@ class PlayerTest {
 		assertEquals(false,p1.checkFinishBuilding());
 	}
 
-	
+	@Test
+	void isUsingFabricTest() {
+		assertFalse(player.isUsingFabric());
 
+		player.setBoard(new Board());
+		player.takeCoinsFromBank(5);
+		assertFalse(player.isUsingFabric());
+				
+		player.hand.add(new District(6,6, DistrictColor.Wonder,"rue"));
+		player.setHand(player.hand);
+		assertFalse(player.isUsingFabric());
+		
+		City c = mock(City.class);
+		when(c.getSizeOfCity()).thenReturn(8);
+		player.setCity(c);
+		assertFalse(player.isUsingFabric());
+	}
 	
 
 

@@ -5,7 +5,9 @@ import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
+import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 class BotIATest{
 
-    BotIA bot;
+    BotIA bot, anotherBot;
     District d1 = new District(3,4,DistrictColor.Religion, "quartier");
     District d2 = new District(6,6, DistrictColor.Wonder,"rue");
 	Hand hand;
@@ -173,24 +175,6 @@ class BotIATest{
 	}
 	
 	@Test
-	void isUsingFabricTest() {
-		assertFalse(bot.isUsingFabric());
-
-		bot.setBoard(new Board());
-		bot.takeCoinsFromBank(5);
-		assertFalse(bot.isUsingFabric());
-				
-		hand.add(d2);
-		bot.setHand(hand);
-		assertFalse(bot.isUsingFabric());
-		
-		City c = mock(City.class);
-		when(c.getSizeOfCity()).thenReturn(8);
-		bot.setCity(c);
-		assertFalse(bot.isUsingFabric());
-	}
-	
-	@Test
 	void isUsingLaboTest() {
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
@@ -216,5 +200,54 @@ class BotIATest{
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
+	}
+	
+	@BeforeEach
+	void setMultiPlayers() {
+		anotherBot = new BotIA(2);
+		bot.city.add(d1);
+		
+		Board b = new Board();
+		anotherBot.setBoard(b);
+		b.setPlayers(bot, anotherBot);
+	}
+	
+	@Test
+	void findDestroyedDistrictTest(){
+		bot.deleteDistrictFromCity(d1);
+		assertEquals(d1, anotherBot.findDestroyedDistrict());
+	}
+	
+	@Test
+	void isUsingGraveyardTest(){
+		bot.deleteDistrictFromCity(d1);
+		
+		City c = mock(City.class);
+		when(c.containsWonder("Cimetiere")).thenReturn(true);
+		anotherBot.setCity(c);
+		anotherBot.setBank(new Bank());
+		anotherBot.getBank().setBourses(List.of(bot,anotherBot));
+		anotherBot.takeCoinsFromBank(5);
+		anotherBot.setCharacter(new Merchant());
+		
+		int tmpGold = anotherBot.getGold();
+		int tmpHandSize = anotherBot.getHand().size();
+		anotherBot.isUsingGraveyard();
+		
+		assertEquals(tmpGold - 1, anotherBot.getGold());
+		assertEquals(tmpHandSize + 1, anotherBot.getHand().size());
+		assertTrue(anotherBot.hand.toList().contains(d1));
+		
+		bot.city.add(d2);
+		bot.deleteDistrictFromCity(d2);
+		anotherBot.takeCoinsFromBank(3);
+		
+		tmpGold = anotherBot.getGold();
+		tmpHandSize = anotherBot.getHand().size();
+		anotherBot.isUsingGraveyard();
+		
+		assertEquals(tmpGold - 1, anotherBot.getGold());
+		assertEquals(tmpHandSize +1, anotherBot.getHand().size());
+		assertTrue(anotherBot.hand.toList().contains(d2));
 	}
 }

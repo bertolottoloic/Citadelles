@@ -29,6 +29,7 @@ public class Player {
 	protected Role targetToRob;
 	protected Player targetToDestroyDistrict;
 	protected District districtToDestroy;
+	protected District destroyedDistrict;
 	private ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
@@ -106,11 +107,13 @@ public class Player {
 	public void deleteDistrictFromCity(District toDelete){
 		if(character!=null){
 			if(!character.toString().equals("Bishop") && !toDelete.getName().equals("Donjon")){
+				destroyedDistrict = toDelete;
 				city.removeDistrict(toDelete);
 			}
 		}
 		else{
 			if(!toDelete.getName().equals("Donjon")){
+				destroyedDistrict = toDelete;
 				city.removeDistrict(toDelete);
 			}
 		}
@@ -199,6 +202,7 @@ public class Player {
 
 		this.collectMoneyFromDistricts();
 		isUsingLabo();
+		isUsingGraveyard();
 		
 		boolean buildFirst = isBuildingFirst();
 		if(coinsOrDistrict()){//on prend au hasard
@@ -222,7 +226,6 @@ public class Player {
 			specialMove();
 			action();
 		}
-		
 	}
 
 	protected boolean isBuildingFirst() {
@@ -238,6 +241,7 @@ public class Player {
 	 * 
 	 * @return 
 	 */
+	
 	public boolean isUsingFabric() {
 		if(!this.usingFabricPower){
 			boolean resultat=getCity().containsWonder("Manufacture")
@@ -253,7 +257,9 @@ public class Player {
 	}
 	
 	protected void isUsingLabo() {
-		
+	}
+	
+	protected void isUsingGraveyard() {
 	}
 	/**
 	 * Méthode pour remettre au default les valeurs 
@@ -288,11 +294,6 @@ public class Player {
 	public void specialMove() {
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();	
-	}
-
-	public void discardWonderEffect(ArrayList<District> d){
-		if(!d.isEmpty()){
-			this.deck.putbackOne(d.remove(0)); }
 	}
 	
 	/**
@@ -435,7 +436,11 @@ public class Player {
 	public void setDistrictToDestroy(District districtToDestroy) {
 		this.districtToDestroy = districtToDestroy;
 	}
-
+	
+	public District GetDestroyedDistrict() {
+		return destroyedDistrict;
+	}
+	
 	public Player getTargetToExchangeHandWith() {
 		return targetToExchangeHandWith;
 	}

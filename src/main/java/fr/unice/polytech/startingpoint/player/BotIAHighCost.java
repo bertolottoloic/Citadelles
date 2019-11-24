@@ -111,7 +111,6 @@ public class BotIAHighCost extends Player {
                 }
             }
         }
-        //TODO : Cartes "Merveille" Manufacture, Observatoire, Bibliothèque
     }
 
     @Override
@@ -119,7 +118,7 @@ public class BotIAHighCost extends Player {
         return getGold() < 2
                 || hand.nbBadCards(getGold())<=hand.size()/2
                 || city.getSizeOfCity() >= 6
-                || this.deck.numberOfCards() < 4
+                || deck.numberOfCards() < 4
                 || hand.size()>2;
     }
 
@@ -141,7 +140,48 @@ public class BotIAHighCost extends Player {
             return true;
         }
     }
+    
+    @Override
+    protected void isUsingLabo() { 
+       	if(city.containsWonder("Laboratoire")) {
+       		ArrayList<District> list = hand.cardsAboveGold(getGold());
+       		if(!list.isEmpty()
+       				&& city.getSizeOfCity() >= 6) {
+       			District dis = hand.lowCostDistrict();
+       			if(!list.contains(dis)) {
+       				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+       				this.deck.putbackOne(dis);
+       				hand.remove(dis);
+       				takeCoinsFromBank(1);
+       			}
+       		}
+      	}
+    }
+    
+    District findDestroyedDistrict() {
+    	ArrayList<Player> players = board.getPlayers();
+    	for(Player p : players) {
+    		District tmp = p.destroyedDistrict;
+    		if(tmp != null) {
+    			return tmp;
+    		}
+    	}
+    	return null;
+	}
 
+	@Override
+	protected void isUsingGraveyard() {
+		if (city.containsWonder("Cimetiere")) {
+			District dis = findDestroyedDistrict();
+			if (dis != null && !getCharacter().toString().equals("Warlord")) {
+				if (dis.getCost() < getGold() && dis.getValue() > 4) {
+					System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
+					bank.deposit(1, this);
+					hand.add(dis);
+				}
+			}
+		}
+	}
 
     Role pickTargetRole(){
         Role character = this.getCharacter();

@@ -19,15 +19,19 @@ public class Hand {
         this.districts=new ArrayList<>(liste);
     }
 
-    District lowCostDistrict() {
-        District lowCost=districts.get(0);
-        for(District d : districts){
-            if(d.getCost() < lowCost.getCost()) {
-                lowCost=d;
-            }
-        }
-        return lowCost;
-    }
+	District lowCostDistrict() {
+		if (districts.isEmpty()) {
+			return null;
+		} else {
+			District lowCost = districts.get(0);
+			for (District d : districts) {
+				if (d.getCost() < lowCost.getCost()) {
+					lowCost = d;
+				}
+			}
+			return lowCost;
+		}
+	}
 
     /**
      * Cherche un district qui vaut plus que le threeshold

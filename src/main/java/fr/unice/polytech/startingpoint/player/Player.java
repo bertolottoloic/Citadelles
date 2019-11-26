@@ -471,11 +471,14 @@ public class Player {
 	public void setBoard(Board board) {
 		this.board = board;
 		if(this.board.getPlayers()!=null){
-			matches=new MatchingProb(this.board.getPlayers());
+			setMatches(new MatchingProb(this.board.getPlayers()));
 		}
 		
 	}
 
+	public void setMatches(MatchingProb matches){
+		this.matches = matches;
+	}
 
 	public Hand getHand(){return hand;}
 	

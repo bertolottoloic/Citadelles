@@ -1,11 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
+
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
-
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotIA extends Player{
     public BotIA(int id) {
@@ -145,23 +145,17 @@ public class BotIA extends Player{
      * @return le district a poser
      */
     District whatToBuild(int limit){
-        if(getCharacter().toString().equals("Architect")) {  //si architecte alors strategie du build low cost
             District lowerCost = hand.lowCostDistrict();
-            if (lowerCost.getCost() <= limit) {
-                return lowerCost;
-            } else {
-                return null;
-            }
-        }
-        else{
-            District district = hand.highCostDistrict(limit);
-            if(district.getCost()<=limit){
-                return district;
+            if(getCharacter().equals("Architect")) {
+                if (lowerCost.getCost() <= limit) {
+                    return lowerCost;
+                } else {
+                    return null;
+                }
             }
             else{
-                return null;
+                return hand.lowCostDistrictForNextTurn(getGold()); //prend le district le plus cher de manière à avoir assez de golds pour le tour suivant
             }
-        }
     }
 
 

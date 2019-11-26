@@ -1,12 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.board.DistrictColor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HandTest {
     District d1 = new District(3,4,DistrictColor.Religion, "quartier");
@@ -60,6 +59,19 @@ public class HandTest {
         hand.add(d2);
         hand.add(new District(5, 2, DistrictColor.Wonder, "rue"));
         assertEquals("merveille",hand.bestColorDistrict());
+
+    }
+
+    @Test
+    void lowCostDistrictForNextTurn(){
+        hand.add(d1);
+        hand.add(d2);
+        District d3=new District(4,4,DistrictColor.Religion,"test");
+        hand.add(d3);
+        assertEquals(d2,hand.lowCostDistrictForNextTurn(10));
+        assertEquals(d3,hand.lowCostDistrictForNextTurn(5));
+        assertEquals(d1,hand.lowCostDistrictForNextTurn(3));
+
 
     }
 }

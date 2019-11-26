@@ -1,13 +1,13 @@
 package fr.unice.polytech.startingpoint.player;
 
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.board.DistrictColor;
 
 public class Hand {
     private ArrayList<District> districts=new ArrayList<>();
@@ -32,6 +32,17 @@ public class Hand {
 			return lowCost;
 		}
 	}
+
+    District lowCostDistrictForNextTurn(int golds) {
+        District ld= lowCostDistrict();
+        District optimized=ld;
+        for(District d : districts){
+            if(d.getCost()+ld.getCost()<=golds+2&&(!d.equals(ld))&&d.getCost()>optimized.getCost()){
+                optimized=d;
+            }
+        }
+        return optimized;
+    }
 
     /**
      * Cherche un district qui vaut plus que le threeshold

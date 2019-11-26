@@ -147,7 +147,7 @@ class BotIATest{
 
 
 		when(role.toString()).thenReturn("Warlord");
-		assertEquals(d2,bot.whatToBuild(10));
+		assertEquals(d1,bot.whatToBuild(10));
 
 		assertEquals(null,bot.whatToBuild(2));
 

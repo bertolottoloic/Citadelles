@@ -1,9 +1,9 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.util.ArrayList;
-
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
+
+import java.util.ArrayList;
 
 public class BotIAHighCost extends Player {
 
@@ -30,6 +30,9 @@ public class BotIAHighCost extends Player {
 
     //TODO ???
     Role bestRoleToChoose(ArrayList<Role> roles, String color){
+        if(hand.highValuedDistrict(4)&&roles.contains("Wizard")){
+            return roles.get(roles.indexOf("Wizard"));
+        }
         int position;
         switch (color){
             case "religion": position=5;

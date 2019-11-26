@@ -145,8 +145,8 @@ public class BotIA extends Player{
      * @return le district a poser
      */
     District whatToBuild(int limit){
-            District lowerCost = hand.lowCostDistrict();
             if(getCharacter().equals("Architect")) {
+                District lowerCost = hand.lowCostDistrict();
                 if (lowerCost.getCost() <= limit) {
                     return lowerCost;
                 } else {
@@ -154,7 +154,13 @@ public class BotIA extends Player{
                 }
             }
             else{
-                return hand.lowCostDistrictForNextTurn(getGold()); //prend le district le plus cher de manière à avoir assez de golds pour le tour suivant
+                District lowerCost = hand.lowCostDistrictForNextTurn(getGold()); //prend le district le plus cher de manière à avoir assez de golds pour le tour suivant
+                if(lowerCost.getCost()<=limit){
+                    return lowerCost;
+                }
+                else{
+                    return null;
+                }
             }
     }
 

@@ -12,14 +12,13 @@ class DistrictsInput{
     private final String srcData="/json/infos_districts.json";
 
     private String readFile(String fichier) throws FileNotFoundException,IOException{
-        String tmp=new String(getClass().getResourceAsStream(srcData).readAllBytes());
-        return tmp;
+        return new String(getClass().getResourceAsStream(srcData).readAllBytes());
     }
 
 	public  ArrayList<District> getDistricts() {
         ArrayList<District> list=new ArrayList<>();
 		try {
-            JSONArray infos=new JSONArray(readFile(srcData));
+            var infos=new JSONArray(readFile(srcData));
 
             
             infos.forEach(e->{

@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.board;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 
 public class District {
@@ -36,6 +37,19 @@ public class District {
 
     public boolean hasColor(String color2) {
         return colorsList.stream().anyMatch(s -> s.equals(color2));
+    }
+
+    public DistrictColor primaryColor(){
+        //seuls les merveilles ont plus de 1 couleur
+        if (colorsList.size()>1){
+            return DistrictColor.Wonder;
+        }
+        else{
+            return List.of(
+                    DistrictColor.values()
+                ).stream().filter(dc->dc.toString().equals(color)).findAny().get();
+                
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -115,7 +116,7 @@ public class BotIA extends Player{
      */
 
     @Override
-    public void discard(ArrayList<District> d){
+    public void discard(List<District> d){
         if(d.size()>=2){
             d.sort((a,b)->
                 Integer.compare(a.getCost(),b.getCost())
@@ -140,7 +141,7 @@ public class BotIA extends Player{
      * @return le district a poser
      */
     District whatToBuild(int limit){
-            if(getCharacter().equals("Architect")) {
+            if(getCharacter().toString().equals("Architect")) {
                 District lowerCost = hand.lowCostDistrict();
                 if (lowerCost.getCost() <= limit) {
                     return lowerCost;

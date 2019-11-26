@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.board;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -86,7 +85,7 @@ public class Deck{
      * 
      */
     public District exchangeOne(District d){
-        District tmp=this.withdraw();
+        var tmp=this.withdraw();
         list.add(d);
         this.shuffle();
         return tmp;
@@ -105,9 +104,9 @@ public class Deck{
      * 
      */
     public ArrayList<District> exchangeMany(ArrayList<District> districts){
-        ArrayList <District> l=new ArrayList<>();
+        var l=new ArrayList<District>();
         if(districts.size()<list.size()){
-            l = withdrawMany(districts.size());
+            l.addAll(withdrawMany(districts.size()));
             list.addAll(districts);
         }
         return l;

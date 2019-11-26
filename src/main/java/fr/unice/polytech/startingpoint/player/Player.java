@@ -7,10 +7,10 @@ import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.board.Bank;
 
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Player {
@@ -219,7 +219,7 @@ public class Player {
 				this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
-			ArrayList<District> districts=this.deck.withdrawMany(this.character.getNumberDistrictPickable());
+			List<District> districts=this.deck.withdrawMany(this.character.getNumberDistrictPickable());
 			discard(districts);
 			hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
@@ -321,9 +321,10 @@ public class Player {
 		// forgot something ??
 	}
 
-	public void discard(ArrayList<District> d){
-		if(!d.isEmpty()){
-			this.deck.putbackOne(d.remove(0)); }
+	public void discard(List<District> districts) {
+		if (!districts.isEmpty()) {
+			this.deck.putbackOne(districts.remove(0));
+		}
 	}
 
 	protected void action() {

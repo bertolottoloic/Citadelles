@@ -1,10 +1,10 @@
 package fr.unice.polytech.startingpoint.player;
 
-
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BotRnd extends Player{
@@ -58,7 +58,7 @@ public class BotRnd extends Player{
     }
 
     @Override
-    public void discard(ArrayList<District> d){
+    public void discard(List<District> d){
         if(!d.isEmpty()){
             this.deck.putbackOne(d.remove(0));
         }

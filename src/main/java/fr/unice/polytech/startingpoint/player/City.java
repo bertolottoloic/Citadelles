@@ -60,25 +60,47 @@ public class City {
         return (int)districts.stream().filter(d -> d.hasColor(color)).count();
      }
 
+     /**
+      * La méthode removeDistrict reset la buildDate du district à supprimer
+      * @param toDelete
+      * @return
+      */
 	public boolean removeDistrict(District toDelete) {
         toDelete.resetBuildDate();
         return districts.remove(toDelete);
+        
     }
     
-    
     public boolean containsAllColors(){
-        HashSet<String> s=new HashSet<String>();
-		districts.forEach((c)->{
-            if(c.getName().equals("Cour des Miracles")){
-                s.add(DistrictColor.Wonder.toString());
-            }
-            else{
-                s.addAll(c.getColorsList());
-            }
-			
+        var s=new HashSet<DistrictColor>();
+		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach((c)->{
+            s.add(c.primaryColor());
+        });
 
-		});
-		return s.size()==5;
+        var optCour=this.getWonder("Cour des Miracles");
+        
+        if(s.size()==4 && optCour.isPresent()){
+            return true;
+        }
+
+        return s.size()==5;
+    }
+
+    boolean checkDateContainsAllColors(){
+        var s=new HashSet<DistrictColor>();
+		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach((c)->{
+            s.add(c.primaryColor());
+        });
+
+        var optCour=this.getWonder("Cour des Miracles");
+        
+        if(s.size()==4 && optCour.isPresent() && optCour.get().getBuildDate()<this.presentDate){
+            return true;
+        }
+        if(optCour.isPresent()){
+            s.add(optCour.get().primaryColor());
+        }
+        return s.size()==5;
     }
     
     public int getSizeOfCity(){
@@ -89,7 +111,7 @@ public class City {
      * @return
      */
     public int totalValue(){
-        if(this.containsAllColors()){
+        if(this.checkDateContainsAllColors()){
             return 3+this.netValue();
         }
         else{
@@ -129,7 +151,11 @@ public class City {
 
 	public boolean containsWonder(String wonder) {
 		return districts.stream().anyMatch(d -> d.getName().equals(wonder));
-	}
+    }
+    
+    public Optional<District> getWonder(String name){
+        return districts.stream().filter(d -> d.getName().equals(name)).findAny();
+    }
 
 	public Collection<District> toList() {
 		return districts;

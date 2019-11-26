@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import fr.unice.polytech.startingpoint.board.District;
@@ -95,7 +96,7 @@ public class BotIAHighCost extends Player {
     }
 
     @Override
-    public void discard(ArrayList<District> d){
+    public void discard(List<District> d){
         if(d.size()>=2){
             d.sort((a,b)->
                     Integer.compare(a.getCost(),b.getCost())

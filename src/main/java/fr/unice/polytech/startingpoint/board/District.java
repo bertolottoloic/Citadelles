@@ -9,6 +9,7 @@ public class District {
     private final String color; 
     private final String name;
     private final ArrayList<String> colorsList = new ArrayList<>();
+    private int buildDate=-1;
 
     public District(int cost, int value, String color, String name) {
         this.cost = cost;
@@ -72,6 +73,17 @@ public class District {
 
     public int getValue() {
         return value;
+    }
+
+    public int getBuildDate() {
+        return buildDate;
+    }
+
+    public void setBuildDate(int buildDate) {
+        this.buildDate = buildDate;
+    }
+    public void resetBuildDate() {
+        this.buildDate = -1;
     }
 
 }

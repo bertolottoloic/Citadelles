@@ -11,6 +11,7 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 
 public class City {
     private ArrayList<District> districts=new ArrayList<>();
+    private int presentDate=0;
     
     public City(){
         
@@ -59,14 +60,22 @@ public class City {
         return (int)districts.stream().filter(d -> d.hasColor(color)).count();
      }
 
-	public void removeDistrict(District toDelete) {
-        districts.remove(toDelete);
+	public boolean removeDistrict(District toDelete) {
+        toDelete.resetBuildDate();
+        return districts.remove(toDelete);
     }
+    
     
     public boolean containsAllColors(){
         HashSet<String> s=new HashSet<String>();
 		districts.forEach((c)->{
-			s.addAll(c.getColorsList());
+            if(c.getName().equals("Cour des Miracles")){
+                s.add(DistrictColor.Wonder.toString());
+            }
+            else{
+                s.addAll(c.getColorsList());
+            }
+			
 
 		});
 		return s.size()==5;
@@ -75,14 +84,30 @@ public class City {
     public int getSizeOfCity(){
 		return districts.size();
     }
-    
-    public int getTotalValue(){
+    /**
+     * La valeur de la City  avec les potentiels bonus
+     * @return
+     */
+    public int totalValue(){
+        if(this.containsAllColors()){
+            return 3+this.netValue();
+        }
+        else{
+            return this.netValue();
+        }
+    }
+    /**
+     * La valeur nette de la City sans le bonus 
+     * utiliser totalValue() pour les potentiels bonus
+     */
+    public int netValue(){
         return districts.stream().mapToInt(d -> d.getValue()).sum();
     }
 
-	public void add(District theDistrict) {
+    public void add(District theDistrict) {
         if(theDistrict!=null && !alreadyContains(theDistrict)){
             districts.add(theDistrict);
+            theDistrict.setBuildDate(this.presentDate);
         }
     }
     
@@ -114,7 +139,11 @@ public class City {
 		return districts.stream().min(
                 (a,b)->Integer.compare(a.getCost(), b.getCost())
             );
-	}
+    }
+    
+    public void nextDay(){
+        this.presentDate+=1;
+    }
     
 
 }

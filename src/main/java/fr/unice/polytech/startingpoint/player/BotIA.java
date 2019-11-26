@@ -185,7 +185,12 @@ public class BotIA extends Player{
     @Override
     public Optional<District> wantToUseLabo() {
         // TODO Auto-generated method stub
-        return super.wantToUseLabo();
+        ArrayList<District> list = hand.cardsAboveGold(getGold());
+       		if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
+                   District dis = hand.highCostDistrict(getGold());
+                   return Optional.of(dis);
+            }
+            return super.wantToUseLabo();
     }
     
     District findDestroyedDistrict() {

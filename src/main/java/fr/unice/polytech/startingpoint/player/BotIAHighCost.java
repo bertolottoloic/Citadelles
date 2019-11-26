@@ -24,6 +24,11 @@ public class BotIAHighCost extends Player {
 
     //TODO ???
     Role bestRoleToChoose(ArrayList<Role> roles, String color){
+        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
+
+        if(hand.highValuedDistrict(4)&& optWizard.isPresent()){
+            return optWizard.get();
+        }
         int position;
         switch (color){
             case "religion": position=5;

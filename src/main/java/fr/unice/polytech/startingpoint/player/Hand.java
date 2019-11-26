@@ -54,8 +54,8 @@ public class Hand {
         districts.add(d);
 	}
 
-	public void remove(District theDistrict) {
-        districts.remove(theDistrict);
+	public boolean remove(District theDistrict) {
+        return districts.remove(theDistrict);
     }
 
 	public List<? extends District> toList() {

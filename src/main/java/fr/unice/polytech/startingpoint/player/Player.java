@@ -11,12 +11,11 @@ import fr.unice.polytech.startingpoint.board.Bank;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Player {
 	private final int id;
 	private Role character;
-	@Deprecated
-	private int gold;
 	protected Hand hand;
 	protected City city;
 	protected Player nextPlayer;
@@ -91,10 +90,6 @@ public class Player {
 		return false;
 	}
 	
-	@Deprecated
-	public void addMoney(int amount) {
-		gold+= amount;
-	}
 
 	public int getGold(){
 		return bank.getPlayerMoney(this);
@@ -102,21 +97,23 @@ public class Player {
 
 	/**
 	 * Destruction de district dans city
+	 * @RoleInterface
 	 * @param toDelete
 	 */
-	public void deleteDistrictFromCity(District toDelete){
+	public boolean deleteDistrictFromCity(District toDelete){
 		if(character!=null){
 			if(!character.toString().equals("Bishop") && !toDelete.getName().equals("Donjon")){
 				destroyedDistrict = toDelete;
-				city.removeDistrict(toDelete);
+				return city.removeDistrict(toDelete);
 			}
 		}
 		else{
 			if(!toDelete.getName().equals("Donjon")){
 				destroyedDistrict = toDelete;
-				city.removeDistrict(toDelete);
+				return city.removeDistrict(toDelete);
 			}
 		}
+		return false;
 	}
 	
 	/**
@@ -154,9 +151,11 @@ public class Player {
 	 * pour le moment il choisit le premier Personnage
 	 *  puis appelle la méthode sur nextPlayer
 	 */
-	public void chooseRole(){
+	final public void chooseRole(){
 		if(!alreadyChosenRole){
-			setCharacter(dealRoles.getLeftRoles().remove(0));
+			Role tmpRole=this.processChooseRole();
+			setCharacter(tmpRole);
+			dealRoles.getLeftRoles().remove(tmpRole);
 			alreadyChosenRole=true;
 			//appelle le prochain player
 			if(nextPlayer!=null){
@@ -164,7 +163,15 @@ public class Player {
 			}
 			
 		}
-    }
+	}
+	
+	/**
+	 * @ToOverride by Bots
+	 * @return
+	 */
+	public Role processChooseRole(){
+		return dealRoles.getLeftRoles().get(0);
+	}
 
 	@Deprecated
     public void roleInformations(){
@@ -190,7 +197,8 @@ public class Player {
 	 * 
 	 * 
 	 * */
-	public void playTurn(){
+	final public void playTurn(){
+		this.city.nextDay();
 		if(character.isMurdered()){
 			System.out.println("Joueur "+id+" passe son tour car il a été tué");
 			return; //on sort de la fonction sans plus rien faire
@@ -201,8 +209,8 @@ public class Player {
 		}
 
 		this.collectMoneyFromDistricts();
-		isUsingLabo();
-		isUsingGraveyard();
+		this.isUsingLabo();
+		this.isUsingGraveyard();
 		
 		boolean buildFirst = isBuildingFirst();
 		if(coinsOrDistrict()){//on prend au hasard
@@ -233,21 +241,18 @@ public class Player {
 	}
 
 	/**
-	 * Cette fonction permet au player de décider si il 
-	 * veut utiliser le pouvoir de la manufacture ou pas
 	 * cette fonction renvoie un boolean utilisé par 
 	 * Role pour déterminer le  nombre que renverra les 
 	 * méthodes getNumberDistrictPickable et getNumberDistrictKeepable
-	 * 
+	 * @RoleInterface
 	 * @return 
 	 */
 	
 	public boolean isUsingFabric() {
 		if(!this.usingFabricPower){
 			boolean resultat=getCity().containsWonder("Manufacture")
-				&& gold >= 3; 
+				&& this.wantToUseFabric();
 			if(resultat){
-				this.gold -= 3;
 				this.bank.deposit(3,this);
 				this.usingFabricPower=true;
 			}
@@ -255,9 +260,43 @@ public class Player {
 		}
 		return this.usingFabricPower;
 	}
-	
-	protected void isUsingLabo() {
+
+	/**
+	 * fonction à réécrire par les Bots pour déterminer si ils veuleunt utiliser 
+	 * la Manufacture ou pas
+	 * Pas besoin de vérifier si la carte Manufacture est vraiment disponible
+	 * c'est fait par isUsingFabric
+	 * @return un boolean
+	 * @ToOverride
+	 */
+	public boolean wantToUseFabric(){
+		return true;
 	}
+	
+	/**
+	 * @PlayTurnInterface
+	 */
+	final public void isUsingLabo() {
+		Optional<District> od=wantToUseLabo();
+		if(city.containsWonder("Laboratoire")&& od.isPresent()) {
+			System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+			if(hand.remove(od.get())){
+				this.deck.putbackOne(od.get());
+				takeCoinsFromBank(1);
+			}			
+	   }
+	}
+
+	/**
+	 * A réécrire par les players pour déterminer dans quelles conditions
+	 * utiliser le Laboratoire pas besoin de vérifier si on l'a
+	 * C'est fait dans isUsingLabo
+	 * @ToOverride
+	 * @return
+	 */
+	public Optional<District> wantToUseLabo(){
+        return Optional.empty();
+    }
 	
 	protected void isUsingGraveyard() {
 	}
@@ -268,7 +307,7 @@ public class Player {
 	 * partie complète 
 	 *
 	 */
-	public void reInitializeForNextTurn(){
+	final public void reInitializeForNextTurn(){
 		usingFabricPower=false;
 		alreadyChosenRole=false;
 		character=null;
@@ -351,21 +390,16 @@ public class Player {
 	 * Cette méthode permet de compter les points en fin de partie
 	 * @return le nombre de points
 	 */
-	public int points(){
+	final public int points(){
 		int points=0;
-         points+=city.getTotalValue();
+         points+=city.totalValue();
 		 if(this.firstToFinish){
-			//Le premier joueur à avoir posé son quartier reçoit +4
+			//Le premier joueur à avoir fini sa city reçoit +4
 			points+=4;
 		 }
 		 else if(!this.firstToFinish && city.getSizeOfCity()>=8){
 			 // + 2 pour les autres joueurs ayant huit quartiers.
 			 points+=2;
-		 }
-
-		 if(this.city.containsAllColors()){
-			 // + 3 si la cité comprend des quartiers des cinq couleurs différentes.
-			 points+=3;
 		 }
 		 
          return points;
@@ -527,8 +561,9 @@ public class Player {
 	public int sizeOfCity(){
 		return city.getSizeOfCity();
 	}
+	
 	public int totalValueOfCity(){
-		return city.getTotalValue();
+		return city.totalValue();
 	}
 
 }

@@ -15,8 +15,9 @@ public class BotRnd extends Player{
     }
 
     @Override
-    public void chooseRole() {
-        super.chooseRole();
+    public Role processChooseRole() {
+        // TODO Auto-generated method stub
+        return super.processChooseRole();
     }
 
     @Override
@@ -78,6 +79,12 @@ public class BotRnd extends Player{
             return true;}
         else
         {return false;}
+    }
+
+    @Override
+    public boolean wantToUseFabric() {
+        // TODO Auto-generated method stub
+        return super.wantToUseFabric();
     }
 
     Role pickRandomTargetRole(){

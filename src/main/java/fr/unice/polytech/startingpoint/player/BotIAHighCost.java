@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
@@ -11,21 +12,14 @@ public class BotIAHighCost extends Player {
         super(id);
     }
 
+   
     @Override
-    public void chooseRole() {
-        if(!alreadyChosenRole){
-            ArrayList<Role> leftRoles=this.dealRoles.getLeftRoles();
-            String maxColor=hand.bestColorDistrict();
-            Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
-            this.dealRoles.getLeftRoles().remove(choosenRole);
-            setCharacter(choosenRole);
-            alreadyChosenRole=true;
-            //appelle le prochain player
-            if(nextPlayer!=null){
-                nextPlayer.chooseRole();
-            }
+    public Role processChooseRole() {
+        ArrayList<Role> leftRoles=this.dealRoles.getLeftRoles();
+        String maxColor=hand.bestColorDistrict();
+        Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
 
-        }
+        return choosenRole;
     }
 
     //TODO ???
@@ -140,22 +134,24 @@ public class BotIAHighCost extends Player {
         }
     }
     
+    /**
+     * TODO stratégie
+     */
     @Override
-    protected void isUsingLabo() { 
-       	if(city.containsWonder("Laboratoire")) {
-       		ArrayList<District> list = hand.cardsAboveGold(getGold());
-       		if(!list.isEmpty()
-       				&& city.getSizeOfCity() >= 6) {
-       			District dis = hand.lowCostDistrict();
-       			if(!list.contains(dis)) {
-       				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
-       				this.deck.putbackOne(dis);
-       				hand.remove(dis);
-       				takeCoinsFromBank(1);
-       			}
-       		}
-      	}
+    public Optional<District> wantToUseLabo() {
+        ArrayList<District> list = hand.cardsAboveGold(getGold());
+        if(!list.isEmpty()
+                && city.getSizeOfCity() >= 6) {
+            District dis = hand.lowCostDistrict();
+            if(!list.contains(dis)) {
+                return Optional.of(dis);
+            }
+        }
+        return Optional.empty();
     }
+       		
+   
+    
     
     District findDestroyedDistrict() {
     	ArrayList<Player> players = board.getPlayers();
@@ -212,6 +208,12 @@ public class BotIAHighCost extends Player {
             return d;
         }
         return null;
+    }
+
+    @Override
+    public boolean wantToUseFabric() {
+        // TODO Auto-generated method stub
+        return super.wantToUseFabric();
     }
 
 }

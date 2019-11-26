@@ -195,5 +195,12 @@
         "cost":5,
         "nb":1,
         "nom":"Cimetiere"
+    },
+    {
+        "color":"merveille",
+        "value":5,
+        "cost":5,
+        "nb":1,
+        "nom":"Cour des Miracles"
     }
 ]

@@ -12,25 +12,20 @@ public class BotIA extends Player{
         super(id);
     }
 
+    
+
     @Override
-    public void chooseRole() {
-        for(Role r : this.dealRoles.getLeftRoles()){
-            if(r.toString().equals("Architect")){
-                chooseRole(r);
-                return;
-            }
-        }
-        Optional<Role> tmpRole=this.roleToOptimizeCoins(
+    public Role processChooseRole() {
+        // TODO Auto-generated method stub
+        Optional<Role> alt1= this.dealRoles.getLeftRoles().stream().filter(r->r.toString().equals("Architect")).findAny();
+        
+        Optional<Role> alt2=this.roleToOptimizeCoins(
             this.dealRoles.getLeftRoles(), 
             this.dealRoles.getHidden()    
         );
-        if(tmpRole.isPresent()){
-                chooseRole(tmpRole.get());
-        }
-        else{
-            super.chooseRole();
-        }
-
+        
+        return alt1.or(()->alt2).or(()->Optional.of(super.processChooseRole())).get();
+        
     }
 
     /**
@@ -185,21 +180,12 @@ public class BotIA extends Player{
         }
     }
     
+    
+    
     @Override
-    protected void isUsingLabo() { 
-       	if(city.containsWonder("Laboratoire")) {
-       		ArrayList<District> list = hand.cardsAboveGold(getGold());
-       		if(!list.isEmpty()
-       				&& city.getSizeOfCity() >= 6) {
-       			District dis = hand.highCostDistrict(getGold());
-       			if(!list.contains(dis)) {
-       				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
-       				this.deck.putbackOne(dis);
-       				hand.remove(dis);
-       				takeCoinsFromBank(1);
-       			}
-       		}
-      	}
+    public Optional<District> wantToUseLabo() {
+        // TODO Auto-generated method stub
+        return super.wantToUseLabo();
     }
     
     District findDestroyedDistrict() {
@@ -305,6 +291,12 @@ public class BotIA extends Player{
     Role targetToChooseForThief(){
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
+    }
+
+    @Override
+    public boolean wantToUseFabric() {
+        // TODO Auto-generated method stub
+        return super.wantToUseFabric();
     }
 
 }

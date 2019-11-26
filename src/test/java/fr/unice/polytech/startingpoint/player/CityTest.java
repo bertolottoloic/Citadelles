@@ -30,9 +30,9 @@ public class CityTest {
 
     @Test
     void testGetTotalValue(){
-        assertEquals(0, city.getTotalValue());
+        assertEquals(0, city.netValue());
         city.add(new District(2,2,DistrictColor.Noble,"Chateau"));
-        assertEquals(2, city.getTotalValue());
+        assertEquals(2, city.netValue());
     }
 
     @Test

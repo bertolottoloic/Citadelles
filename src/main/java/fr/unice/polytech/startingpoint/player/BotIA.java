@@ -300,5 +300,4 @@ public class BotIA extends Player{
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
-
 }

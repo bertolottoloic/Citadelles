@@ -71,7 +71,5 @@ public class HandTest {
         assertEquals(d2,hand.lowCostDistrictForNextTurn(10));
         assertEquals(d3,hand.lowCostDistrictForNextTurn(5));
         assertEquals(d1,hand.lowCostDistrictForNextTurn(3));
-
-
     }
 }

@@ -5,14 +5,18 @@ import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
+import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Thief;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -26,6 +30,8 @@ class BotIATest{
 	Hand hand;
 	Bank bank;
 	Deck deck;
+	MatchingProb matches;
+	DealRoles dealRoles;
 
 
     @BeforeEach
@@ -249,5 +255,39 @@ class BotIATest{
 		assertEquals(tmpGold - 1, anotherBot.getGold());
 		assertEquals(tmpHandSize +1, anotherBot.getHand().size());
 		assertTrue(anotherBot.hand.toList().contains(d2));
+	}
+
+	@Test
+	void targetToChooseForMurdererTest(){
+		dealRoles = new DealRoles();
+		bot.setDealRoles(dealRoles);
+		Player p = mock(Player.class);
+		when(p.getId()).thenReturn(1);
+		Board board = mock(Board.class);
+		when(board.playerWithTheBiggestCity(bot)).thenReturn(p);
+		bot.setBoard(board);
+		Set<String> s = new HashSet<String>();
+		s.add("Thief");
+		matches = mock(MatchingProb.class);
+		when(matches.possibleRolesFor(1)).thenReturn(s);
+		bot.setMatches(matches);
+		assertEquals(dealRoles.getRole("Thief"), bot.targetToChooseForMurderer());
+	}
+
+	@Test
+	void targetToChooseForThiefTest(){
+		dealRoles = new DealRoles();
+		bot.setDealRoles(dealRoles);
+		Player p = mock(Player.class);
+		when(p.getId()).thenReturn(1);
+		Board board = mock(Board.class);
+		when(board.richestPlayer(bot)).thenReturn(p);
+		bot.setBoard(board);
+		Set<String> s = new HashSet<String>();
+		s.add("Merchant");
+		matches = mock(MatchingProb.class);
+		when(matches.possibleRolesFor(1)).thenReturn(s);
+		bot.setMatches(matches);
+		assertEquals(dealRoles.getRole("Merchant"), bot.targetToChooseForThief());
 	}
 }

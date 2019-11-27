@@ -47,11 +47,13 @@ class BotIAHighCostTest{
         bank.withdraw(10,bot);
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setBoard(new Board());
-
+        ArrayList<District> badCards = new ArrayList<>();
+        badCards.add(new District(1, 1, "religion", "Temple"));
+        badCards.add(new District(1, 1, "religion", "Temple"));
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setCity(c);
         Hand h=mock(Hand.class);
-        when(h.badCards(bot.getGold()).size()).thenReturn(2);
+        when(h.badCards(bot.getGold())).thenReturn(badCards);
         when(h.size()).thenReturn(2);
         bot.setHand(h);
         assertFalse(bot.coinsOrDistrict());

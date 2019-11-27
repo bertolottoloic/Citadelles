@@ -161,33 +161,17 @@ public class BotIAHighCost extends Player {
         }
         return Optional.empty();
     }
-       		
-   
-    
-    
-    District findDestroyedDistrict() {
-    	ArrayList<Player> players = board.getPlayers();
-    	for(Player p : players) {
-    		District tmp = p.destroyedDistrict;
-    		if(tmp != null) {
-    			return tmp;
-    		}
-    	}
-    	return null;
-	}
 
-	@Override
-	protected void isUsingGraveyard() {
+    @Override
+	protected boolean isUsingGraveyard(District dis) {
 		if (city.containsWonder("Cimetiere")) {
-			District dis = findDestroyedDistrict();
 			if (dis != null && !getCharacter().toString().equals("Warlord")) {
 				if (dis.getCost() < getGold() && dis.getValue() > 4) {
-					System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
-					bank.deposit(1, this);
-					hand.add(dis);
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 

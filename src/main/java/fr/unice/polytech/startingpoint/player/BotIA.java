@@ -149,38 +149,25 @@ public class BotIA extends Player{
             return super.wantToUseLabo();
     }
     
-    District findDestroyedDistrict() {
-    	ArrayList<Player> players = board.getPlayers();
-    	for(Player p : players) {
-    		District tmp = p.destroyedDistrict;
-    		if(tmp != null) {
-    			return tmp;
-    		}
-    	}
-    	return null;
-    }
-    
 	@Override
-	protected void isUsingGraveyard() {
+	protected boolean isUsingGraveyard(District dis) {
 		if (city.containsWonder("Cimetiere")) {
-			District dis = findDestroyedDistrict();
 			if (dis != null && !getCharacter().toString().equals("Warlord")) {
 				District lowest = hand.lowCostDistrict();
 				if(lowest == null) {
 					if(dis.getCost() < getGold()) {
-	       				System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
-						bank.deposit(1, this);
-						hand.add(dis);
+	       				return true;
 					}
 				} else {
-					if ((lowest.getCost() < getGold() || dis.getCost() < getGold()) && lowest.getCost() != dis.getCost()) {
-	       				System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
-						bank.deposit(1, this);
-						hand.add(dis);
+					if ((lowest.getCost() < getGold() 
+							|| dis.getCost() < getGold()) 
+							&& lowest.getCost() != dis.getCost()) {
+	       				return true;
 					}
 				}
 			}
 		}
+		return false;
 	}
     
     

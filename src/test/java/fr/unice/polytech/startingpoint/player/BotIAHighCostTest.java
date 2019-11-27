@@ -229,17 +229,14 @@ class BotIAHighCostTest{
 		anotherBot.setBoard(b);
 		b.setPlayers(bot, anotherBot);
 	}
-
-    @Test
-	void findDestroyedDistrictTest(){
-		bot.deleteDistrictFromCity(d2);
-		assertEquals(d2, anotherBot.findDestroyedDistrict());
-	}
 	
 	@Test
-	void isUsingGraveyardTest(){
-		bot.deleteDistrictFromCity(d2);
-		
+	void isUsingGraveyardTest(){	
+		Board b = mock(Board.class);
+		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
+		bot.setBoard(b);
+		assertFalse(bot.deleteDistrictFromCity(d1));
+
 		City c = mock(City.class);
 		when(c.containsWonder("Cimetiere")).thenReturn(true);
 		anotherBot.setCity(c);
@@ -248,24 +245,13 @@ class BotIAHighCostTest{
 		anotherBot.takeCoinsFromBank(7);
 		anotherBot.setCharacter(new Merchant());
 		
-		int tmpGold = anotherBot.getGold();
-		int tmpHandSize = anotherBot.getHand().size();
-		anotherBot.isUsingGraveyard();
-		
-		assertEquals(tmpGold - 1, anotherBot.getGold());
-		assertEquals(tmpHandSize + 1, anotherBot.getHand().size());
-		assertTrue(anotherBot.hand.toList().contains(d2));
+		assertTrue(anotherBot.isUsingGraveyard(d2));
+		anotherBot.usesGraveyard(d2);
 		
 		bot.city.add(d1);
 		bot.deleteDistrictFromCity(d1);
 		anotherBot.takeCoinsFromBank(3);
-		
-		tmpGold = anotherBot.getGold();
-		tmpHandSize = anotherBot.getHand().size();
-		anotherBot.isUsingGraveyard();
-		
-		assertEquals(tmpGold, anotherBot.getGold());
-		assertEquals(tmpHandSize, anotherBot.getHand().size());
-		assertFalse(anotherBot.hand.toList().contains(d1));
+
+		assertFalse(anotherBot.isUsingGraveyard(d1));
 	}
 }

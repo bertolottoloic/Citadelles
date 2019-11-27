@@ -242,6 +242,7 @@ class BotIATest{
 		anotherBot.takeCoinsFromBank(3);
 		
 		assertTrue(anotherBot.isUsingGraveyard(d2));
+	}
 		
 	@Test
 	void targetToChooseForMurdererTest(){

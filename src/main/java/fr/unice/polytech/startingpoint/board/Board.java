@@ -55,4 +55,13 @@ public class Board{
         return players.stream().filter(p->p!=except).findAny().get();
     }
 
+	public Player existsGraveyardPlayer() {
+		for(Player p : players) {
+			if(p.hasTheDistrict("Cimetiere")) {
+				return p;
+			}
+		}
+		return null;
+	}
+
 }

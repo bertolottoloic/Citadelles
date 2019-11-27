@@ -8,7 +8,6 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Thief;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -169,7 +168,7 @@ class BotIATest{
 		hand.add(d2);
 		bot.setHand(hand);
 		System.out.println(bot.getGold()+"	"+
-		bot.getHand().nbBadCards(bot.getGold()));
+		bot.getHand().badCards(bot.getGold()).size());
 		assertFalse(bot.isBuildingFirst());
 
 		when(role.toString()).thenReturn("Warlord");

@@ -51,7 +51,7 @@ class BotIAHighCostTest{
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setCity(c);
         Hand h=mock(Hand.class);
-        when(h.nbBadCards(bot.getGold())).thenReturn(2);
+        when(h.badCards(bot.getGold()).size()).thenReturn(2);
         when(h.size()).thenReturn(2);
         bot.setHand(h);
         assertFalse(bot.coinsOrDistrict());

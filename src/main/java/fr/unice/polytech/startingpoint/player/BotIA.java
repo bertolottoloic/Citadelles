@@ -130,7 +130,7 @@ public class BotIA extends Player{
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
-                || hand.nbBadCards(getGold())<=hand.size()/2
+                || hand.badCards(getGold()).size()<=hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || this.deck.numberOfCards() < 4
                 || hand.size()>2;
@@ -168,7 +168,7 @@ public class BotIA extends Player{
             return false;
         }
         else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().nbBadCards(getGold());
+            int countBadCards=getHand().badCards(getGold()).size();
             if(countBadCards>getHand().size()/2){
                 return false;
             } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
@@ -265,11 +265,19 @@ public class BotIA extends Player{
 
 	}
 
-    private Player pickTargetToExchangeHands(){
-        return this.getBoard().playerWithTheBiggestHand(this);
-        
-    }   
-    private Player pickTargetToDestroy(){
+    Player pickTargetToExchangeHands(){
+        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
+            this.setCardsToExchange(this.hand.badCards(this.getGold()));
+            return null;
+        } 
+        if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
+            return this.getBoard().playerWithTheBiggestHand(this); 
+        }
+        this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
+        return null;
+    }  
+
+    Player pickTargetToDestroy(){
         return this.board.playerWithTheBiggestCity(this);
     }
 

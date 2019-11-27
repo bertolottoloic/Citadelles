@@ -81,10 +81,10 @@ public class Hand {
      * Compte le nombre de district dont le cout est plus eleve que le nombre de piece d'or posseder par le joueur
      * @return int : nombre de district
      */
-    public int nbTooExpensiveDistricts(int golds){
+    public int nbTooExpensiveDistricts(int gold){
         int n=0;
         for(District d : districts) {
-            if (golds < d.getCost()) {
+            if (gold < d.getCost()) {
                 n++;
             }
         }
@@ -105,14 +105,14 @@ public class Hand {
         return highCost;
 	}
 
-	public int nbBadCards(int gold) {
-		int count=0;
-        for(District d : districts){
+	public ArrayList<District> badCards(int gold) {
+		ArrayList<District> badCards = new ArrayList<>();
+        districts.forEach(d -> {
             if(d.getCost()+3<gold||d.getCost()>gold){
-                count++;
+                badCards.add(d);
             }
-        }
-        return count;
+        });
+        return badCards;
     }
     
     public ArrayList<District> cardsAboveGold(int gold){

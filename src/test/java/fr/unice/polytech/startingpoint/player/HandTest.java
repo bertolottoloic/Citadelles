@@ -41,7 +41,7 @@ public class HandTest {
 	   hand.add(d2);
        hand.add(new District(1, 2, DistrictColor.Commerce, "cul-de-sac"));
        hand.add(new District(5, 2, DistrictColor.Warlord, "rue"));
-       assertEquals(2, hand.nbBadCards(5));
+       assertEquals(2, hand.badCards(5).size());
    }
    
    @Test

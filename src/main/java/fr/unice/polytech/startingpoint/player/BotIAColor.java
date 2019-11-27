@@ -65,7 +65,7 @@ public class BotIAColor extends Player{
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
-                || hand.nbBadCards(getGold())<=hand.size()/2
+                || hand.badCards(getGold()).size()<=hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
@@ -115,7 +115,7 @@ public class BotIAColor extends Player{
             return false;
         }
         else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().nbBadCards(getGold());
+            int countBadCards=getHand().badCards(getGold()).size();
             if(countBadCards>getHand().size()/2){
                 return false;
             } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir

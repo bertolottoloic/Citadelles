@@ -79,8 +79,13 @@ public class BotIAHighCost extends Player {
 
     @Override
     public List<District> processWhatToBuild() {
+        District tmp=this.whatToBuild(this.getGold());
+        if(tmp!=null){
+            return List.of(tmp);
+        }
+
+        return new ArrayList<>();
         // TODO Auto-generated method stub
-        return List.of(whatToBuild(getGold()));
     }
 
     

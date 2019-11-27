@@ -220,7 +220,15 @@ public class BotIA extends Player{
 
 	}
 
-    
+    @Override
+    public Player processWhoseDistrictToDestroy() {
+        return board.playerWithTheBiggestCity(this);
+    }
+
+    @Override
+    public Player processWhoToExchangeHandWith() {
+        return board.playerWithTheBiggestHand(this);
+    }
     @Override
     public District processDistrictToDestroy(Player target) {
         Optional<District> tmp=target.city.cheaperDistrict();
@@ -260,8 +268,13 @@ public class BotIA extends Player{
 
     @Override
     public List<District> processWhatToBuild() {
-        // TODO Auto-generated method stub
-        return List.of(this.whatToBuild(this.getGold()));
+        District tmp=this.whatToBuild(this.getGold());
+        if(tmp!=null){
+            return List.of(tmp);
+        }
+
+        return new ArrayList<>();
+        
     }
 
 }

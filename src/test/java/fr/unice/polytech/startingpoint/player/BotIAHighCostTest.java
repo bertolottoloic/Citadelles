@@ -97,6 +97,7 @@ class BotIAHighCostTest{
         bot.setBoard(new Board());
         bot.takeCoinsFromBank(4);
         assertEquals(3, dis.size());
+        bot.setCharacter(new Merchant());
         bot.discard(dis);
         assertEquals(1, dis.size());
         assertEquals(2, dis.get(0).getCost());

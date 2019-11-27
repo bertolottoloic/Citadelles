@@ -2,12 +2,12 @@ package fr.unice.polytech.startingpoint.role;
 
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,18 +20,21 @@ public class RoleTest {
     Player target;
     Board board;
     Bank bank;
+    Deck deck;
     DealRoles dealRoles;
 
     @BeforeEach
-    void setUp(){
-        player=new Player(1);
+    void setUp() {
+        player = new Player(1);
         target = new Player(2);
+        deck = new Deck();
         bank=new Bank();
         ArrayList<Player> players = new ArrayList<>();
         players.add(player);
         players.add(target);
         dealRoles = new DealRoles();
         board = new Board();
+        board.setPlayers(players);
         bank.setBourses(players);
         players.forEach(p->p.setDealRoles(dealRoles));
     }
@@ -60,6 +63,8 @@ public class RoleTest {
         player.setCharacter(thief);
         target.setCharacter(merchant);
         target.setBoard(board);
+        target.setDeck(deck);
+        player.setDeck(deck);
         player.setTargetToRob(merchant);
         
         bank.withdraw(4, player);

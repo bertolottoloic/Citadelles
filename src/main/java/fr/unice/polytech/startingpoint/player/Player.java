@@ -1,17 +1,17 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.Board;
-import fr.unice.polytech.startingpoint.board.Deck;
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.game.DealRoles;
-import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.board.Bank;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import fr.unice.polytech.startingpoint.board.Bank;
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.role.Role;
 
 public class Player {
 	private final int id;
@@ -165,6 +165,7 @@ public class Player {
 		}
 	}
 	
+	/*    ----------------------To Override-------------------- */
 	/**
 	 * @ToOverride by Bots
 	 * @return
@@ -173,17 +174,24 @@ public class Player {
 		return dealRoles.getLeftRoles().get(0);
 	}
 
-	@Deprecated
-    public void roleInformations(){
-		knownRole.addAll(this.dealRoles.getLeftRoles());
-		knownRole.addAll(this.dealRoles.getVisible());
-		unknownRole.addAll(this.dealRoles.getRoles());
-		unknownRole.removeAll(knownRole);
-		unknownRole.remove(character);
-		if(unknownRole.size()==1) hidden = unknownRole.remove(0);
-	}
 
     public boolean coinsOrDistrict(){
+		return true;
+	}
+
+	protected boolean isBuildingFirst() {
+		return true;
+	}
+
+	/**
+	 * fonction à réécrire par les Bots pour déterminer si ils veuleunt utiliser 
+	 * la Manufacture ou pas
+	 * Pas besoin de vérifier si la carte Manufacture est vraiment disponible
+	 * c'est fait par isUsingFabric
+	 * @return un boolean
+	 * @ToOverride
+	 */
+	public boolean wantToUseFabric(){
 		return true;
 	}
 
@@ -227,18 +235,16 @@ public class Player {
 		}
 	
 		if(buildFirst) {
-			action();
+			building();
 			specialMove();
 		}
 		else{
 			specialMove();
-			action();
+			building();
 		}
 	}
 
-	protected boolean isBuildingFirst() {
-		return true;
-	}
+	
 
 	/**
 	 * cette fonction renvoie un boolean utilisé par 
@@ -261,17 +267,7 @@ public class Player {
 		return this.usingFabricPower;
 	}
 
-	/**
-	 * fonction à réécrire par les Bots pour déterminer si ils veuleunt utiliser 
-	 * la Manufacture ou pas
-	 * Pas besoin de vérifier si la carte Manufacture est vraiment disponible
-	 * c'est fait par isUsingFabric
-	 * @return un boolean
-	 * @ToOverride
-	 */
-	public boolean wantToUseFabric(){
-		return true;
-	}
+	
 	
 	/**
 	 * @PlayTurnInterface
@@ -327,11 +323,62 @@ public class Player {
 		}
 	}
 
-	protected void action() {
-		
+	final protected void building() {
+		if(!getHand().isEmpty()) {
+			var toBuild = this.processWhatToBuild();
+			
+			if (!toBuild.isEmpty()) {
+				addToTheCity(toBuild);
+			}
+		}
+
+		if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
+			/*
+			Notez que si il reste encore des cartes dans le deck et
+			que le joueur a bien atteint  les 8 districts sans être le premier à
+			l'avoir fait, ce bloc n'est pas executé
+			Cela ne pose pas problème puisque comme ça le Manager n'est notifié qu'une
+			seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
+			fois
+			*/
+			support.firePropertyChange("gameOver",gameOver , true);
+			this.gameOver=true;//inutile en fait : c'est là pour le principe
+		}
 	}
 
-	public void specialMove() {
+	private void addToTheCity(List<District> toBuild) {
+		toBuild.forEach(d->{
+			this.addToTheCity(d);
+		});
+	}
+
+	public List<District> processWhatToBuild() {
+		return new ArrayList<>();
+	}
+
+	public Role processWhoToKill(){
+		return null;
+	}
+
+	public Role processWhoToRob(){
+		return null;
+	}
+
+	public Player processWhoToExchangeHandWith(){
+		return null;
+	}
+	public Player processWhoseDistrictToDestroy(){
+		return null;
+	}
+	public District processDistrictToDestroy(Player target){
+		return null;
+	}
+	final public void specialMove() {
+		targetToKill=processWhoToKill();
+        targetToRob=processWhoToRob();
+        targetToExchangeHandWith=processWhoToExchangeHandWith();
+        targetToDestroyDistrict = processWhoseDistrictToDestroy();
+        districtToDestroy = processDistrictToDestroy(this.targetToDestroyDistrict);
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();	
 	}

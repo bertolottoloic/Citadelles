@@ -1,11 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Role;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotRnd extends Player{
     private Random random=new Random();
@@ -14,6 +14,7 @@ public class BotRnd extends Player{
         super(id);
     }
 
+    
     @Override
     public Role processChooseRole() {
         // TODO Auto-generated method stub
@@ -21,42 +22,38 @@ public class BotRnd extends Player{
     }
 
     @Override
-    public void specialMove() {
-        targetToKill=pickRandomTargetRole();
-        targetToRob=pickRandomTargetRole();
-        targetToExchangeHandWith=pickRandomTargetPlayer();
-        targetToDestroyDistrict = pickRandomTargetPlayer();
-        districtToDestroy = pickRandomDistrict();
-        super.specialMove();
+    public District processDistrictToDestroy(Player target) {
+        if(target!=null){
+            return target.city.randomDistrict();
+        }
+        return null;
+    }
+    @Override
+    public Player processWhoseDistrictToDestroy() {
+        return board.randomPlayer(this);
     }
 
     @Override
-    protected void action() {
-        int i =0;
-            ArrayList<District> currHand=new ArrayList<District>();
-            currHand.addAll(getHand().toList());
-            int nb=getCharacter().getNumberDistrictBuildable();
-            for (District d : currHand){
-                if ((d.getCost() < getGold()) && i<nb) {
-                    addToTheCity(d);
-                    i++;
-                }
-            }
-            if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
-                /*
-                Notez que si il reste encore des cartes dans le deck et
-                que le joueur a bien atteint  les 8 districts sans être le premier à
-                l'avoir fait, ce bloc n'est pas executé
-                Cela ne pose pas problème puisque le Manager n'est notifié qu'une
-                seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
-                fois
-                */
-                support.firePropertyChange("gameOver",gameOver , true);
-		        this.gameOver=true;//inutile en fait : c'est là pour le principe
-            }
-        
+    public Player processWhoToExchangeHandWith() {
+        return board.randomPlayer(this);
     }
+    
 
+    @Override
+    public List<District> processWhatToBuild() {
+        int i =0;
+        var toBuild=new ArrayList<District>();
+        var currHand=new ArrayList<District>();
+        currHand.addAll(getHand().toList());
+        int nb=getCharacter().getNumberDistrictBuildable();
+        for (District d : currHand){
+            if ((d.getCost() < getGold()) && i<nb) {
+                toBuild.add(d);
+                i++;
+            }
+        }
+        return toBuild;
+    }
     @Override
     public void discard(List<District> d){
         if(!d.isEmpty()){
@@ -87,9 +84,16 @@ public class BotRnd extends Player{
         return super.wantToUseFabric();
     }
 
-    Role pickRandomTargetRole(){
+    @Override
+    public Role processWhoToKill() {
+       return  this.dealRoles.getRole(random.nextInt(8)+1);
+    }
+
+    @Override
+    public Role processWhoToRob() {
         return  this.dealRoles.getRole(random.nextInt(8)+1);
     }
+    
     Player pickRandomTargetPlayer(){
         return board.randomPlayer();
     }

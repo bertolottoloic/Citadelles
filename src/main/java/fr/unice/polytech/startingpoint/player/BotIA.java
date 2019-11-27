@@ -73,68 +73,23 @@ public class BotIA extends Player{
         }
     }
 
-    @Override
-    public void specialMove() {
-        targetToKill=targetToChooseForMurderer();
-        targetToRob=targetToChooseForThief();
-        targetToExchangeHandWith=this.pickTargetToExchangeHands();
-        targetToDestroyDistrict = this.pickTargetToDestroy();
-        if(targetToDestroyDistrict!=null) 
-            districtToDestroy = pickDistrict(targetToDestroyDistrict);
-        else 
-            districtToDestroy = null;
-        super.specialMove();
-    }
-
-    @Override
-    protected void action() {
-            if(!getHand().isEmpty()) {
-                District toBuild = whatToBuild(getGold());
-                if (toBuild != null) {
-                    addToTheCity(toBuild);
-                }
-            }
-
-            if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
-                /*
-                Notez que si il reste encore des cartes dans le deck et
-                que le joueur a bien atteint  les 8 districts sans être le premier à
-                l'avoir fait, ce bloc n'est pas executé
-                Cela ne pose pas problème puisque comme ça le Manager n'est notifié qu'une
-                seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
-                fois
-                */
-                support.firePropertyChange("gameOver",gameOver , true);
-                this.gameOver=true;//inutile en fait : c'est là pour le principe
-            }
-        
-    }
-
-
+    
     /**
      * On garde la carte la moins chere
      */
-
     @Override
     public void discard(List<District> d){
         if(d.size()>=2){
             d.sort((a,b)->
                 Integer.compare(a.getCost(),b.getCost())
             );
-            while(d.size()>1){//On ne garde qu'une carte
+            while(d.size()>this.getCharacter().getNumberDistrictKeepable()){
                 this.deck.putbackOne(d.remove(d.size()-1));
             }
         }
     }
 
-    @Override
-    public boolean coinsOrDistrict() {
-        return getGold() < 2
-                || hand.nbBadCards(getGold())<=hand.size()/2
-                || city.getSizeOfCity() >= 6
-                || this.deck.numberOfCards() < 4
-                || hand.size()>2;
-    }
+    
     
     /**
      * utilise une srrategie pour chercher le quartier le moins cher a poser
@@ -265,18 +220,9 @@ public class BotIA extends Player{
 
 	}
 
-    private Player pickTargetToExchangeHands(){
-        return this.getBoard().playerWithTheBiggestHand(this);
-        
-    }   
-    private Player pickTargetToDestroy(){
-        return this.board.playerWithTheBiggestCity(this);
-    }
-
     
-
-    //TODO
-    District pickDistrict(Player target) {
+    @Override
+    public District processDistrictToDestroy(Player target) {
         Optional<District> tmp=target.city.cheaperDistrict();
         if(tmp.isPresent()){
             return tmp.get();
@@ -284,17 +230,15 @@ public class BotIA extends Player{
         else{
             return null;
         }
-        
     }
 
-    Role targetToChooseForMurderer(){
+    @Override
+    public Role processWhoToKill() {
         Set<String> targets = matches.possibleRolesFor(this.board.playerWithTheBiggestCity(this).getId());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
-
-
-
-    Role targetToChooseForThief(){
+    @Override
+    public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
@@ -303,6 +247,21 @@ public class BotIA extends Player{
     public boolean wantToUseFabric() {
         // TODO Auto-generated method stub
         return super.wantToUseFabric();
+    }
+
+    @Override
+    public boolean coinsOrDistrict() {
+        return getGold() < 2
+                || hand.nbBadCards(getGold())<=hand.size()/2
+                || city.getSizeOfCity() >= 6
+                || this.deck.numberOfCards() < 4
+                || hand.size()>2;
+    }
+
+    @Override
+    public List<District> processWhatToBuild() {
+        // TODO Auto-generated method stub
+        return List.of(this.whatToBuild(this.getGold()));
     }
 
 }

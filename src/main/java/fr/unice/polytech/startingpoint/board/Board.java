@@ -49,7 +49,10 @@ public class Board{
 
     public Player randomPlayer(){
         var random=new Random();
-        return players.get(random.nextInt(4));
+        return players.get(random.nextInt(players.size()));
+    }
+    public Player randomPlayer(Player except){
+        return players.stream().filter(p->p!=except).findAny().get();
     }
 
 }

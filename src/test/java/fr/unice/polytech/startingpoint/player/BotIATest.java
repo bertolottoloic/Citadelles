@@ -1,5 +1,19 @@
 package fr.unice.polytech.startingpoint.player;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
@@ -8,19 +22,6 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Thief;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class BotIATest{
 
@@ -84,6 +85,8 @@ class BotIATest{
 		
 		bot.setBoard(new Board());
 		assertEquals(3, dis.size());
+
+		bot.setCharacter(new Merchant());
 		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertEquals(2, dis.get(0).getCost());
@@ -271,7 +274,7 @@ class BotIATest{
 		matches = mock(MatchingProb.class);
 		when(matches.possibleRolesFor(1)).thenReturn(s);
 		bot.setMatches(matches);
-		assertEquals(dealRoles.getRole("Thief"), bot.targetToChooseForMurderer());
+		assertEquals(dealRoles.getRole("Thief"), bot.processWhoToKill());
 	}
 
 	@Test
@@ -288,6 +291,6 @@ class BotIATest{
 		matches = mock(MatchingProb.class);
 		when(matches.possibleRolesFor(1)).thenReturn(s);
 		bot.setMatches(matches);
-		assertEquals(dealRoles.getRole("Merchant"), bot.targetToChooseForThief());
+		assertEquals(dealRoles.getRole("Merchant"), bot.processWhoToRob());
 	}
 }

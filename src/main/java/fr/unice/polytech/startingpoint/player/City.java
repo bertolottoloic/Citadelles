@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
@@ -58,7 +60,21 @@ public class City {
     }
     public int nbOcurrencesOf(String color) {
         return (int)districts.stream().filter(d -> d.hasColor(color)).count();
-     }
+    }
+
+    /**
+     * Renvoie un set des primaryColors de la city
+     * @return
+     */
+    public Set<DistrictColor> colorsOfCity(){
+        var colors= new HashSet<DistrictColor>();
+
+        districts.forEach(d->{
+            colors.add(d.primaryColor());
+        });
+
+        return colors;
+    }
 
      /**
       * La méthode removeDistrict reset la buildDate du district à supprimer
@@ -169,6 +185,14 @@ public class City {
     
     public void nextDay(){
         this.presentDate+=1;
+    }
+
+    public District randomDistrict(){
+        var rand=new Random();
+        if(!districts.isEmpty()){
+            return districts.get(rand.nextInt(districts.size())) ;
+        }
+        return null;
     }
     
 

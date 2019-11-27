@@ -34,7 +34,7 @@ public class BotIAMultiColors extends Player{
         }
         optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
 
-        if(hand.nbBadCards(getGold())>hand.size()/2&& optWizard.isPresent()){
+        if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
             return optWizard.get();
         }
         int position;
@@ -54,29 +54,6 @@ public class BotIAMultiColors extends Player{
         }
         return roles.get(0);
 
-    }
-
-    @Override
-    protected void action() {
-        if(!getHand().isEmpty()) {
-            District toBuild = whatToBuild(getGold());
-            if (toBuild != null) {
-                addToTheCity(toBuild);
-            }
-        }
-
-        if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
-                /*
-                Notez que si il reste encore des cartes dans le deck et
-                que le joueur a bien atteint  les 8 districts sans être le premier à
-                l'avoir fait, ce bloc n'est pas executé
-                Cela ne pose pas problème puisque le Manager n'est notifié qu'une
-                seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
-                fois
-                */
-            support.firePropertyChange("gameOver",gameOver , true);
-            this.gameOver=true;//inutile en fait : c'est là pour le principe
-        }
     }
 
     District whatToBuild(int limit){
@@ -129,7 +106,7 @@ public class BotIAMultiColors extends Player{
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
-                || hand.nbBadCards(getGold())<=hand.size()/2
+                || hand.badCards(getGold()).size()<=hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
@@ -144,16 +121,6 @@ public class BotIAMultiColors extends Player{
             return d;
         }
         return null;
-    }
-
-    @Override
-    public void specialMove() {
-        targetToKill=pickTargetRole();
-        targetToRob=pickTargetRole();
-        targetToExchangeHandWith=this.board.playerWithTheBiggestHand(this);
-        targetToDestroyDistrict = this.board.playerWithTheBiggestCity(this);
-        districtToDestroy = pickRandomDistrict();
-        super.specialMove();
     }
 
     Role pickTargetRole(){
@@ -179,7 +146,7 @@ public class BotIAMultiColors extends Player{
             return false;
         }
         else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().nbBadCards(getGold());
+            int countBadCards=getHand().badCards(getGold()).size();
             if(countBadCards>getHand().size()/2){
                 return false;
             } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
@@ -204,29 +171,8 @@ public class BotIAMultiColors extends Player{
         }
         return Optional.empty();
     }
-    @Override
-    protected void isUsingGraveyard() {
-        if (city.containsWonder("Cimetiere")) {
-            District dis = findDestroyedDistrict();
-            if (dis != null && !getCharacter().toString().equals("Warlord")) {
-                if (dis.getCost() < getGold() && dis.getValue() > 4) {
-                    System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
-                    bank.deposit(1, this);
-                    hand.add(dis);
-                }
-            }
-        }
-    }
-    District findDestroyedDistrict() {
-        ArrayList<Player> players = board.getPlayers();
-        for(Player p : players) {
-            District tmp = p.destroyedDistrict;
-            if(tmp != null) {
-                return tmp;
-            }
-        }
-        return null;
-    }
+
+
     @Override
     public boolean wantToUseFabric() {
         // TODO Auto-generated method stub

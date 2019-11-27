@@ -35,7 +35,7 @@ public class BotIAHighCost extends Player {
         }
         optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
 
-        if(hand.nbBadCards(getGold())>hand.size()/2&& optWizard.isPresent()){
+        if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
             return optWizard.get();
         }
         int position;

@@ -1,11 +1,11 @@
 package fr.unice.polytech.startingpoint.player;
 
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotIAHighCost extends Player {
 
@@ -25,19 +25,27 @@ public class BotIAHighCost extends Player {
 
     //TODO ???
     Role bestRoleToChoose(ArrayList<Role> roles, String color){
-        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
+        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
+        if(optWizard.isPresent()){
+            return optWizard.get();
+        }
+        optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
+        if(optWizard.isPresent()){
+            return optWizard.get();
+        }
+        optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
 
-        if(hand.highValuedDistrict(4)&& optWizard.isPresent()){
+        if(hand.nbBadCards(getGold())>hand.size()/2&& optWizard.isPresent()){
             return optWizard.get();
         }
         int position;
         switch (color){
             case "religion": position=5;
-            break;
+                break;
             case "soldatesque": position =8;
-            break;
+                break;
             case "noble": position =4;
-            break;
+                break;
             default : position =6;
         }
         for(Role role : roles){
@@ -48,6 +56,8 @@ public class BotIAHighCost extends Player {
         return roles.get(0);
 
     }
+
+
 
 
     @Override

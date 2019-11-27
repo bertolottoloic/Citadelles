@@ -12,28 +12,10 @@ public class BotIAColor extends Player{
     }
 
     @Override
-    protected void action() {
-        if(!getHand().isEmpty()) {
-            District toBuild = whatToBuild(getGold());
-            if (toBuild != null) {
-                addToTheCity(toBuild);
-            }
-        }
-
-        if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
-                /*
-                Notez que si il reste encore des cartes dans le deck et
-                que le joueur a bien atteint  les 8 districts sans être le premier à
-                l'avoir fait, ce bloc n'est pas executé
-                Cela ne pose pas problème puisque le Manager n'est notifié qu'une
-                seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
-                fois
-                */
-            support.firePropertyChange("gameOver",gameOver , true);
-            this.gameOver=true;//inutile en fait : c'est là pour le principe
-        }
+    public List<fr.unice.polytech.startingpoint.board.District> processWhatToBuild() {
+        // TODO Auto-generated method stub
+        return List.of(this.whatToBuild(this.getGold()));
     }
-
     District whatToBuild(int limit){
         District district = getHand().highCostDistrict(limit);
         if(district.getCost()<=limit){
@@ -82,15 +64,6 @@ public class BotIAColor extends Player{
         return null;
     }
 
-    @Override
-    public void specialMove() {
-        targetToKill=pickTargetRole();
-        targetToRob=pickTargetRole();
-        targetToExchangeHandWith=this.board.playerWithTheBiggestHand(this);
-        targetToDestroyDistrict = this.board.playerWithTheBiggestCity(this);
-        districtToDestroy = pickRandomDistrict();
-        super.specialMove();
-    }
 
     Role pickTargetRole(){
         Role character = this.getCharacter();

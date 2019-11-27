@@ -56,20 +56,20 @@ class BotRndTest {
 	}
 	
 	@Test
-	void testAction() {
+	void testbuilding() {
 		bank.withdraw(10, b1);
 		b1.pickNewDistrict(new District(3, 2, DistrictColor.Religion, "Église"));
 		b1.pickNewDistrict(new District(2, 2, DistrictColor.Noble, "Chateau"));
 		b1.pickNewDistrict(new District(6, 2, DistrictColor.Warlord, "Pont"));
 		assertTrue(b1.city.isEmpty());
-		b1.action();
+		b1.building();
 		assertEquals(1, b1.city.getSizeOfCity());
-		b1.action();
+		b1.building();
 		assertEquals(2, b1.city.getSizeOfCity());
-		b1.action();
+		b1.building();
 		assertEquals(2, b1.city.getSizeOfCity());
 		b1.getDeck().getList().clear();
-		b1.action();
+		b1.building();
 		assertTrue(b1.gameOver);
 	}
 }

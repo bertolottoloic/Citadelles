@@ -8,15 +8,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Bank;
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.player.Player;
 
 public class MerchantTest {
     Player player;
     Bank bank;
+    Board board;
+    Deck deck;
     @BeforeEach
     void setUp(){
         player=new Player(1);
         bank=new Bank();
+        board=new Board();
+        deck=new Deck();
+        board.setPlayers(player);
+        player.setBoard(board);
+        player.setDeck(deck);
         bank.setBourses(List.of(player));
     }
 

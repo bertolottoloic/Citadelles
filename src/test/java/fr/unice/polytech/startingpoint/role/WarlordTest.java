@@ -19,10 +19,21 @@ public class WarlordTest {
     DealRoles dealRoles;
     Deck deck;
     Bank bank;
+    District d;
 
     @BeforeEach
     void setUp(){
-        player=new Player(1);
+        target=new Player(1);
+        player=new Player(0){
+            @Override
+            public District processDistrictToDestroy(Player target){
+                return d;
+            }
+            @Override
+            public Player processWhoseDistrictToDestroy() {
+                return target;
+            }
+        };
         target=new Player(2);
         dealRoles = new DealRoles();
         deck=new Deck();
@@ -42,11 +53,11 @@ public class WarlordTest {
         player.setCharacter(warlord);
         player.takeCoinsFromBank(10);
         target.takeCoinsFromBank(10);
-        District d=deck.withdraw();
+        d=deck.withdraw();
         target.addToTheCity(d);
         ArrayList<District> city = target.getCity().getListDistricts();
-        player.setTargetToDestroyDistrict(target);
-        player.setDistrictToDestroy(d);
+        
+        
         player.specialMove();
         assertEquals(8,warlord.getPosition());
         assertEquals(player,warlord.getPlayer());

@@ -49,40 +49,46 @@ public class BotIAHighCost extends Player {
 
     }
 
+
+    @Override
+    public Role processWhoToKill() {
+        return this.dealRoles.getRole("Thief");
+    }
+
+    @Override
+    public Role processWhoToRob() {
+        // TODO Auto-generated method stub
+        return this.dealRoles.getRole("Merchant");
+    }
+
+    @Override
+    public Player processWhoToExchangeHandWith() {
+        return this.board.playerWithTheBiggestHand(this);
+    }
+
+    @Override
+    public Player processWhoseDistrictToDestroy() {
+        return this.board.playerWithTheBiggestCity(this);
+    }
+
+    @Override
+    public District processDistrictToDestroy(Player target) {
+        return pickRandomDistrict();
+    }
     
 
     @Override
-    public void specialMove() {
-        targetToKill=pickTargetRole();
-        targetToRob=pickTargetRole();
-        targetToExchangeHandWith=this.board.playerWithTheBiggestHand(this);
-        targetToDestroyDistrict = this.board.playerWithTheBiggestCity(this);
-        districtToDestroy = pickRandomDistrict();
-        super.specialMove();
-    }
-
-    @Override
-    protected void action() {
-        if(!getHand().isEmpty()) {
-            District toBuild = whatToBuild(getGold());
-            if (toBuild != null) {
-                addToTheCity(toBuild);
-            }
+    public List<District> processWhatToBuild() {
+        District tmp=this.whatToBuild(this.getGold());
+        if(tmp!=null){
+            return List.of(tmp);
         }
 
-        if(checkFinishBuilding() || this.deck.numberOfCards()<=0){
-                /*
-                Notez que si il reste encore des cartes dans le deck et
-                que le joueur a bien atteint  les 8 districts sans être le premier à
-                l'avoir fait, ce bloc n'est pas executé
-                Cela ne pose pas problème puisque le Manager n'est notifié qu'une
-                seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
-                fois
-                */
-            support.firePropertyChange("gameOver",gameOver , true);
-            this.gameOver=true;//inutile en fait : c'est là pour le principe
-        }
+        return new ArrayList<>();
+        // TODO Auto-generated method stub
     }
+
+    
 
 
     District whatToBuild(int limit){
@@ -101,7 +107,7 @@ public class BotIAHighCost extends Player {
             d.sort((a,b)->
                     Integer.compare(a.getCost(),b.getCost())
             );
-            while(d.size()>1){//On ne garde qu'une carte
+            while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
                 if(d.get(0).getCost()>getGold()){
                     this.deck.putbackOne(d.remove(0));
                 }
@@ -184,23 +190,6 @@ public class BotIAHighCost extends Player {
 		}
 	}
 
-    //
-    Role pickTargetRole(){
-        Role character = this.getCharacter();
-        Role target;
-        switch(character.getPosition()){
-            case 1:
-                target = this.dealRoles.getRole("Thief");
-                break;
-            case 2:
-                target = this.dealRoles.getRole("Merchant");
-                break;
-            default :
-                target = null;
-                break;
-        }
-        return target;
-    }
 
 
     //TODO utiliser une stratégie concrète

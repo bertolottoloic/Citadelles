@@ -84,8 +84,12 @@ public class BotIA extends Player{
                 Integer.compare(a.getCost(),b.getCost())
             );
             while(d.size()>this.getCharacter().getNumberDistrictKeepable()){
-                this.deck.putbackOne(d.remove(d.size()-1));
-            }
+				if(d.get(0).getCost()>getGold()){
+                    this.deck.putbackOne(d.remove(0));
+                }
+                else{
+                    this.deck.putbackOne(d.remove(d.size()-1));
+                }            }
         }
     }
 

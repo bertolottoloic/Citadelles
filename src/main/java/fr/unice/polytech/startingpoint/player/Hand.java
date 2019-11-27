@@ -23,13 +23,13 @@ public class Hand {
 		if (districts.isEmpty()) {
 			return null;
 		} else {
-			District lowCost = districts.get(0);
+			/*District lowCost = districts.get(0);
 			for (District d : districts) {
 				if (d.getCost() < lowCost.getCost()) {
 					lowCost = d;
 				}
-			}
-			return lowCost;
+            }*/
+            return districts.stream().min((a,b)->Integer.compare(a.getCost(),b.getCost())).get();
 		}
 	}
 
@@ -57,8 +57,8 @@ public class Hand {
     	return false;
     }
 
-	public void addAll(ArrayList<District> withdrawMany) {
-        districts.addAll(withdrawMany);
+	public void addAll(List<District> list) {
+        districts.addAll(list);
 	}
 
 	public void add(District d) {

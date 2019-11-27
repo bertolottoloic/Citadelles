@@ -48,7 +48,7 @@ public class Board{
     }
 
     public Player randomPlayer(){
-        Random random=new Random();
+        var random=new Random();
         return players.get(random.nextInt(4));
     }
 

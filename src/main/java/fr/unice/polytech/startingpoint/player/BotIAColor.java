@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BotIAColor extends Player{
     public BotIAColor(int id){
@@ -44,7 +45,7 @@ public class BotIAColor extends Player{
     }
 
     @Override
-    public void discard(ArrayList<District> d){
+    public void discard(List<District> d){
         if(d.size()>=2){
             d.sort((a,b)->
                     Integer.compare(a.getCost(),b.getCost())

@@ -2,8 +2,11 @@ package fr.unice.polytech.startingpoint.role;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,8 +71,8 @@ public class WizardTest {
         cardsToExchange.remove(0);
         player.setCardsToExchange(cardsToExchange);
         wizard.useSpecialPower();
-        assertEquals(hand.get(0),player.getHand().toList().get(0));
-        assertEquals(hand.get(1),player.getHand().toList().get(1));
+        assertEquals(true,player.getHand().toList().contains(hand.get(0)));
+        assertEquals(true,player.getHand().toList().contains(hand.get(1)));
         assertNotSame(hand.get(2),player.getHand().toList().get(2));
         assertNotSame(hand.get(3),player.getHand().toList().get(3));
     }

@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
@@ -20,6 +22,7 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.King;
+import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.role.Warlord;
 import fr.unice.polytech.startingpoint.role.Wizard;
@@ -80,10 +83,15 @@ class PlayerTest {
     
     @Test
     void testDeleteDistrictFromCity(){
+    	player.setBoard(new Board());
+    	player.getBoard().setPlayers(player, p2);
+    	
 		assertEquals(0, player.getCity().getSizeOfCity());
 		bank.withdraw(3, player);
     	player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise"));
     	assertEquals(1, player.getCity().getSizeOfCity());
+    	
+    	
     	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
     	assertEquals(0, player.getCity().getSizeOfCity());
     	
@@ -92,7 +100,31 @@ class PlayerTest {
     	player.setCharacter(new Bishop());
     	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
     	assertEquals(1, player.getCity().getSizeOfCity());
+    	
+    	bank.withdraw(3, player);
+    	player.addToTheCity(new District(3,3,DistrictColor.Wonder,"Donjon"));
+    	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
+    	assertEquals(2, player.getCity().getSizeOfCity());
+    	
+    	player.setCharacter(new Merchant());
+    	bank.withdraw(3, player);
+    	player.addToTheCity(new District(3,3,DistrictColor.Wonder,"Donjon"));
+    	player.deleteDistrictFromCity(player.getCity().getListDistricts().get(0));
+    	assertEquals(1, player.getCity().getSizeOfCity());
 	}
+    
+    @Test 
+    void testDeletion(){
+    	board = mock(Board.class);
+    	p2 = mock(Player.class);
+    	player.setBoard(board);
+    	board.setPlayers(player, p2); 
+    	District d = new District(0, 2, DistrictColor.Commerce, "quartier");
+    	Mockito.verify(p2, Mockito.never()).isUsingGraveyard(d);
+    	when(board.existsGraveyardPlayer()).thenReturn(p2);
+    	player.deletion(d);
+    	Mockito.verify(p2).isUsingGraveyard(d);
+    }
     
     @Test
     void testTakeCoinsFromBank(){
@@ -238,8 +270,13 @@ class PlayerTest {
 		assertFalse(player.isUsingFabric());
 	}
 	
-
-
-    
+	@Test
+	void usesGraveyardTest() {
+		assertEquals(0, player.hand.size());
+		
+		District ex = new District(2, 2, "merveille", "Poudlard");
+		player.usesGraveyard(ex);
+		assertEquals(1, player.hand.size());
+	}
     
 }

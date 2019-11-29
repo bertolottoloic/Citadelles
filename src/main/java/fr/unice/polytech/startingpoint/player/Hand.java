@@ -128,7 +128,7 @@ public class Hand {
     	return res;
     }
 
-    public String bestColorDistrict(){
+    public HashMap<DistrictColor,Integer> countColors(){
         HashMap<DistrictColor,Integer> countColors=new HashMap<>();
         countColors.put(DistrictColor.Religion,0);
         countColors.put(DistrictColor.Commerce,0);
@@ -142,6 +142,11 @@ public class Hand {
                 }
             });
         }
+        return countColors;
+    }
+
+    public String bestColorDistrict(){
+        HashMap<DistrictColor,Integer> countColors=countColors();
         Entry<DistrictColor,Integer> resultat= Collections.max(countColors.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue());
 
         if(resultat.getValue()<=0){

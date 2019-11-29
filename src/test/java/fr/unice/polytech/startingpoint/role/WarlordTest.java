@@ -45,6 +45,7 @@ public class WarlordTest {
         bank.setBourses(players);
         players.forEach(p->p.setDealRoles(dealRoles));
         players.forEach(p->p.setDeck(deck));
+        d=deck.withdraw();
     }
 
     @Test
@@ -53,7 +54,7 @@ public class WarlordTest {
         player.setCharacter(warlord);
         player.takeCoinsFromBank(10);
         target.takeCoinsFromBank(10);
-        d=deck.withdraw();
+        
         target.addToTheCity(d);
         ArrayList<District> city = target.getCity().getListDistricts();
         

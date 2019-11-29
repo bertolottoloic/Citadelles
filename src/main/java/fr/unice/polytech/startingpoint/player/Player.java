@@ -28,7 +28,6 @@ public class Player {
 	protected Role targetToRob;
 	protected Player targetToDestroyDistrict;
 	protected District districtToDestroy;
-	protected District destroyedDistrict;
 	private ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
@@ -100,17 +99,24 @@ public class Player {
 	final public boolean deleteDistrictFromCity(District toDelete){
 		if(character!=null){
 			if(!character.toString().equals("Bishop") && !toDelete.getName().equals("Donjon")){
-				destroyedDistrict = toDelete;
-				return city.removeDistrict(toDelete);
+				 return deletion(toDelete);
 			}
 		}
 		else{
 			if(!toDelete.getName().equals("Donjon")){
-				destroyedDistrict = toDelete;
-				return city.removeDistrict(toDelete);
+				return deletion(toDelete);
 			}
 		}
 		return false;
+	}
+	
+	boolean deletion(District d) {
+		Player p;
+		if(board!=null && board.existsGraveyardPlayer() != null) {
+			p = board.existsGraveyardPlayer();
+			p.isUsingGraveyard(d);
+		}
+		return city.removeDistrict(d);
 	}
 	
 	/**
@@ -263,7 +269,6 @@ public class Player {
 
 		this.collectMoneyFromDistricts();
 		this.isUsingLabo();
-		this.isUsingGraveyard();
 		
 		
 		if(coinsOrDistrict()){
@@ -335,6 +340,17 @@ public class Player {
 	
 	
 	
+	protected boolean isUsingGraveyard(District d) {
+		return true;
+	}
+	
+	protected void usesGraveyard(District d) {
+		if(isUsingGraveyard(d)) {
+			System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
+			bank.deposit(1, this);
+			hand.add(d);
+		}
+	}
 	/**
 	 * Méthode pour remettre au default les valeurs 
 	 * changées par le tour qui vient d'être joué
@@ -533,10 +549,6 @@ public class Player {
 
 	public void setDistrictToDestroy(District districtToDestroy) {
 		this.districtToDestroy = districtToDestroy;
-	}
-	
-	public District GetDestroyedDistrict() {
-		return destroyedDistrict;
 	}
 	
 	public Player getTargetToExchangeHandWith() {

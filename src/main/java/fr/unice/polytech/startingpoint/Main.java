@@ -21,11 +21,11 @@ public class Main {
         stats.put(2,0);
         stats.put(3,0);
         stats.put(4,0);
-        while (n < 1200) {
+        while (n < 2200) {
             Player p1 = new BotIA(1);
             Player p2 = new BotIA(2);
-            Player p3 = new BotRnd(3);
-            Player p4 = new BotIAHighCost(4);
+            Player p3 = new BotIA(3);
+            Player p4 = new BotIA(4);
 
             Manager manager = new Manager();          
             manager.letsPlay(p1, p2, p3, p4);

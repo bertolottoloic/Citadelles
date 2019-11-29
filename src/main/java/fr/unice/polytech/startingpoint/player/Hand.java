@@ -69,7 +69,7 @@ public class Hand {
         return districts.remove(theDistrict);
     }
 
-	public List<? extends District> toList() {
+	public List<District> toList() {
 		return districts;
 	}
 
@@ -95,8 +95,11 @@ public class Hand {
 		return districts.size();
 	}
 
+    public int nbCardsCostingLessThan(int limit){
+        return (int)districts.stream().filter(d->d.getCost()<=limit).count();
+    }
 	public District highCostDistrict(int gold) {
-		District highCost=districts.get(0);
+        District highCost=districts.get(0);
         for(District d : districts){
             if(d.getCost() > highCost.getCost()&&(d.getCost()<=gold)) {
                 highCost=d;
@@ -114,6 +117,8 @@ public class Hand {
         });
         return badCards;
     }
+    
+
     
     public ArrayList<District> cardsAboveGold(int gold){
     	ArrayList<District> res = new ArrayList<>();
@@ -146,6 +151,10 @@ public class Hand {
             return resultat.getKey().toString();
         }
     }
+
+    
+    
+    
     
 
 

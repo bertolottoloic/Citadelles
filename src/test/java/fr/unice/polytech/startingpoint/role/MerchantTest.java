@@ -19,7 +19,12 @@ public class MerchantTest {
     Deck deck;
     @BeforeEach
     void setUp(){
-        player=new Player(1);
+        player=new Player(1){
+            @Override
+            public boolean coinsOrDistrict() {
+                return true;
+            }
+        };
         bank=new Bank();
         board=new Board();
         deck=new Deck();

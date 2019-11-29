@@ -7,19 +7,21 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.player.BotIA;
+
+
 
 public class BankTest {
     Bank b;
-    Player p;
-    Player p2;
+    BotIA p;
+    BotIA p2;
 
     @BeforeEach
     public void setUp() {
 
         b=new Bank();
-        p=new Player(1);
-        p2=new Player(2);
+        p=new BotIA(1);
+        p2=new BotIA(2);
         b.setBourses(List.of(p,p2));
        
     }

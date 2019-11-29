@@ -1,12 +1,13 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.role.Role;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotIA extends Player{
     public BotIA(int id) {
@@ -17,15 +18,31 @@ public class BotIA extends Player{
 
     @Override
     public Role processChooseRole() {
+        List<Role> toConsider=new ArrayList<>(this.dealRoles.getLeftRoles());
         // TODO Auto-generated method stub
-        Optional<Role> alt1= this.dealRoles.getLeftRoles().stream().filter(r->r.toString().equals("Architect")).findAny();
-        
-        Optional<Role> alt2=this.roleToOptimizeCoins(
-            this.dealRoles.getLeftRoles(), 
-            this.dealRoles.getHidden()    
+        if(this.nextPlayer.alreadyChosenRole){
+            toConsider.add(this.dealRoles.getHidden());
+        }
+        Optional<Role> alt1=this.roleToOptimizeCoins(
+            toConsider
         );
+        Optional<Role> alt2= toConsider.stream().filter(r->r.toString().equals("Architect")).findAny();
         
-        return alt1.or(()->alt2).or(()->Optional.of(super.processChooseRole())).get();
+        
+        Optional<Role> alt3= toConsider.stream().filter(r->r.toString().equals("Merchant")).findAny();
+        Optional<Role> alt4= toConsider.stream().filter(r->r.toString().equals("Thief")).findAny();
+        Optional<Role> alt5= toConsider.stream().filter(r->r.toString().equals("Murderer")).findAny();
+        Optional<Role> alt6= toConsider.stream().filter(r->r.toString().equals("Wizard")).findAny();
+
+        this.attributeProbsToPlayer();
+        
+        return alt1
+        .or(()->alt2)
+        .or(()->alt3)
+        .or(()->alt4)
+        .or(()->alt5)
+        .or(()->alt6)
+        .or(()->Optional.of(super.processChooseRole())).get();
         
     }
 
@@ -40,19 +57,30 @@ public class BotIA extends Player{
      * la probabilité pour qu'ils aient (p1,p2 ou p3)
      * comme role est 0
      * 
-     * TODO : une méthode similaire pour les joueurs suivants
      */
 
-    public void attributeProbsToPreviousPlayer(){
+    public void attributeProbsToPlayer(){
         ArrayList<Player> pl=board.getPlayers();
-        ArrayList<Role> lefts=this.dealRoles.getLeftRoles();
+        ArrayList<Role> toConsider=new ArrayList<>(this.dealRoles.getLeftRoles());
+        var hiddenRole=this.dealRoles.getHidden();
+        ArrayList<Role> visibles=this.dealRoles.getVisible();
 
+        if(this.nextPlayer!=null && this.nextPlayer.alreadyChosenRole){
+            toConsider.add(hiddenRole);
+        }
         for (Player player : pl) {
+            //tous ceux qui ont déja choisi leurs roles n'ont évidemment pas 
+            //pu prendre ce qui reste
             if(player.alreadyChosenRole){
-                for (Role role : lefts) {
+                for (Role role : toConsider) {
                     matches.setProbability(player.getId(), role.toString(), 0);
                 }
             }
+            //personne n'a les roles visbibles
+            for (Role role : visibles) {
+                matches.setProbability(player.getId(), role.toString(), 0);
+            }
+            
             
         }
     }
@@ -79,16 +107,44 @@ public class BotIA extends Player{
      */
     @Override
     public void discard(List<District> d){
-        if(d.size()>=2){
+        //if(d.size()>=2){
             d.sort((a,b)->
                 Integer.compare(a.getCost(),b.getCost())
             );
             while(d.size()>this.getCharacter().getNumberDistrictKeepable()){
                 this.deck.putbackOne(d.remove(d.size()-1));
+                
+            }
+        //}
+    }
+
+    //TODO tests
+	public Tmp buildables(List<District> toConsider,int limit){
+        if(toConsider.isEmpty() || limit<=0){
+            return new Tmp(0,new ArrayList<District>());
+        }
+        else if(toConsider.get(0).getCost()>limit){
+            //Explore right branch only
+            return buildables(toConsider.subList(1,toConsider.size()), limit);
+        }
+        else{
+            var nextItem=toConsider.get(0);
+            //Explore left branch
+            Tmp resultLeft=buildables(toConsider.subList(1, toConsider.size()), limit-nextItem.getCost());
+            resultLeft.addVal(nextItem.getValue());
+            //Explore right branch
+            Tmp resultRight=buildables(toConsider.subList(1, toConsider.size()), limit);
+
+            if(resultLeft.getVal()>resultRight.getVal()){
+                resultLeft.getDistricts().add(nextItem);
+                
+                return resultLeft;
+            }
+            else{
+                return resultRight;
             }
         }
     }
-
     
     
     /**
@@ -120,13 +176,25 @@ public class BotIA extends Player{
     @Override
     protected boolean isBuildingFirst() {
         if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
+            return true;
+        }
+        else if(getCharacter().toString().equals("Thief")){
             return false;
         }
-        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().badCards(getGold()).size();
-            if(countBadCards>getHand().size()/2){
+        else if(getCharacter().toString().equals("Warlord")){
+            //TODO compléter l'algorithme
+            //vérifier si il peut construire
+            //si il le peut vérifier la valeur totale qu'aura sa cité
+            //comparer avec la valeur totale de la cité de celui qui la cité avec la plus grande valeur
+            //si this.city.totalValue()>= other.city.value then true
+            //otherwise 
+            return true;
+        }
+        else if(getCharacter().toString().equals("Wizard")){//si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+            int countBadCards=getHand().nbTooExpensiveDistricts(getGold());
+            if(countBadCards==getHand().size()){
                 return false;
-            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+            }
             else{
                 return true;
             }
@@ -196,21 +264,21 @@ public class BotIA extends Player{
 	 * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true TODO
 	 * utliser le parametre hidden
 	 */
-	public Optional<Role> roleToOptimizeCoins(ArrayList<Role> lefts, Role hidden) {
+	public Optional<Role> roleToOptimizeCoins(List<Role> toConsider) {
 
 		if (city.getSizeOfCity() == 0) {
 			// une autre
 			return Optional.empty();
 		} else {
 			ArrayList<String> availableColors = new ArrayList<>();
-			lefts.stream().map(d -> d.getColor()).forEach(s -> {
+			toConsider.stream().map(d -> d.getColor()).forEach(s -> {
 				if (s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse")) {
 					availableColors.add(s);
 				}
 			});
 			String bestColor = this.city.mostPotentiallyPayingColor(availableColors);
 
-			for (Role r : lefts) {
+			for (Role r : toConsider) {
 				if (r.getColor().equals(bestColor)) {
 					return Optional.of(r);
 				}
@@ -251,39 +319,62 @@ public class BotIA extends Player{
 
     @Override
     public Role processWhoToKill() {
+        this.attributeProbsToPlayer();
         Set<String> targets = matches.possibleRolesFor(this.board.playerWithTheBiggestCity(this).getId());
+        targets.remove(this.getCharacter().toString());//on exclut son propre role
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
     @Override
     public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
+        targets.remove(this.getCharacter().toString());//on exclut son propre role
+        //TODO exclure celui qui a deja ete tué
+        /*Optional<Role> optKilled=dealRoles.roleKilled();
+        if(optKilled.isPresent()){
+            targets.remove(optKilled.get().toString());
+        }*/
+        
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
     @Override
     public boolean wantToUseFabric() {
-        // TODO Auto-generated method stub
-        return super.wantToUseFabric();
+        return false;
+        
     }
 
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2
-                || hand.badCards(getGold()).size()<=hand.size()/2
-                || city.getSizeOfCity() >= 6
-                || this.deck.numberOfCards() < 4
-                || hand.size()>2;
+        return getGold() < 8;
     }
 
+    //TODO optimiser par rapport à la couleur
     @Override
     public List<District> processWhatToBuild() {
-        District tmp=this.whatToBuild(this.getGold());
-        if(tmp!=null){
-            return List.of(tmp);
+        //District tmp=this.whatToBuild(this.getGold());
+        List<District> toConsider;
+        if(city.getSizeOfCity()==7){//si on est sur le point de finir 
+            //on peut construire des cartes de cout 1 puisque le condotierre ne peut pas détruire
+            //les cités finies
+            //TODO trier le résultat final par ordre décroissant de valeur
+            toConsider=getHand().toList().stream()
+            .filter(d->!city.alreadyContains(d))
+            .collect(Collectors.toList());
         }
-
-        return new ArrayList<>();
-        
+        else{//ne pas construire des cartes de cout 1 sinon le condotierre peut les détruire facilement
+            //sans rien payer
+            toConsider=getHand().toList().stream()
+            .filter(d->!city.alreadyContains(d)&& d.getCost()>1)
+            .collect(Collectors.toList());
+        }
+        return buildables(
+                        toConsider,
+                        getGold()
+                )
+            .getDistricts().stream()
+            .limit(this.getCharacter().getNumberDistrictBuildable())
+            .collect(Collectors.toList());
     }
 
+    
 }

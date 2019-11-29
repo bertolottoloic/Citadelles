@@ -1,18 +1,19 @@
 package fr.unice.polytech.startingpoint.game;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Crown;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 public class Manager implements PropertyChangeListener {
     private int i=1;
@@ -42,7 +43,7 @@ public class Manager implements PropertyChangeListener {
             p.reInitializeForNextTurn();
         }
 
-        dealRoles.readyToDistribute();
+        dealRoles.readyToDistribute(players.length);
         //dealRoles.distributeRoles(crown);
         crown.getCrownOwner().chooseRole();
 
@@ -68,16 +69,24 @@ public class Manager implements PropertyChangeListener {
     }
 
     public void letsPlay(Player... players) {
-
-        // On crée met les players en cercle
+        Set<Integer> ids =new HashSet<>();
+        for(Player p:players){
+            ids.add(p.getId());
+        }
+        if(ids.size()!=players.length){
+            throw new IllegalArgumentException("Les id des players doivent etre différents");
+        }
+        // On met les players en cercle
         for (int i = 0; i < players.length - 1; i++) {
             players[i].setNextPlayer(players[i + 1]);
         }
         players[players.length - 1].setNextPlayer(players[0]);
-        ArrayList<Player> list = new ArrayList<>(Arrays.asList(players));
-        board.setPlayers(list);
+
+        
+        board.setPlayers(players);
+
         dealRoles = new DealRoles();
-        bank.setBourses(List.of(players));
+        bank.setBourses(players);
         bank.distributeCoinsAtBeggining();
         for (Player p : players) {
             p.addPropertyChangeListener(this);
@@ -114,7 +123,7 @@ public class Manager implements PropertyChangeListener {
 
     public void endGame(Player... players) {
 
-        int maxScore = -1;
+        /*int maxScore = -1;
         for (Player p : players) {
             int score = p.points();
             if (score > maxScore) {
@@ -125,7 +134,9 @@ public class Manager implements PropertyChangeListener {
                 winner.add(p);
             }
 
-        }
+        }*/
+
+        winner.add(List.of(players).stream().max((a,b)->Integer.compare(a.points(), b.points())).get());
         
     }
 

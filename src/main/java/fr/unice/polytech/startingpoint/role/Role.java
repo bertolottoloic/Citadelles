@@ -26,7 +26,7 @@ public abstract class Role {
     /**
      * Nombre de districts qu'on peut consulter dans le Deck
      */
-    private int numberDistrictPickable = 2;
+    protected int numberDistrictPickable = 2;
     /**
      * Nombre de districts parmi les cartes du Deck consulter que le joueur peut garder
      * Change pour l'architecte

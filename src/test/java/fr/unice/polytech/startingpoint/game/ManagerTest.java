@@ -44,6 +44,6 @@ class ManagerTest {
 	void testEndGame() {
 		Player[] players = {p1, p2, p3, p4};
 		manager.endGame(players);
-		assertEquals(4, manager.getWinner().size());
+		assertEquals(1, manager.getWinner().size());
 	}
 }

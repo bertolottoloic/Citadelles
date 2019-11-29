@@ -70,5 +70,13 @@ public class MatchingProb {
                   .findFirst().get();
     }
 
+    public void reInitialize(){
+        mappingPlayerIndex.keySet().stream().forEach(p->{
+            mappingRoleIndex.keySet().stream().forEach(r->{
+                this.setProbability(p, r, -1.0);
+            });
+        });
+    }
+
 
 }

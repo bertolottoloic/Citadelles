@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import fr.unice.polytech.startingpoint.player.BotIA;
 import fr.unice.polytech.startingpoint.player.Player;
 
 
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class CrownTest{
     Crown crown = new Crown();
-    Player player=new Player(1);
+    Player player=new BotIA(1);
 
 
     @Test

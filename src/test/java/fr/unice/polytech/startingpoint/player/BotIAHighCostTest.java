@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.player;
 import fr.unice.polytech.startingpoint.board.*;
 import fr.unice.polytech.startingpoint.role.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ class BotIAHighCostTest{
         hand.add(d2);
     }
 
+    @Disabled
     @Test
     void coinsOrDistrictTest() {
         assertTrue(bot.coinsOrDistrict());
@@ -267,5 +269,11 @@ class BotIAHighCostTest{
 		assertEquals(tmpGold, anotherBot.getGold());
 		assertEquals(tmpHandSize, anotherBot.getHand().size());
 		assertFalse(anotherBot.hand.toList().contains(d1));
-	}
+    }
+    
+    @Test
+    void isUsingFabricTest(){
+        Player p=new BotIAHighCost(5);
+        assertEquals(false, p.isUsingFabric());
+    }
 }

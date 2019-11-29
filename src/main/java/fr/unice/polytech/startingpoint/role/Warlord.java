@@ -21,8 +21,11 @@ public class Warlord extends Role {
 
     @Override
     public void useSpecialPower() {
-        //TODO pourquoi cette vérif ??
-        if(this.player.getDistrictToDestroy()!= null && this.player.getDistrictToDestroy().getCost()<=this.player.getGold()) {
+        var condition=this.player.getDistrictToDestroy()!= null && 
+                        this.player.getDistrictToDestroy().getCost()-1<=this.player.getGold() &&
+                        this.player.getTargetToDestroyDistrict()!=null &&
+                        this.player.getTargetToDestroyDistrict().sizeOfCity()<8;
+        if(condition) {
             action(this.player.getTargetToDestroyDistrict(), this.player.getDistrictToDestroy());
         }
     }

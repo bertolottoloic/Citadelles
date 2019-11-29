@@ -15,11 +15,13 @@ public class Wizard extends Role{
         this.player.exchangeHands();
     }
 
+    //TODO revoir
     @Override
     public void useSpecialPower() {
         if(this.player.getTargetToExchangeHandWith()==null){
             ArrayList<District> hand = new ArrayList<District>(this.player.getHand().toList());
-            for(District d : this.player.getCardsToExchange()) hand.remove(d);
+            for(District d : this.player.getCardsToExchange()) 
+                hand.remove(d);
             ArrayList<District> tmphand = new ArrayList<District>(player.getDeck().exchangeMany(this.player.getCardsToExchange()));
             hand.addAll(tmphand);
             this.player.setHand(new Hand(hand));

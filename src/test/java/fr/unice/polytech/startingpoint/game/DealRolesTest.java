@@ -43,7 +43,13 @@ class DealRolesTest {
 	@Test
 	void reInitializeRoles(){
 		for(Role r : dealer.getRoles()) {
-			r.setPlayer(new Player(6));
+			r.setPlayer(new Player(6){
+				@Override
+				public boolean coinsOrDistrict() {
+					return false;
+				}
+				
+			});
 		}
 		for(Role r : dealer.getRoles()) {
 			assertNotNull(r.getPlayer());

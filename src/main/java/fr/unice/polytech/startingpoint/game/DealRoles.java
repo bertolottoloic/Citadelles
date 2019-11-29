@@ -2,6 +2,9 @@ package fr.unice.polytech.startingpoint.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import fr.unice.polytech.startingpoint.role.Architect;
 import fr.unice.polytech.startingpoint.role.Bishop;
@@ -17,6 +20,17 @@ public class DealRoles{
     private ArrayList<Role> leftRoles = new ArrayList<>();
     private ArrayList<Role> roles = new ArrayList<>();
     private ArrayList<Role> visible = new ArrayList<>();
+    private Map<Integer,Integer> nbVisible=new HashMap<>(){
+        private static final long serialVersionUID = 1L;
+        {
+        put(3,2);
+        put(4,2);
+        put(5,1);
+        put(6,0);
+        put(7,0);
+    }};
+        
+    
     private Role hidden;
     
     public DealRoles(){
@@ -31,14 +45,36 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
+    @Deprecated
     public void  readyToDistribute(){
         ArrayList<Role> al = new ArrayList<Role>(roles);
         Collections.shuffle(al);
         this.hidden=al.remove(0);
         Collections.shuffle(al);
-        if(al.get(0).toString().equals("King")) 
+        if(al.get(0).toString().equals("King"))
             visible.add(al.remove(1)); //Le Roi ne peut pas etre le Role Visible
-        else visible.add(al.remove(0));//Je crois qu'il faut choisir d'abord les visibles
+        else{
+            visible.add(al.remove(0));
+        }
+        leftRoles.addAll(al);
+    }
+
+    public void  readyToDistribute(int nbplayers){
+        ArrayList<Role> al = new ArrayList<Role>(roles);
+        Collections.shuffle(al);
+        this.hidden=al.remove(0);
+        Collections.shuffle(al);
+        int compt=0;
+        while(compt<nbVisible.get(nbplayers)){
+            if(!al.get(0).toString().equals("King")){//Le Roi ne peut pas etre un Role Visible
+                visible.add(al.remove(0));
+                compt++;
+            }
+            else{
+                leftRoles.add(al.remove(0));
+            }
+            
+        }
         leftRoles.addAll(al);
     }
 
@@ -81,5 +117,8 @@ public class DealRoles{
 
     public void setHidden(Role hidden) {
         this.hidden = hidden;
+    }
+    public Optional<Role> roleKilled(){
+        return roles.stream().filter(r->r.isMurdered()).findFirst();
     }
 }

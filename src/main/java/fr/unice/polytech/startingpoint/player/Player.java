@@ -32,9 +32,6 @@ public class Player {
 	private ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
-	protected ArrayList<Role> knownRole = new ArrayList<Role>();
-	protected ArrayList<Role> unknownRole = new ArrayList<Role>();
-	protected Role hidden;
 
 	/*Attributs permettants de savoir si on a déja joué ou choisi son personnage */
 	protected boolean alreadyChosenRole;
@@ -100,7 +97,7 @@ public class Player {
 	 * @RoleInterface
 	 * @param toDelete
 	 */
-	public boolean deleteDistrictFromCity(District toDelete){
+	final public boolean deleteDistrictFromCity(District toDelete){
 		if(character!=null){
 			if(!character.toString().equals("Bishop") && !toDelete.getName().equals("Donjon")){
 				destroyedDistrict = toDelete;
@@ -138,7 +135,7 @@ public class Player {
 
 	
 	
-	void surrenderToThief(){
+	final void surrenderToThief(){
 			System.out.println("Moi le joueur "+id+" j'ai été volé");
 			Player thief=dealRoles.getRole("Thief").getPlayer();
 			if(thief!=null){
@@ -165,7 +162,7 @@ public class Player {
 		}
 	}
 	
-	/*    ----------------------To Override-------------------- */
+	/*    ---------------------------------------To Override--------------------------------- */
 	/**
 	 * @ToOverride by Bots
 	 * @return
@@ -176,13 +173,53 @@ public class Player {
 
 
     public boolean coinsOrDistrict(){
-		return true;
+		return false;
 	}
 
 	protected boolean isBuildingFirst() {
 		return true;
 	}
 
+
+	
+	public void discard(List<District> d) {
+		d.sort((a,b)->
+                Integer.compare(a.getCost(),b.getCost())
+            );
+            while(d.size()>this.getCharacter().getNumberDistrictKeepable()){
+                this.deck.putbackOne(d.remove(d.size()-1));
+                
+            }
+	}
+
+	/**
+	 * A réécrire par les players pour déterminer dans quelles conditions
+	 * utiliser le Laboratoire pas besoin de vérifier si on l'a
+	 * C'est fait dans isUsingLabo
+	 * @ToOverride
+	 * @return
+	 */
+	public Optional<District> wantToUseLabo(){
+        return Optional.empty();
+	}
+	
+	public Role processWhoToKill(){
+		return null;
+	}
+
+	public Role processWhoToRob(){
+		return null;
+	}
+
+	public Player processWhoToExchangeHandWith(){
+		return null;
+	}
+	public Player processWhoseDistrictToDestroy(){
+		return null;
+	}
+	public District processDistrictToDestroy(Player target){
+		return null;
+	}
 	/**
 	 * fonction à réécrire par les Bots pour déterminer si ils veuleunt utiliser 
 	 * la Manufacture ou pas
@@ -191,9 +228,17 @@ public class Player {
 	 * @return un boolean
 	 * @ToOverride
 	 */
-	public boolean wantToUseFabric(){
-		return true;
+	public boolean wantToUseFabric() {
+		return false;
 	}
+	protected void isUsingGraveyard() {
+	}
+
+	public List<District> processWhatToBuild() {
+		return new ArrayList<>();
+	}
+	/*---------------------------------End ToOverride--------------------------------------*/
+
 
 	/**
 	 * check if murdered
@@ -220,21 +265,23 @@ public class Player {
 		this.isUsingLabo();
 		this.isUsingGraveyard();
 		
-		boolean buildFirst = isBuildingFirst();
-		if(coinsOrDistrict()){//on prend au hasard
-			//après c'est l'IA qui doit prendre la décision
-			
-				this.takeCoinsFromBank(this.character.getNumberGold());
+		
+		if(coinsOrDistrict()){
+			this.takeCoinsFromBank(this.character.getNumberGold());
 		}
 		else{
 			List<District> districts=this.deck.withdrawMany(this.character.getNumberDistrictPickable());
-			discard(districts);
+			this.discard(districts);
 			hand.addAll(districts);
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+this.deck.numberOfCards()+" districts dans le deck.");
 		}
+		
+		if(getCharacter().toString().equals("Architect")){
+			this.specialMove();
+		}
 	
-		if(buildFirst) {
+		if(isBuildingFirst()) {
 			building();
 			specialMove();
 		}
@@ -249,7 +296,7 @@ public class Player {
 	/**
 	 * cette fonction renvoie un boolean utilisé par 
 	 * Role pour déterminer le  nombre que renverra les 
-	 * méthodes getNumberDistrictPickable et getNumberDistrictKeepable
+	 * méthodes getNumberDistrictPickable et getNumberDistrictKeepableus
 	 * @RoleInterface
 	 * @return 
 	 */
@@ -257,7 +304,7 @@ public class Player {
 	public boolean isUsingFabric() {
 		if(!this.usingFabricPower){
 			boolean resultat=getCity().containsWonder("Manufacture")
-				&& this.wantToUseFabric();
+			&& this.wantToUseFabric();
 			if(resultat){
 				this.bank.deposit(3,this);
 				this.usingFabricPower=true;
@@ -269,6 +316,8 @@ public class Player {
 
 	
 	
+	
+
 	/**
 	 * @PlayTurnInterface
 	 */
@@ -283,19 +332,9 @@ public class Player {
 	   }
 	}
 
-	/**
-	 * A réécrire par les players pour déterminer dans quelles conditions
-	 * utiliser le Laboratoire pas besoin de vérifier si on l'a
-	 * C'est fait dans isUsingLabo
-	 * @ToOverride
-	 * @return
-	 */
-	public Optional<District> wantToUseLabo(){
-        return Optional.empty();
-    }
 	
-	protected void isUsingGraveyard() {
-	}
+	
+	
 	/**
 	 * Méthode pour remettre au default les valeurs 
 	 * changées par le tour qui vient d'être joué
@@ -311,17 +350,13 @@ public class Player {
 		targetToExchangeHandWith=null;
 		targetToKill=null;
 		targetToRob=null;
-		knownRole.removeAll(knownRole);
-		unknownRole.removeAll(unknownRole);
-		hidden = null;
+		if(matches!=null){
+			matches.reInitialize();
+		}
+		
 		// forgot something ??
 	}
-
-	public void discard(List<District> districts) {
-		if (!districts.isEmpty()) {
-			this.deck.putbackOne(districts.remove(0));
-		}
-	}
+	
 
 	final protected void building() {
 		if(!getHand().isEmpty()) {
@@ -352,27 +387,9 @@ public class Player {
 		});
 	}
 
-	public List<District> processWhatToBuild() {
-		return new ArrayList<>();
-	}
+	
 
-	public Role processWhoToKill(){
-		return null;
-	}
-
-	public Role processWhoToRob(){
-		return null;
-	}
-
-	public Player processWhoToExchangeHandWith(){
-		return null;
-	}
-	public Player processWhoseDistrictToDestroy(){
-		return null;
-	}
-	public District processDistrictToDestroy(Player target){
-		return null;
-	}
+	
 	final public void specialMove() {
 		targetToKill=processWhoToKill();
         targetToRob=processWhoToRob();
@@ -615,6 +632,10 @@ public class Player {
 	
 	public int totalValueOfCity(){
 		return city.totalValue();
+	}
+
+	public MatchingProb getMatches() {
+		return matches;
 	}
 
 }

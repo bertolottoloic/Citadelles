@@ -54,8 +54,10 @@ public class Deck{
      * 
      */
     public void putbackOne(District d){
-        list.add(d);
-        this.shuffle();
+        if(d!=null){
+            list.add(d);
+            this.shuffle();
+        } 
     }
 
     /**

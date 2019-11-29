@@ -17,7 +17,6 @@ public class BotRnd extends Player{
     
     @Override
     public Role processChooseRole() {
-        // TODO Auto-generated method stub
         return super.processChooseRole();
     }
 
@@ -73,15 +72,21 @@ public class BotRnd extends Player{
     @Override
     protected boolean isBuildingFirst() {
         if(random.nextInt(2)==1){
-            return true;}
-        else
-        {return false;}
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
     public boolean wantToUseFabric() {
-        // TODO Auto-generated method stub
-        return super.wantToUseFabric();
+        if(random.nextInt(2)==0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override

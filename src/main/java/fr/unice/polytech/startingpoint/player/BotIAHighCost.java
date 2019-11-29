@@ -7,7 +7,7 @@ import java.util.Optional;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
-public class BotIAHighCost extends Player {
+public class BotIAHighCost extends Player{
 
     public BotIAHighCost(int id){
         super(id);
@@ -103,7 +103,6 @@ public class BotIAHighCost extends Player {
 
     @Override
     public void discard(List<District> d){
-        if(d.size()>=2){
             d.sort((a,b)->
                     Integer.compare(a.getCost(),b.getCost())
             );
@@ -115,7 +114,6 @@ public class BotIAHighCost extends Player {
                     this.deck.putbackOne(d.remove(d.size()-1));
                 }
             }
-        }
     }
 
     @Override
@@ -207,8 +205,7 @@ public class BotIAHighCost extends Player {
 
     @Override
     public boolean wantToUseFabric() {
-        // TODO Auto-generated method stub
-        return super.wantToUseFabric();
+        return true;
     }
 
 }

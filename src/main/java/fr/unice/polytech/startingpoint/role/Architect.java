@@ -2,20 +2,30 @@ package fr.unice.polytech.startingpoint.role;
 
 public class Architect extends Role {
 
-    public Architect(){
+    private boolean alreadyUsePower=false;
+
+    public Architect() {
         super(7);
         this.numberDistrictBuildable+=2;
         
+        
     }
 
+    @Override
+    public void reInitialize() {
+        super.reInitialize();
+        this.alreadyUsePower=false;
+    }
     /**
         * Le pouvoir spécial de l'architecte c'est de pouvoir prendre 
         *deux cartes en plus
         */
     private void action(){
-        if(this.player.getDeck().numberOfCards()>=2){
+        if(!this.alreadyUsePower){
             this.player.getHand().addAll(this.player.getDeck().withdrawMany(2));
+            alreadyUsePower=true;
         }
+        
     }
 
     @Override

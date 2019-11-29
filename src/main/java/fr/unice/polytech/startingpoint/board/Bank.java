@@ -26,6 +26,14 @@ public class Bank{
         }
     }
 
+    public void setBourses(Player... players) {
+        bourses = new HashMap<>();
+        for(Player player : players){
+            bourses.put(player,0);
+            player.setBank(this);
+        }
+    }
+
     public int getCurrNbCoins() {
         return currNbCoins;
     }

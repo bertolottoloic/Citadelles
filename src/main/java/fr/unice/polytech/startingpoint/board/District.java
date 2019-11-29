@@ -55,8 +55,12 @@ public class District {
     @Override
     public String toString() {
 
-        return "******************\n" + "Couleur: " + color + "\n" + "Valeur: " + value + "\n" + "Cout: " + cost + "\n"
-                + "******************\n";
+        return "******************\n" +
+               "Couleur: " + color + "\n" + 
+               "Valeur: " + value + "\n" + 
+               "Cout: " + cost + "\n"+ 
+               "Nom: "+name+"\n"+
+               "******************\n";
 
     }
 

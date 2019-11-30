@@ -218,7 +218,7 @@ public class BotIA extends Player{
     }
     
 	@Override
-	protected boolean isUsingGraveyard(District dis) {
+	protected boolean wantsToUseGraveyard(District dis) {
 		if (city.containsWonder("Cimetiere")) {
 			if (dis != null && !getCharacter().toString().equals("Warlord")) {
 				District lowest = hand.lowCostDistrict();

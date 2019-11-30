@@ -213,6 +213,10 @@ class BotIATest{
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
+		
+		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
+		assertEquals(tmpGold + 1, bot.getGold());
+		assertEquals(tmpHandSize - 1, bot.getHand().size());
 	}
 	
 	@BeforeEach
@@ -239,14 +243,14 @@ class BotIATest{
 		anotherBot.takeCoinsFromBank(5);
 		anotherBot.setCharacter(new Merchant());
 		
-		assertTrue(anotherBot.isUsingGraveyard(d1));
-		anotherBot.usesGraveyard(d1);
+		assertTrue(anotherBot.wantsToUseGraveyard(d1));
+		anotherBot.isUsingGraveyard(d1);
 
 		bot.city.add(d2);
 		bot.deleteDistrictFromCity(d2);
 		anotherBot.takeCoinsFromBank(3);
 		
-		assertTrue(anotherBot.isUsingGraveyard(d2));
+		assertTrue(anotherBot.wantsToUseGraveyard(d2));
 	}
 		
 	@Test

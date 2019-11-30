@@ -171,7 +171,7 @@ public class BotIAHighCost extends Player{
     }
 
     @Override
-	protected boolean isUsingGraveyard(District dis) {
+	protected boolean wantsToUseGraveyard(District dis) {
 		if (city.containsWonder("Cimetiere")) {
 			if (dis != null && !getCharacter().toString().equals("Warlord")) {
 				if (dis.getCost() < getGold() && dis.getValue() > 4) {

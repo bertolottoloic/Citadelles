@@ -41,6 +41,7 @@ public class Player {
 	/*Attribut permettant d'attribuer des probabilités de possession de personnage*/
 	protected MatchingProb matches;
 	private boolean usingFabricPower=false;
+	private boolean hasUsedLabo = false;
 	protected Bank bank;
 	protected Deck deck;
 	protected DealRoles dealRoles;
@@ -114,7 +115,7 @@ public class Player {
 		Player p;
 		if(board!=null && board.existsGraveyardPlayer() != null) {
 			p = board.existsGraveyardPlayer();
-			p.isUsingGraveyard(d);
+			p.wantsToUseGraveyard(d);
 		}
 		return city.removeDistrict(d);
 	}
@@ -237,8 +238,6 @@ public class Player {
 	public boolean wantToUseFabric() {
 		return false;
 	}
-	protected void isUsingGraveyard() {
-	}
 
 	public List<District> processWhatToBuild() {
 		return new ArrayList<>();
@@ -281,11 +280,14 @@ public class Player {
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+this.deck.numberOfCards()+" districts dans le deck.");
 		}
+		this.isUsingLabo();
 		
 		if(getCharacter().toString().equals("Architect")){
 			this.specialMove();
 		}
 	
+		this.isUsingLabo();
+		
 		if(isBuildingFirst()) {
 			building();
 			specialMove();
@@ -319,33 +321,27 @@ public class Player {
 		return this.usingFabricPower;
 	}
 
-	
-	
-	
-
 	/**
 	 * @PlayTurnInterface
 	 */
 	final public void isUsingLabo() {
 		Optional<District> od=wantToUseLabo();
-		if(city.containsWonder("Laboratoire")&& od.isPresent()) {
-			System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+		if(city.containsWonder("Laboratoire")&& od.isPresent() && !hasUsedLabo) {
 			if(hand.remove(od.get())){
+				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
 				this.deck.putbackOne(od.get());
 				takeCoinsFromBank(1);
-			}			
+				hasUsedLabo = true;
+			}
 	   }
 	}
 
-	
-	
-	
-	protected boolean isUsingGraveyard(District d) {
+	protected boolean wantsToUseGraveyard(District d) {
 		return true;
 	}
 	
-	protected void usesGraveyard(District d) {
-		if(isUsingGraveyard(d)) {
+	protected void isUsingGraveyard(District d) {
+		if(wantsToUseGraveyard(d)) {
 			System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
 			bank.deposit(1, this);
 			hand.add(d);
@@ -360,6 +356,7 @@ public class Player {
 	 */
 	final public void reInitializeForNextTurn(){
 		usingFabricPower=false;
+		hasUsedLabo=false;
 		alreadyChosenRole=false;
 		character=null;
 		targetToDestroyDistrict=null;
@@ -395,6 +392,7 @@ public class Player {
 			support.firePropertyChange("gameOver",gameOver , true);
 			this.gameOver=true;//inutile en fait : c'est là pour le principe
 		}
+		this.isUsingLabo();
 	}
 
 	private void addToTheCity(List<District> toBuild) {
@@ -414,6 +412,7 @@ public class Player {
         districtToDestroy = processDistrictToDestroy(this.targetToDestroyDistrict);
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();	
+		this.isUsingLabo();
 	}
 	
 	/**

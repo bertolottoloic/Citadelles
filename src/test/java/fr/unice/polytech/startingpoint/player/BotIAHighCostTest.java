@@ -249,13 +249,13 @@ class BotIAHighCostTest{
 		anotherBot.takeCoinsFromBank(7);
 		anotherBot.setCharacter(new Merchant());
 		
-		assertTrue(anotherBot.isUsingGraveyard(d2));
-		anotherBot.usesGraveyard(d2);
+		assertTrue(anotherBot.wantsToUseGraveyard(d2));
+		anotherBot.isUsingGraveyard(d2);
 		
 		bot.city.add(d1);
 		bot.deleteDistrictFromCity(d1);
 		anotherBot.takeCoinsFromBank(3);
 
-		assertFalse(anotherBot.isUsingGraveyard(d1));
+		assertFalse(anotherBot.wantsToUseGraveyard(d1));
 	}
 }

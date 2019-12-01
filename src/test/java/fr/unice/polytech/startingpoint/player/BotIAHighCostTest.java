@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -198,6 +199,7 @@ class BotIAHighCostTest{
     
     @Test
 	void isUsingLaboTest() {
+		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
 		bot.setCity(c);
@@ -235,7 +237,7 @@ class BotIAHighCostTest{
 	}
 	
 	@Test
-	void isUsingGraveyardTest(){	
+	void wantsToUseGraveyardTest(){	
 		Board b = mock(Board.class);
 		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
 		bot.setBoard(b);

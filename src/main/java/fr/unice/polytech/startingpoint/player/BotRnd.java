@@ -80,7 +80,7 @@ public class BotRnd extends Player{
     }
 
     @Override
-    public boolean wantToUseFabric() {
+    public boolean wantsToUseFabric() {
         if(random.nextInt(2)==0){
             return true;
         }

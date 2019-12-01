@@ -135,7 +135,6 @@ public class Manager implements PropertyChangeListener {
             }
 
         }*/
-
         winner.add(List.of(players).stream().max((a,b)->Integer.compare(a.points(), b.points())).get());
         
     }

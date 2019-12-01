@@ -206,7 +206,7 @@ public class Player {
 	 * @ToOverride
 	 * @return
 	 */
-	public Optional<District> wantToUseLabo(){
+	public Optional<District> wantsToUseLabo(){
         return Optional.empty();
 	}
 	
@@ -235,7 +235,7 @@ public class Player {
 	 * @return un boolean
 	 * @ToOverride
 	 */
-	public boolean wantToUseFabric() {
+	public boolean wantsToUseFabric() {
 		return false;
 	}
 
@@ -311,7 +311,7 @@ public class Player {
 	public boolean isUsingFabric() {
 		if(!this.usingFabricPower){
 			boolean resultat=getCity().containsWonder("Manufacture")
-			&& this.wantToUseFabric();
+			&& this.wantsToUseFabric();
 			if(resultat){
 				this.bank.deposit(3,this);
 				this.usingFabricPower=true;
@@ -320,12 +320,12 @@ public class Player {
 		}
 		return this.usingFabricPower;
 	}
-
+ 
 	/**
 	 * @PlayTurnInterface
 	 */
 	final public void isUsingLabo() {
-		Optional<District> od=wantToUseLabo();
+		Optional<District> od=wantsToUseLabo();
 		if(city.containsWonder("Laboratoire")&& od.isPresent() && !hasUsedLabo) {
 			if(hand.remove(od.get())){
 				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");

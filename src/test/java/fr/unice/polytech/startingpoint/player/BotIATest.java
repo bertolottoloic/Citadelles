@@ -4,6 +4,7 @@ package fr.unice.polytech.startingpoint.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +59,6 @@ class BotIATest{
  	   when(c.getSizeOfCity()).thenReturn(7);
  	   bot.setCity(c);
  	   assertTrue(bot.coinsOrDistrict());
-		
 		
  	   bank.withdraw(10, bot);
  	   when(c.getSizeOfCity()).thenReturn(5);
@@ -189,6 +189,7 @@ class BotIATest{
 	
 	@Test
 	void isUsingLaboTest() {
+		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
 		bot.setCity(c);
@@ -213,10 +214,6 @@ class BotIATest{
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
-		
-		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
-		assertEquals(tmpGold + 1, bot.getGold());
-		assertEquals(tmpHandSize - 1, bot.getHand().size());
 	}
 	
 	@BeforeEach
@@ -229,7 +226,7 @@ class BotIATest{
 		b.setPlayers(bot, anotherBot);
 	}
 	@Test
-	void isUsingGraveyardTest(){
+	void wantsToUseGraveyardTest(){
 		Board b = mock(Board.class);
 		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
 		bot.setBoard(b);

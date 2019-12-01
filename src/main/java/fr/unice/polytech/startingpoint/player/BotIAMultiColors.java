@@ -57,8 +57,8 @@ public class BotIAMultiColors extends Player{
     }
 
     District whatToBuild(int limit){
-        ArrayList<DistrictColor> missingColors = MissingColors();
-        if(missingColors.size()==0){
+        ArrayList<DistrictColor> missingColors = missingColors();
+        if(missingColors.isEmpty()){
             return hand.highCostDistrict(limit);
         }
         else {
@@ -74,7 +74,7 @@ public class BotIAMultiColors extends Player{
         }
     }
 
-    ArrayList<DistrictColor> MissingColors(){
+    ArrayList<DistrictColor> missingColors(){
         HashMap<DistrictColor,Integer> countColors=hand.countColors();
         ArrayList<DistrictColor> missingColors = new ArrayList<>();
         for(DistrictColor key : countColors.keySet()){
@@ -102,7 +102,12 @@ public class BotIAMultiColors extends Player{
         }
     }
 
-
+    @Override
+    public boolean wantsToUseFabric() {//TODO Test
+        return !city.containsAllColors() ||
+        		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
+    }
+    
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
@@ -160,23 +165,33 @@ public class BotIAMultiColors extends Player{
     }
 
     @Override
-    public Optional<District> wantToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
-        if(!list.isEmpty()
-                && city.getSizeOfCity() >= 6) {
-            District dis = hand.lowCostDistrict();
-            if(!list.contains(dis)) {
+    public Optional<District> wantsToUseLabo() { //TODO Test
+    	List<District> districts = hand.discardDistrictsForMultiColors();
+    	District anotherDis = districts.get(0);
+    	if(anotherDis == null) {
+    		District dis = hand.lowCostDistrict();
+    		if(dis == null) {
+    	        return Optional.empty();
+    		} else if(dis.getValue() < getGold()) {
                 return Optional.of(dis);
-            }
+    		}
+        } else {
+        	return Optional.of(anotherDis);
         }
-        return Optional.empty();
+		return Optional.empty();
     }
-
-
+    
     @Override
-    public boolean wantToUseFabric() {
-        // TODO Auto-generated method stub
-        return super.wantToUseFabric();
-    }
+	protected boolean wantsToUseGraveyard(District dis) {
+		if (city.containsWonder("Cimetiere")) {
+			if (dis != null && !getCharacter().toString().equals("Warlord")) {
+				if (missingColors().contains(dis.primaryColor()) ||
+						dis.getCost() < getGold() && dis.getValue() > 4) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 }

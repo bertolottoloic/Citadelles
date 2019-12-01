@@ -207,14 +207,13 @@ public class BotIA extends Player{
     
     
     @Override
-    public Optional<District> wantToUseLabo() {
-        // TODO Auto-generated method stub
+    public Optional<District> wantsToUseLabo() {
         ArrayList<District> list = hand.cardsAboveGold(getGold());
        		if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
                    District dis = hand.highCostDistrict(getGold());
                    return Optional.of(dis);
             }
-            return super.wantToUseLabo();
+            return super.wantsToUseLabo();
     }
     
 	@Override
@@ -325,14 +324,14 @@ public class BotIA extends Player{
     }
 
     @Override
-    public boolean wantToUseFabric() {
-        return false;
-        
+    public boolean wantsToUseFabric() {//TODO Test
+        return getGold() >= 5
+    			&& city.getSizeOfCity() < 7;
     }
 
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 8;
+        return getGold() < 4;
     }
 
     //TODO optimiser par rapport à la couleur

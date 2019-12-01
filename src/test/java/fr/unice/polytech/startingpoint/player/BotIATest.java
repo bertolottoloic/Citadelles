@@ -188,6 +188,20 @@ class BotIATest{
 	}
 	
 	@Test
+	void wantsToUseFabric() {
+		assertFalse(bot.wantsToUseFabric());
+		
+		bot.takeCoinsFromBank(6);
+		assertTrue(bot.wantsToUseFabric());
+		
+		City c = mock(City.class);
+		when(c.getSizeOfCity()).thenReturn(8);
+		bot.setCity(c);
+		
+		assertFalse(bot.wantsToUseFabric());
+	}
+	
+	@Test
 	void isUsingLaboTest() {
 		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);

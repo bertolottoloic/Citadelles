@@ -197,8 +197,22 @@ class BotIAHighCostTest{
 
     }
     
+	@Test
+	void wantsToUseFabric() {
+		assertFalse(bot.wantsToUseFabric());
+		
+		bot.takeCoinsFromBank(9);
+		assertTrue(bot.wantsToUseFabric());
+		
+		Hand h = mock(Hand.class);
+		when(h.highValuedDistrict(bot.getGold()-3)).thenReturn(true);
+		bot.setHand(h);
+		
+		assertFalse(bot.wantsToUseFabric());
+	}
+    
     @Test
-	void isUsingLaboTest() {
+	void wantsToUseLaboTest() {
 		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
@@ -224,6 +238,15 @@ class BotIAHighCostTest{
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
+		
+		bot.reInitializeForNextTurn();
+		bot.bank.deposit(5,bot);
+		hand.add(new District(8, 5, DistrictColor.Noble, "pas picked"));
+		bot.isUsingLabo();
+		
+		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
+		assertEquals(tmpGold - 4, bot.getGold());
+		assertEquals(tmpHandSize, bot.getHand().size());
 	}
     
     @BeforeEach

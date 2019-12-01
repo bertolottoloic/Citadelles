@@ -38,6 +38,26 @@ class BotIAMultiColorsTest {
 		bank.setBourses(List.of(bot));
 	}
 
+    @Test
+    void wantsToUseFabric() {/*
+        return !city.containsAllColors() ||
+        		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));*/
+    	assertTrue(bot.wantsToUseFabric());
+    	
+    	City c = mock(City.class);
+		when(c.containsAllColors()).thenReturn(true);
+		bot.setCity(c);
+    	assertFalse(bot.wantsToUseFabric());
+    
+    	bot.takeCoinsFromBank(9);
+    	assertTrue(bot.wantsToUseFabric());
+    	
+    	Hand h = mock(Hand.class);
+    	when(h.highValuedDistrict(bot.getGold()-3)).thenReturn(true);
+    	bot.setHand(h);
+    	assertFalse(bot.wantsToUseFabric());
+    }
+    
 	@Test
 	void wantToUseLaboTest() {
 		assertEquals(Optional.empty(), bot.wantsToUseLabo());
@@ -65,6 +85,23 @@ class BotIAMultiColorsTest {
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
+		
+		bot.reInitializeForNextTurn();
+		hand.add(new District(5, 7, DistrictColor.Commerce, "doublon"));
+		bot.isUsingLabo();
+		
+		assertEquals(tmpDeckNb + 2, bot.getDeck().numberOfCards());
+		assertEquals(tmpGold + 2, bot.getGold());
+		assertEquals(tmpHandSize - 1, bot.getHand().size());
+		
+		bot.reInitializeForNextTurn();
+		bot.bank.deposit(5,bot);
+		hand.add(new District(8, 5, DistrictColor.Noble, "pas picked"));
+		bot.isUsingLabo();
+		
+		assertEquals(tmpDeckNb + 2, bot.getDeck().numberOfCards());
+		assertEquals(tmpGold - 3, bot.getGold());
+		assertEquals(tmpHandSize, bot.getHand().size());
 	}
 	
 	@BeforeEach

@@ -137,7 +137,7 @@ public class BotIAHighCost extends Player{
      * Strategy : get rid of the lowest valued district
      */
     @Override
-    public Optional<District> wantsToUseLabo() { //TODO Test
+    public Optional<District> wantsToUseLabo() {
     	District dis = hand.lowCostDistrict();
     	if(dis == null) {
     		return Optional.empty();
@@ -159,8 +159,6 @@ public class BotIAHighCost extends Player{
 		return false;
 	}
 
-
-
     //TODO utiliser une stratégie concrète
     District pickRandomDistrict() {
         ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
@@ -175,7 +173,7 @@ public class BotIAHighCost extends Player{
     }
 
     @Override
-    public boolean wantsToUseFabric() {//TODO Test
+    public boolean wantsToUseFabric() {
         return getGold() >= 8
     			&& !hand.highValuedDistrict(getGold()-3);
     }

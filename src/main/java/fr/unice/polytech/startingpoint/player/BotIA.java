@@ -324,7 +324,7 @@ public class BotIA extends Player{
     }
 
     @Override
-    public boolean wantsToUseFabric() {//TODO Test
+    public boolean wantsToUseFabric() {
         return getGold() >= 5
     			&& city.getSizeOfCity() < 7;
     }

@@ -114,7 +114,7 @@ public class BotIAMultiColors extends Player{
     }
 
     @Override
-    public boolean wantsToUseFabric() {//TODO Test
+    public boolean wantsToUseFabric() {
         return !city.containsAllColors() ||
         		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
     }
@@ -156,12 +156,10 @@ public class BotIAMultiColors extends Player{
         return target;
     }
 
-
-    /*@Override
-    public Optional<District> wantsToUseLabo() { //TODO Test
+    @Override
+    public Optional<District> wantsToUseLabo() {
     	List<District> districts = hand.discardDistrictsForMultiColors();
-    	District anotherDis = districts.get(0);
-    	if(anotherDis == null) {
+    	if(districts.isEmpty()) {
     		District dis = hand.lowCostDistrict();
     		if(dis == null) {
     	        return Optional.empty();
@@ -169,20 +167,9 @@ public class BotIAMultiColors extends Player{
                 return Optional.of(dis);
     		}
         } else {
-        	return Optional.of(anotherDis);
+        	return Optional.of(districts.get(0));
         }
 		return Optional.empty();
-    }*/
-
-    @Override
-    public Optional<District> wantsToUseLabo() { //TODO Test
-        District dis = hand.lowCostDistrict();
-        if(dis == null) {
-            return Optional.empty();
-        } else if(dis.getValue() < getGold()) {
-            return Optional.of(dis);
-        }
-        return Optional.empty();
     }
     
     @Override

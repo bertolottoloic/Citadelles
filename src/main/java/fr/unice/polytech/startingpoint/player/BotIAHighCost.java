@@ -132,25 +132,7 @@ public class BotIAHighCost extends Player{
                 || hand.badCards(getGold()).size()<=hand.size()/2;
     }
 
-    @Override
-    protected boolean isBuildingFirst() {
-        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-            return false;
-        }
-        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().badCards(getGold()).size();
-            if(countBadCards>getHand().size()/2){
-                return false;
-            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-            else{
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
-    }
-    
+
     /**
      * Strategy : get rid of the lowest valued district
      */

@@ -26,7 +26,7 @@ public class Main {
             Player p1 = new BotRnd(1);
             Player p2 = new BotIA(2);
             Player p3 = new BotIAHighCost(3);
-            Player p4 = new BotIAHighCost(4);
+            Player p4 = new BotIAMultiColors(4);
 
             Manager manager = new Manager();          
             manager.letsPlay(p1, p2, p3, p4);

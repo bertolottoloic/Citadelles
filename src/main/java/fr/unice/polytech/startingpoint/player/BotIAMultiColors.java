@@ -56,6 +56,17 @@ public class BotIAMultiColors extends Player{
 
     }
 
+    @Override
+    public List<District> processWhatToBuild() {
+        District tmp=this.whatToBuild(this.getGold());
+        if(tmp!=null){
+            return List.of(tmp);
+        }
+
+        return new ArrayList<>();
+        // TODO Auto-generated method stub
+    }
+
     District whatToBuild(int limit){
         ArrayList<DistrictColor> missingColors = missingColors();
         if(missingColors.isEmpty()){
@@ -145,26 +156,8 @@ public class BotIAMultiColors extends Player{
         return target;
     }
 
-    @Override
-    protected boolean isBuildingFirst() {
-        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-            return false;
-        }
-        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().badCards(getGold()).size();
-            if(countBadCards>getHand().size()/2){
-                return false;
-            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-            else{
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
-    }
 
-    @Override
+    /*@Override
     public Optional<District> wantsToUseLabo() { //TODO Test
     	List<District> districts = hand.discardDistrictsForMultiColors();
     	District anotherDis = districts.get(0);
@@ -179,6 +172,17 @@ public class BotIAMultiColors extends Player{
         	return Optional.of(anotherDis);
         }
 		return Optional.empty();
+    }*/
+
+    @Override
+    public Optional<District> wantsToUseLabo() { //TODO Test
+        District dis = hand.lowCostDistrict();
+        if(dis == null) {
+            return Optional.empty();
+        } else if(dis.getValue() < getGold()) {
+            return Optional.of(dis);
+        }
+        return Optional.empty();
     }
     
     @Override
@@ -193,5 +197,32 @@ public class BotIAMultiColors extends Player{
 		}
 		return false;
 	}
+
+    @Override
+    public Role processWhoToKill() {
+        return this.dealRoles.getRole("Thief");
+    }
+
+    @Override
+    public Role processWhoToRob() {
+        // TODO Auto-generated method stub
+        return this.dealRoles.getRole("Merchant");
+    }
+
+    @Override
+    public Player processWhoToExchangeHandWith() {
+        return this.board.playerWithTheBiggestHand(this);
+    }
+
+    @Override
+    public Player processWhoseDistrictToDestroy() {
+        return this.board.playerWithTheBiggestCity(this);
+    }
+
+    @Override
+    public District processDistrictToDestroy(Player target) {
+        return pickRandomDistrict();
+    }
+
 
 }

@@ -157,7 +157,7 @@ public class Hand {
         }
     }
     
-    public List<District> discardDistrictsForMultiColors(){//TODO Test
+    public List<District> discardDistrictsForMultiColors(){
     	List<District> res = new ArrayList<>();
     	HashMap<DistrictColor,Integer> countColors = countColors();
     	List<DistrictColor> severalDistrictsColor = new ArrayList<>();

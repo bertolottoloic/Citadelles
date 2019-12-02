@@ -5,6 +5,9 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HandTest {
@@ -63,7 +66,7 @@ public class HandTest {
     }
 
     @Test
-    void lowCostDistrictForNextTurn(){
+    void lowCostDistrictForNextTurnTest(){
         hand.add(d1);
         hand.add(d2);
         District d3=new District(4,4,DistrictColor.Religion,"test");
@@ -71,5 +74,20 @@ public class HandTest {
         assertEquals(d2,hand.lowCostDistrictForNextTurn(10));
         assertEquals(d3,hand.lowCostDistrictForNextTurn(5));
         assertEquals(d1,hand.lowCostDistrictForNextTurn(3));
+    }
+    
+    @Test
+    void discardDistrictsForMultiColorsTest() {
+    	assertTrue(hand.discardDistrictsForMultiColors().isEmpty());
+    	hand.add(new District(4, 5, DistrictColor.Religion, "un quartier"));
+    	assertTrue(hand.discardDistrictsForMultiColors().isEmpty());
+    	hand.add(d1);
+    	assertEquals(2, hand.discardDistrictsForMultiColors().size());
+    	assertTrue(hand.discardDistrictsForMultiColors().contains(d1));
+    	hand.add(d2);
+    	hand.add(new District(5, 8, DistrictColor.Wonder, "un autre quartier"));
+    	assertEquals(4, hand.discardDistrictsForMultiColors().size());
+    	assertEquals(d1, hand.discardDistrictsForMultiColors().get(0));
+    	
     }
 }

@@ -221,6 +221,11 @@ public class Player {
 	 * @return
 	 */
 	public Optional<District> wantsToUseLabo(){
+		for(District handDis : hand.toList()) {
+			if(hasTheDistrict(handDis.getName())){
+				return Optional.of(handDis);
+			}
+		}
         return Optional.empty();
 	}
 

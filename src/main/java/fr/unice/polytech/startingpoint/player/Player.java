@@ -110,6 +110,18 @@ public class Player {
 		}
 		return false;
 	}
+
+	protected District pickRandomDistrict() {
+		ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
+		if(!hand.isEmpty()) {
+			District d = hand.get(0);
+			for (District d1 : hand) {
+				if (d1.getCost() < d.getCost()) d = d1;
+			}
+			return d;
+		}
+		return null;
+	}
 	
 	boolean deletion(District d) {
 		Player p;
@@ -201,6 +213,38 @@ public class Player {
 		}
 	}
 
+	Role bestRoleToChoose(ArrayList<Role> roles, String color){
+		Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
+		if(optWizard.isPresent()){
+			return optWizard.get();
+		}
+		optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
+		if(optWizard.isPresent()){
+			return optWizard.get();
+		}
+		optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
+
+		if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
+			return optWizard.get();
+		}
+		int position;
+		switch (color){
+			case "religion": position=5;
+				break;
+			case "soldatesque": position =8;
+				break;
+			case "noble": position =4;
+				break;
+			default : position =6;
+		}
+		for(Role role : roles){
+			if(role.getPosition()==position){
+				return role;
+			}
+		}
+		return roles.get(0);
+
+	}
 
 	
 	public void discard(List<District> d) {
@@ -437,7 +481,7 @@ public class Player {
 	/**
 	 * Méthode pour collecter l'argent des districts
 	 */
-	void collectMoneyFromDistricts(){
+	protected void collectMoneyFromDistricts(){
 		character.collectRentMoney();
 	}
 	

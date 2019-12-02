@@ -19,42 +19,9 @@ public class BotIAMultiColors extends Player{
     public Role processChooseRole() {
         ArrayList<Role> leftRoles=this.dealRoles.getLeftRoles();
         String maxColor=hand.bestColorDistrict();
-        Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
-
-        return choosenRole;
+        return bestRoleToChoose(leftRoles,maxColor);
     }
-    Role bestRoleToChoose(ArrayList<Role> roles, String color){
-        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
-        if(optWizard.isPresent()){
-            return optWizard.get();
-        }
-        optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
-        if(optWizard.isPresent()){
-            return optWizard.get();
-        }
-        optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
 
-        if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
-            return optWizard.get();
-        }
-        int position;
-        switch (color){
-            case "religion": position=5;
-                break;
-            case "soldatesque": position =8;
-                break;
-            case "noble": position =4;
-                break;
-            default : position =6;
-        }
-        for(Role role : roles){
-            if(role.getPosition()==position){
-                return role;
-            }
-        }
-        return roles.get(0);
-
-    }
 
     @Override
     public List<District> processWhatToBuild() {
@@ -127,17 +94,7 @@ public class BotIAMultiColors extends Player{
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
     }
-    District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
-        if(!hand.isEmpty()) {
-            District d = hand.get(0);
-            for (District d1 : hand) {
-                if (d1.getCost() < d.getCost()) d = d1;
-            }
-            return d;
-        }
-        return null;
-    }
+
 
     Role pickTargetRole(){
         Role character = this.getCharacter();

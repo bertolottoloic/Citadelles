@@ -9,7 +9,6 @@ import fr.unice.polytech.startingpoint.game.Manager;
 import fr.unice.polytech.startingpoint.player.BotIA;
 import fr.unice.polytech.startingpoint.player.BotRainbow;
 import fr.unice.polytech.startingpoint.player.BotRnd;
-import fr.unice.polytech.startingpoint.player.BotSmart;
 import fr.unice.polytech.startingpoint.player.BotSpender;
 import fr.unice.polytech.startingpoint.player.Player;
 
@@ -24,10 +23,10 @@ public class Main {
         stats.put(3,0);
         stats.put(4,0);
         while (n < 1000) {
-            Player p1 = new BotIA(1);
-            Player p2 = new BotRnd(2);
-            Player p3 = new BotRnd(3);
-            Player p4 = new BotRnd(4);
+            Player p1 = new BotRnd(1);
+            Player p2 = new BotIA(2);
+            Player p3 = new BotSpender(3);
+            Player p4 = new BotRainbow(4);
 
             Manager manager = new Manager();          
             manager.letsPlay(p1, p4,p2, p3);

@@ -76,7 +76,7 @@ public class BotRnd extends Player{
     }
 
     @Override
-    public boolean wantToUseFabric() {
+    public boolean wantsToUseFabric() {
         if(random.nextInt(2)==0){
             return true;
         }
@@ -98,15 +98,5 @@ public class BotRnd extends Player{
     Player pickRandomTargetPlayer(){
         return board.randomPlayer();
     }
-    District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
-        if(!hand.isEmpty()) {
-            District d = hand.get(0);
-            for (District d1 : hand) {
-                if (d1.getCost() < d.getCost()) d = d1;
-            }
-            return d;
-        }
-        return null;
-    }
+
 }

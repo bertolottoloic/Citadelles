@@ -90,6 +90,7 @@ public class Bank{
     public void distributeCoinsAtBeggining(){
         for(Player p : bourses.keySet()){
             bourses.put(p,2);
+            currNbCoins-=2;
         }
     }
 

@@ -41,6 +41,7 @@ public class Player {
 	/*Attribut permettant d'attribuer des probabilités de possession de personnage*/
 	protected MatchingProb matches;
 	private boolean usingFabricPower=false;
+	private boolean hasUsedLabo = false;
 	protected Bank bank;
 	protected Deck deck;
 	protected DealRoles dealRoles;
@@ -109,12 +110,24 @@ public class Player {
 		}
 		return false;
 	}
+
+	protected District pickRandomDistrict() {
+		ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
+		if(!hand.isEmpty()) {
+			District d = hand.get(0);
+			for (District d1 : hand) {
+				if (d1.getCost() < d.getCost()) d = d1;
+			}
+			return d;
+		}
+		return null;
+	}
 	
 	boolean deletion(District d) {
 		Player p;
 		if(board!=null && board.existsGraveyardPlayer() != null) {
 			p = board.existsGraveyardPlayer();
-			p.isUsingGraveyard(d);
+			p.wantsToUseGraveyard(d);
 		}
 		return city.removeDistrict(d);
 	}
@@ -189,9 +202,43 @@ public class Player {
 	}
 
 	protected boolean isBuildingFirst() {
+		
 		return true;
+		
 	}
 
+	Role bestRoleToChoose(ArrayList<Role> roles, String color){
+		Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
+		if(optWizard.isPresent()){
+			return optWizard.get();
+		}
+		optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
+		if(optWizard.isPresent()){
+			return optWizard.get();
+		}
+		optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
+
+		if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
+			return optWizard.get();
+		}
+		int position;
+		switch (color){
+			case "religion": position=5;
+				break;
+			case "soldatesque": position =8;
+				break;
+			case "noble": position =4;
+				break;
+			default : position =6;
+		}
+		for(Role role : roles){
+			if(role.getPosition()==position){
+				return role;
+			}
+		}
+		return roles.get(0);
+
+	}
 
 	
 	public void discard(List<District> d) {
@@ -211,10 +258,15 @@ public class Player {
 	 * @ToOverride
 	 * @return
 	 */
-	public Optional<District> wantToUseLabo(){
+	public Optional<District> wantsToUseLabo(){
+		for(District handDis : hand.toList()) {
+			if(hasTheDistrict(handDis.getName())){
+				return Optional.of(handDis);
+			}
+		}
         return Optional.empty();
 	}
-	
+
 	public Role processWhoToKill(){
 		return null;
 	}
@@ -240,10 +292,8 @@ public class Player {
 	 * @return un boolean
 	 * @ToOverride
 	 */
-	public boolean wantToUseFabric() {
+	public boolean wantsToUseFabric() {
 		return false;
-	}
-	protected void isUsingGraveyard() {
 	}
 
 	public List<District> processWhatToBuild() {
@@ -287,11 +337,14 @@ public class Player {
 			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+this.deck.numberOfCards()+" districts dans le deck.");
 		}
+		this.isUsingLabo();
 		
 		if(getCharacter().toString().equals("Architect")){
 			this.specialMove();
 		}
 	
+		this.isUsingLabo();
+		
 		if(isBuildingFirst()) {
 			building();
 			specialMove();
@@ -315,7 +368,7 @@ public class Player {
 	public boolean isUsingFabric() {
 		if(!this.usingFabricPower){
 			boolean resultat=getCity().containsWonder("Manufacture")
-			&& this.wantToUseFabric();
+			&& this.wantsToUseFabric();
 			if(resultat){
 				this.bank.deposit(3,this);
 				this.usingFabricPower=true;
@@ -324,34 +377,28 @@ public class Player {
 		}
 		return this.usingFabricPower;
 	}
-
-	
-	
-	
-
+ 
 	/**
 	 * @PlayTurnInterface
 	 */
 	final public void isUsingLabo() {
-		Optional<District> od=wantToUseLabo();
-		if(city.containsWonder("Laboratoire")&& od.isPresent()) {
-			System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+		Optional<District> od=wantsToUseLabo();
+		if(city.containsWonder("Laboratoire")&& od.isPresent() && !hasUsedLabo) {
 			if(hand.remove(od.get())){
+				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
 				this.deck.putbackOne(od.get());
 				takeCoinsFromBank(1);
-			}			
+				hasUsedLabo = true;
+			}
 	   }
 	}
 
-	
-	
-	
-	protected boolean isUsingGraveyard(District d) {
+	protected boolean wantsToUseGraveyard(District d) {
 		return true;
 	}
 	
-	protected void usesGraveyard(District d) {
-		if(isUsingGraveyard(d)) {
+	protected void isUsingGraveyard(District d) {
+		if(wantsToUseGraveyard(d)) {
 			System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
 			bank.deposit(1, this);
 			hand.add(d);
@@ -366,6 +413,7 @@ public class Player {
 	 */
 	final public void reInitializeForNextTurn(){
 		usingFabricPower=false;
+		hasUsedLabo=false;
 		alreadyChosenRole=false;
 		character=null;
 		targetToDestroyDistrict=null;
@@ -402,6 +450,7 @@ public class Player {
 			support.firePropertyChange("gameOver",gameOver , true);
 			this.gameOver=true;//inutile en fait : c'est là pour le principe
 		}
+		this.isUsingLabo();
 	}
 
 	
@@ -417,12 +466,13 @@ public class Player {
         districtToDestroy = processDistrictToDestroy(this.targetToDestroyDistrict);
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();	
+		this.isUsingLabo();
 	}
 	
 	/**
 	 * Méthode pour collecter l'argent des districts
 	 */
-	void collectMoneyFromDistricts(){
+	protected void collectMoneyFromDistricts(){
 		character.collectRentMoney();
 	}
 	

@@ -121,7 +121,7 @@ public class BotRainbow extends BotSmart{
     }
 
     @Override
-    public Optional<District> wantToUseLabo() {
+    public Optional<District> wantsToUseLabo() {
         ArrayList<District> list = hand.cardsAboveGold(getGold());
         if(!list.isEmpty()
                 && city.getSizeOfCity() >= 6) {
@@ -135,9 +135,9 @@ public class BotRainbow extends BotSmart{
 
 
     @Override
-    public boolean wantToUseFabric() {
+    public boolean wantsToUseFabric() {
         // TODO Auto-generated method stub
-        return super.wantToUseFabric();
+        return super.wantsToUseFabric();
     }
 
 }

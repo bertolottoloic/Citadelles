@@ -55,7 +55,19 @@ public class BotSpender extends BotSmart {
             }
         }
         return roles.get(0);
+    }
 
+
+
+    @Override
+    public Role processWhoToKill() {
+        return this.dealRoles.getRole("Thief");
+    }
+
+    @Override
+    public Role processWhoToRob() {
+        // TODO Auto-generated method stub
+        return this.dealRoles.getRole("Merchant");
     }
 
     @Override
@@ -108,51 +120,28 @@ public class BotSpender extends BotSmart {
     }
 
     @Override
-    public boolean coinsOrDistrict() {
-        return getGold() < 8
-                || hand.badCards(getGold()).size()<=hand.size()/2
-                || city.getSizeOfCity() >= 6
-                || deck.numberOfCards() < 4
-                || hand.size()>2;
+    public boolean coinsOrDistrict() {//TODO Test
+        return getGold() < 2
+                || hand.badCards(getGold()).size()<=hand.size()/2;
     }
 
-    @Override
-    protected boolean isBuildingFirst() {
-        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-            return false;
-        }
-        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().badCards(getGold()).size();
-            if(countBadCards>getHand().size()/2){
-                return false;
-            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-            else{
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
-    }
-    
+
     /**
-     * TODO stratégie
+     * Strategy : get rid of the lowest valued district
      */
     @Override
-    public Optional<District> wantToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
-        if(!list.isEmpty()
-                && city.getSizeOfCity() >= 6) {
-            District dis = hand.lowCostDistrict();
-            if(!list.contains(dis)) {
-                return Optional.of(dis);
-            }
+    public Optional<District> wantsToUseLabo() {
+    	District dis = hand.lowCostDistrict();
+    	if(dis == null) {
+    		return Optional.empty();
+    	} else if(dis.getValue() < getGold()) {
+            return Optional.of(dis);
         }
         return Optional.empty();
     }
 
     @Override
-	protected boolean isUsingGraveyard(District dis) {
+	protected boolean wantsToUseGraveyard(District dis) {
 		if (city.containsWonder("Cimetiere")) {
 			if (dis != null && !getCharacter().toString().equals("Warlord")) {
 				if (dis.getCost() < getGold() && dis.getValue() > 4) {
@@ -168,8 +157,9 @@ public class BotSpender extends BotSmart {
     
 
     @Override
-    public boolean wantToUseFabric() {
-        return true;
+    public boolean wantsToUseFabric() {
+        return getGold() >= 8
+    			&& !hand.highValuedDistrict(getGold()-3);
     }
 
 }

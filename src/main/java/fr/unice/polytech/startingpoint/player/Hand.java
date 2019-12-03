@@ -181,7 +181,21 @@ public class Hand {
     
     
     
-    
-
-
+    public List<District> discardDistrictsForMultiColors(){
+    	List<District> res = new ArrayList<>();
+    	HashMap<DistrictColor,Integer> countColors = countColors();
+    	List<DistrictColor> severalDistrictsColor = new ArrayList<>();
+    	countColors.forEach((k, v) -> {
+    		if(v > 1) {
+    			severalDistrictsColor.add(k);
+    		}
+    	});
+    	districts.forEach(d -> {
+    		if(severalDistrictsColor.contains(d.primaryColor())) {
+    			res.add(d);
+    		};
+    	});
+    	res.sort((a,b) -> a.getValue() - b.getValue());
+    	return res;
+    }
 }

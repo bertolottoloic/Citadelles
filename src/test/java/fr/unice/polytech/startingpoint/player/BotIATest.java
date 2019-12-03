@@ -4,6 +4,7 @@ package fr.unice.polytech.startingpoint.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +59,6 @@ class BotIATest{
  	   when(c.getSizeOfCity()).thenReturn(7);
  	   bot.setCity(c);
  	   assertTrue(bot.coinsOrDistrict());
-		
 		
  	   bank.withdraw(10, bot);
  	   when(c.getSizeOfCity()).thenReturn(5);
@@ -188,7 +188,22 @@ class BotIATest{
 	}
 	
 	@Test
+	void wantsToUseFabric() {
+		assertFalse(bot.wantsToUseFabric());
+		
+		bot.takeCoinsFromBank(6);
+		assertTrue(bot.wantsToUseFabric());
+		
+		City c = mock(City.class);
+		when(c.getSizeOfCity()).thenReturn(8);
+		bot.setCity(c);
+		
+		assertFalse(bot.wantsToUseFabric());
+	}
+	
+	@Test
 	void isUsingLaboTest() {
+		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
 		bot.setCity(c);
@@ -225,7 +240,7 @@ class BotIATest{
 		b.setPlayers(bot, anotherBot);
 	}
 	@Test
-	void isUsingGraveyardTest(){
+	void wantsToUseGraveyardTest(){
 		Board b = mock(Board.class);
 		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
 		bot.setBoard(b);
@@ -239,14 +254,14 @@ class BotIATest{
 		anotherBot.takeCoinsFromBank(5);
 		anotherBot.setCharacter(new Merchant());
 		
-		assertTrue(anotherBot.isUsingGraveyard(d1));
-		anotherBot.usesGraveyard(d1);
+		assertTrue(anotherBot.wantsToUseGraveyard(d1));
+		anotherBot.isUsingGraveyard(d1);
 
 		bot.city.add(d2);
 		bot.deleteDistrictFromCity(d2);
 		anotherBot.takeCoinsFromBank(3);
 		
-		assertTrue(anotherBot.isUsingGraveyard(d2));
+		assertTrue(anotherBot.wantsToUseGraveyard(d2));
 	}
 		
 	@Test
@@ -283,6 +298,39 @@ class BotIATest{
 		when(matches.possibleRolesFor(1)).thenReturn(s);
 		bot.setMatches(matches);
 		assertEquals(dealRoles.getRole("Merchant"), bot.processWhoToRob());
+	}
+
+	@Test
+	void processWhoToExchangeHandWithTest(){
+		District d1 = new District(1, 1, "religion", "Temple");
+		District d2 = new District(1, 1, "commerce", "Taverne");
+		District d3 = new District(2, 2, "religion", "Eglise");
+		ArrayList<District> districts = new ArrayList<>();
+		bot.takeCoinsFromBank(3);
+		districts.add(d1);
+		districts.add(d2);
+		districts.add(d3);
+		hand = new Hand(districts);
+		bot.setHand(hand);
+		Player target = new Player(2);
+		target.setDeck(deck);
+		target.takeCardsAtBeginning();
+		Board board = mock(Board.class);
+		when(board.playerWithTheBiggestHand(bot)).thenReturn(target);
+		bot.setBoard(board);
+		assertEquals(target,bot.processWhoToExchangeHandWith());
+		d1 = new District(4, 4, "noblesse", "Palais");
+		d2 = new District(4, 4, "noblesse", "Palais");
+		d3 = new District(1, 1, "religion", "Eglise");
+		District d4 = new District(1, 1, "religion", "Eglise");
+		districts = new ArrayList<>();
+		districts.add(d1);
+		districts.add(d2);
+		districts.add(d3);
+		districts.add(d4);
+		bot.setHand(new Hand(districts));
+		bot.takeCoinsFromBank(2);
+		assertEquals(null,bot.processWhoToExchangeHandWith());
 	}
 
 	@Test

@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import fr.unice.polytech.startingpoint.board.District;
@@ -106,17 +107,17 @@ public class BotIA extends BotSmart{
      * puisqu'on a pas le droit de le poser de toute facon
      */
     @Override
-    public Optional<District> wantToUseLabo() {
+    public Optional<District> wantsToUseLabo() {
         ArrayList<District> list = hand.cardsAboveGold(getGold());
        		if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
                    District dis = hand.highCostDistrict(getGold());
                    return Optional.of(dis);
             }
-            return super.wantToUseLabo();
+            return super.wantsToUseLabo();
     }
     
 	@Override
-	protected boolean isUsingGraveyard(District dis) {
+	protected boolean wantsToUseGraveyard(District dis) {
 		if (city.containsWonder("Cimetiere")) {
 			if (dis != null && !getCharacter().toString().equals("Warlord")) {
 				District lowest = hand.lowCostDistrict();
@@ -173,13 +174,61 @@ public class BotIA extends BotSmart{
 	}
 
 
-    
-    
+    @Override
+    public Player processWhoseDistrictToDestroy() {
+        return board.playerWithTheBiggestCity(this);
+    }
 
     @Override
-    public boolean wantToUseFabric() {
-        return false;
+    public Player processWhoToExchangeHandWith() {    
+        //ArrayList<District> d = this.hand.badCards(this.getGold());   
+        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())<=((int)(this.hand.size()/2))){
+            this.setCardsToExchange(this.hand.badCards(this.getGold()));
+            return null;
+        }
+        if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
+
+            return this.getBoard().playerWithTheBiggestHand(this); 
+        }
+        this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
+        return null;
+    }
+    
+    @Override
+    public District processDistrictToDestroy(Player target) {
+        Optional<District> tmp=target.city.cheaperDistrict();
+        if(tmp.isPresent()){
+            return tmp.get();
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public Role processWhoToKill() {
+        this.attributeProbsToPlayer();
+        Set<String> targets = matches.possibleRolesFor(this.board.playerWithTheBiggestCity(this).getId());
+        targets.remove(this.getCharacter().toString());//on exclut son propre role
+        return this.dealRoles.getRole(targets.stream().findFirst().get());
+    }
+    @Override
+    public Role processWhoToRob() {
+        Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
+        targets.remove(this.getCharacter().toString());//on exclut son propre role
+        //TODO exclure celui qui a deja ete tué
+        /*Optional<Role> optKilled=dealRoles.roleKilled();
+        if(optKilled.isPresent()){
+            targets.remove(optKilled.get().toString());
+        }*/
         
+        return this.dealRoles.getRole(targets.stream().findFirst().get());
+    }
+
+    @Override
+    public boolean wantsToUseFabric() {
+        return getGold() >= 5
+    			&& city.getSizeOfCity() < 7;
     }
 
     

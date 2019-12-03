@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -196,8 +197,23 @@ class BotIAHighCostTest{
 
     }
     
+	@Test
+	void wantsToUseFabric() {
+		assertFalse(bot.wantsToUseFabric());
+		
+		bot.takeCoinsFromBank(9);
+		assertTrue(bot.wantsToUseFabric());
+		
+		Hand h = mock(Hand.class);
+		when(h.highValuedDistrict(bot.getGold()-3)).thenReturn(true);
+		bot.setHand(h);
+		
+		assertFalse(bot.wantsToUseFabric());
+	}
+    
     @Test
-	void isUsingLaboTest() {
+	void wantsToUseLaboTest() {
+		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
 		bot.setCity(c);
@@ -222,6 +238,15 @@ class BotIAHighCostTest{
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
+		
+		bot.reInitializeForNextTurn();
+		bot.bank.deposit(5,bot);
+		hand.add(new District(8, 5, DistrictColor.Noble, "pas picked"));
+		bot.isUsingLabo();
+		
+		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
+		assertEquals(tmpGold - 4, bot.getGold());
+		assertEquals(tmpHandSize, bot.getHand().size());
 	}
     
     @BeforeEach
@@ -235,7 +260,7 @@ class BotIAHighCostTest{
 	}
 	
 	@Test
-	void isUsingGraveyardTest(){	
+	void wantsToUseGraveyardTest(){	
 		Board b = mock(Board.class);
 		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
 		bot.setBoard(b);
@@ -249,13 +274,13 @@ class BotIAHighCostTest{
 		anotherBot.takeCoinsFromBank(7);
 		anotherBot.setCharacter(new Merchant());
 		
-		assertTrue(anotherBot.isUsingGraveyard(d2));
-		anotherBot.usesGraveyard(d2);
+		assertTrue(anotherBot.wantsToUseGraveyard(d2));
+		anotherBot.isUsingGraveyard(d2);
 		
 		bot.city.add(d1);
 		bot.deleteDistrictFromCity(d1);
 		anotherBot.takeCoinsFromBank(3);
 
-		assertFalse(anotherBot.isUsingGraveyard(d1));
+		assertFalse(anotherBot.wantsToUseGraveyard(d1));
 	}
 }

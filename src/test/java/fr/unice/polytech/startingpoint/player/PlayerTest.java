@@ -119,10 +119,10 @@ class PlayerTest {
     	player.setBoard(board);
     	board.setPlayers(player, p2); 
     	District d = new District(0, 2, DistrictColor.Commerce, "quartier");
-    	Mockito.verify(p2, Mockito.never()).isUsingGraveyard(d);
+    	Mockito.verify(p2, Mockito.never()).wantsToUseGraveyard(d);
     	when(board.existsGraveyardPlayer()).thenReturn(p2);
     	player.deletion(d);
-    	Mockito.verify(p2).isUsingGraveyard(d);
+    	Mockito.verify(p2).wantsToUseGraveyard(d);
     }
     
     @Test
@@ -274,7 +274,7 @@ class PlayerTest {
 		assertEquals(0, player.hand.size());
 		
 		District ex = new District(2, 2, "merveille", "Poudlard");
-		player.usesGraveyard(ex);
+		player.isUsingGraveyard(ex);
 		assertEquals(1, player.hand.size());
 	}
     

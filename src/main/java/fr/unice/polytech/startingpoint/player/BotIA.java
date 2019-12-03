@@ -281,17 +281,20 @@ public class BotIA extends Player{
     }
 
     @Override
-    public Player processWhoToExchangeHandWith() {
-        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
+    public Player processWhoToExchangeHandWith() {    
+        ArrayList<District> d = this.hand.badCards(this.getGold());   
+        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())<=((int)(this.hand.size()/2))){
             this.setCardsToExchange(this.hand.badCards(this.getGold()));
             return null;
-        } 
+        }
         if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
+
             return this.getBoard().playerWithTheBiggestHand(this); 
         }
         this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
         return null;
     }
+    
     @Override
     public District processDistrictToDestroy(Player target) {
         Optional<District> tmp=target.city.cheaperDistrict();

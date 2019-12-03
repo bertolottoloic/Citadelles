@@ -7,8 +7,10 @@ import java.util.HashMap;
 
 import fr.unice.polytech.startingpoint.game.Manager;
 import fr.unice.polytech.startingpoint.player.BotIA;
-import fr.unice.polytech.startingpoint.player.BotIAHighCost;
+import fr.unice.polytech.startingpoint.player.BotRainbow;
 import fr.unice.polytech.startingpoint.player.BotRnd;
+import fr.unice.polytech.startingpoint.player.BotSmart;
+import fr.unice.polytech.startingpoint.player.BotSpender;
 import fr.unice.polytech.startingpoint.player.Player;
 
 public class Main {
@@ -21,14 +23,14 @@ public class Main {
         stats.put(2,0);
         stats.put(3,0);
         stats.put(4,0);
-        while (n < 2200) {
+        while (n < 1000) {
             Player p1 = new BotIA(1);
-            Player p2 = new BotIA(2);
-            Player p3 = new BotIA(3);
-            Player p4 = new BotIA(4);
+            Player p2 = new BotRnd(2);
+            Player p3 = new BotRnd(3);
+            Player p4 = new BotRnd(4);
 
             Manager manager = new Manager();          
-            manager.letsPlay(p1, p2, p3, p4);
+            manager.letsPlay(p1, p4,p2, p3);
             countWinner(manager.getWinner());
             n++;
 

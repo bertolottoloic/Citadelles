@@ -28,7 +28,7 @@ public class Player {
 	protected Role targetToRob;
 	protected Player targetToDestroyDistrict;
 	protected District districtToDestroy;
-	private ArrayList<District> cardsToExchange;
+	protected ArrayList<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
 
@@ -156,7 +156,12 @@ public class Player {
 	 */
 	final public void chooseRole(){
 		if(!alreadyChosenRole){
-			Role tmpRole=this.processChooseRole();
+			List<Role> toConsiderRoles=new ArrayList<>(this.dealRoles.getLeftRoles());
+			
+			if(this.nextPlayer!=null && this.nextPlayer.alreadyChosenRole){
+				toConsiderRoles.add(this.dealRoles.getHidden());
+			}
+			Role tmpRole=processChooseRole(toConsiderRoles);
 			setCharacter(tmpRole);
 			dealRoles.getLeftRoles().remove(tmpRole);
 			alreadyChosenRole=true;
@@ -169,12 +174,13 @@ public class Player {
 	}
 	
 	/*    ---------------------------------------To Override--------------------------------- */
+
 	/**
 	 * @ToOverride by Bots
 	 * @return
 	 */
-	public Role processChooseRole(){
-		return dealRoles.getLeftRoles().get(0);
+	public Role processChooseRole(List<Role> toConsiderRoles){
+		return toConsiderRoles.get(0);
 	}
 
 
@@ -377,9 +383,10 @@ public class Player {
 	final protected void building() {
 		if(!getHand().isEmpty()) {
 			var toBuild = this.processWhatToBuild();
-			
-			if (!toBuild.isEmpty()) {
-				addToTheCity(toBuild);
+			int maxbuild=this.getCharacter().getNumberDistrictBuildable();
+			while(maxbuild>0 && !toBuild.isEmpty()){
+				addToTheCity(toBuild.remove(0));
+				maxbuild--;
 			}
 		}
 
@@ -397,11 +404,7 @@ public class Player {
 		}
 	}
 
-	private void addToTheCity(List<District> toBuild) {
-		toBuild.forEach(d->{
-			this.addToTheCity(d);
-		});
-	}
+	
 
 	
 
@@ -471,7 +474,7 @@ public class Player {
 	 * Cette méthode permet de compter les points en fin de partie
 	 * @return le nombre de points
 	 */
-	final public int points(){
+	public int points(){
 		int points=0;
          points+=city.totalValue();
 		 if(this.firstToFinish){

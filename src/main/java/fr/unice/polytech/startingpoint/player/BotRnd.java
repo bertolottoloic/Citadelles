@@ -15,10 +15,6 @@ public class BotRnd extends Player{
     }
 
     
-    @Override
-    public Role processChooseRole() {
-        return super.processChooseRole();
-    }
 
     @Override
     public District processDistrictToDestroy(Player target) {

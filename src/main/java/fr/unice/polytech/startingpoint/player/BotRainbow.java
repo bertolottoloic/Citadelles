@@ -9,21 +9,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class BotIAMultiColors extends Player{
-    public BotIAMultiColors(int id){
+public class BotRainbow extends BotSmart{
+    public BotRainbow(int id){
         super(id);
     }
 
 
-    @Override
-    public Role processChooseRole() {
-        ArrayList<Role> leftRoles=this.dealRoles.getLeftRoles();
-        String maxColor=hand.bestColorDistrict();
-        Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
+    
 
+    @Override
+    public Role processChooseRole(List<Role> toConsiderRoles) {
+        String maxColor=hand.bestColorDistrict();
+        Role choosenRole=bestRoleToChoose(toConsiderRoles,maxColor);
+        
         return choosenRole;
     }
-    Role bestRoleToChoose(ArrayList<Role> roles, String color){
+    Role bestRoleToChoose(List<Role> roles, String color){
         Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
         if(optWizard.isPresent()){
             return optWizard.get();
@@ -57,7 +58,7 @@ public class BotIAMultiColors extends Player{
     }
 
     District whatToBuild(int limit){
-        ArrayList<DistrictColor> missingColors = MissingColors();
+        ArrayList<DistrictColor> missingColors = missingColors();
         if(missingColors.size()==0){
             return hand.highCostDistrict(limit);
         }
@@ -74,7 +75,7 @@ public class BotIAMultiColors extends Player{
         }
     }
 
-    ArrayList<DistrictColor> MissingColors(){
+    ArrayList<DistrictColor> missingColors(){
         HashMap<DistrictColor,Integer> countColors=hand.countColors();
         ArrayList<DistrictColor> missingColors = new ArrayList<>();
         for(DistrictColor key : countColors.keySet()){
@@ -85,22 +86,7 @@ public class BotIAMultiColors extends Player{
         return missingColors;
     }
 
-    @Override
-    public void discard(List<District> d){
-        if(d.size()>=2){
-            d.sort((a,b)->
-                    Integer.compare(a.getCost(),b.getCost())
-            );
-            while(d.size()>1){//On ne garde qu'une carte
-                if(d.get(0).getCost()>getGold()){
-                    this.deck.putbackOne(d.remove(0));
-                }
-                else{
-                    this.deck.putbackOne(d.remove(d.size()-1));
-                }
-            }
-        }
-    }
+    //TODO override discard here
 
 
     @Override
@@ -111,34 +97,9 @@ public class BotIAMultiColors extends Player{
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
     }
-    District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
-        if(!hand.isEmpty()) {
-            District d = hand.get(0);
-            for (District d1 : hand) {
-                if (d1.getCost() < d.getCost()) d = d1;
-            }
-            return d;
-        }
-        return null;
-    }
+    
 
-    Role pickTargetRole(){
-        Role character = this.getCharacter();
-        Role target;
-        switch(character.getPosition()){
-            case 1:
-                target = this.dealRoles.getRole("Thief");
-                break;
-            case 2:
-                target = this.dealRoles.getRole("Merchant");
-                break;
-            default :
-                target = null;
-                break;
-        }
-        return target;
-    }
+    
 
     @Override
     protected boolean isBuildingFirst() {

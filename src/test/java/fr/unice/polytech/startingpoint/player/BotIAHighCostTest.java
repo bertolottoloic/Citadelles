@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class BotIAHighCostTest{
 
 
-    BotIAHighCost bot, anotherBot;
+    BotSpender bot, anotherBot;
     District d1 = new District(3,4,DistrictColor.Religion, "quartier");
     District d2 = new District(6,6, DistrictColor.Wonder,"rue");
     Hand hand;
@@ -29,7 +29,7 @@ class BotIAHighCostTest{
         deck=new Deck();
         bank=new Bank();
         hand = new Hand();
-        bot = new BotIAHighCost(1);
+        bot = new BotSpender(1);
         bank.setBourses(List.of(bot));
         bot.setDeck(deck);
         hand.add(d1);
@@ -226,7 +226,7 @@ class BotIAHighCostTest{
     
     @BeforeEach
 	void setMultiPlayers() {
-		anotherBot = new BotIAHighCost(2);
+		anotherBot = new BotSpender(2);
 		bot.city.add(d2);
 		
 		Board b = new Board();

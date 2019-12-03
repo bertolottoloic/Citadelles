@@ -7,13 +7,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 public class HandTest {
-    District d1 = new District(3,4,DistrictColor.Religion, "quartier");
-    District d2 = new District(6,6, DistrictColor.Wonder,"rue");
+    District d1;
+    District d2,d3;
     Hand hand;
 
     @BeforeEach
     void setUp(){
+        d2 = new District(6,6, DistrictColor.Wonder,"rue");
+        d1 = new District(3,4,DistrictColor.Religion, "quartier");
+        d3=new District(3,4,DistrictColor.Religion, "quartier");
         hand=new Hand();
     }
     @Test
@@ -71,5 +76,30 @@ public class HandTest {
         assertEquals(d2,hand.lowCostDistrictForNextTurn(10));
         assertEquals(d3,hand.lowCostDistrictForNextTurn(5));
         assertEquals(d1,hand.lowCostDistrictForNextTurn(3));
+    }
+
+    @Test
+    void contentExceptStrictTest(){
+        hand.add(d1);
+        hand.add(d2);
+        hand.add(d3);
+        List<District> resultat=hand.contentExceptStrict(List.of(d1));
+        assertEquals(false, resultat.contains(d1));
+        assertEquals(false, resultat.contains(d3));
+        assertEquals(true, resultat.contains(d2));
+        
+    }
+
+    @Test
+    void contentExceptTest(){
+        hand.add(d1);
+        hand.add(d2);
+        hand.add(d3);
+
+        List<District> resultat=hand.contentExcept(List.of(d1));
+        assertEquals(true, resultat.contains(d1));
+        assertEquals(true, resultat.contains(d2));
+        assertEquals(2, resultat.size());
+        
     }
 }

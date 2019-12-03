@@ -7,24 +7,25 @@ import java.util.Optional;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
-public class BotIAHighCost extends Player{
+public class BotSpender extends BotSmart {
 
-    public BotIAHighCost(int id){
+    public BotSpender(int id) {
         super(id);
     }
 
    
-    @Override
-    public Role processChooseRole() {
-        ArrayList<Role> leftRoles=this.dealRoles.getLeftRoles();
-        String maxColor=hand.bestColorDistrict();
-        Role choosenRole=bestRoleToChoose(leftRoles,maxColor);
+    
 
+    @Override
+    public Role processChooseRole(List<Role> toConsiderRoles) {
+        String maxColor=hand.bestColorDistrict();
+        Role choosenRole=bestRoleToChoose(toConsiderRoles,maxColor);
+        
         return choosenRole;
     }
 
     //TODO ???
-    Role bestRoleToChoose(ArrayList<Role> roles, String color){
+    Role bestRoleToChoose(List<Role> roles, String color){
         Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
         if(optWizard.isPresent()){
             return optWizard.get();
@@ -57,20 +58,6 @@ public class BotIAHighCost extends Player{
 
     }
 
-
-
-
-    @Override
-    public Role processWhoToKill() {
-        return this.dealRoles.getRole("Thief");
-    }
-
-    @Override
-    public Role processWhoToRob() {
-        // TODO Auto-generated method stub
-        return this.dealRoles.getRole("Merchant");
-    }
-
     @Override
     public Player processWhoToExchangeHandWith() {
         return this.board.playerWithTheBiggestHand(this);
@@ -82,16 +69,10 @@ public class BotIAHighCost extends Player{
     }
 
     @Override
-    public District processDistrictToDestroy(Player target) {
-        return pickRandomDistrict();
-    }
-    
-
-    @Override
     public List<District> processWhatToBuild() {
         District tmp=this.whatToBuild(this.getGold());
         if(tmp!=null){
-            return List.of(tmp);
+            return new ArrayList<District>(List.of(tmp));
         }
 
         return new ArrayList<>();
@@ -128,7 +109,7 @@ public class BotIAHighCost extends Player{
 
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2
+        return getGold() < 8
                 || hand.badCards(getGold()).size()<=hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || deck.numberOfCards() < 4
@@ -184,18 +165,7 @@ public class BotIAHighCost extends Player{
 
 
 
-    //TODO utiliser une stratégie concrète
-    District pickRandomDistrict() {
-        ArrayList<District> hand = new ArrayList<District>(getBoard().randomPlayer().getCity().getListDistricts());
-        if(!hand.isEmpty()) {
-            District d = hand.get(0);
-            for (District d1 : hand) {
-                if (d1.getCost() < d.getCost()) d = d1;
-            }
-            return d;
-        }
-        return null;
-    }
+    
 
     @Override
     public boolean wantToUseFabric() {

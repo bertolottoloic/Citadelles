@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class Hand {
     private ArrayList<District> districts=new ArrayList<>();
@@ -19,7 +20,7 @@ public class Hand {
         this.districts=new ArrayList<>(liste);
     }
 
-	District lowCostDistrict() {
+	public District lowCostDistrict() {
 		if (districts.isEmpty()) {
 			return null;
 		} else {
@@ -33,7 +34,7 @@ public class Hand {
 		}
 	}
 
-    District lowCostDistrictForNextTurn(int golds) {
+    public District lowCostDistrictForNextTurn(int golds) {
         District ld= lowCostDistrict();
         District optimized=ld;
         for(District d : districts){
@@ -48,7 +49,7 @@ public class Hand {
      * Cherche un district qui vaut plus que le threeshold
      * @return true s'il y en a
      */
-    boolean highValuedDistrict(int threeshold) {
+    public boolean highValuedDistrict(int threeshold) {
     	for(District d : districts){
     		if(d.getValue() > threeshold) {
     			return true;
@@ -155,6 +156,26 @@ public class Hand {
         else{
             return resultat.getKey().toString();
         }
+    }
+
+    /**
+     * Cette méthode retourne une liste contenant les éléments de la Hand
+     * excepté ceux qui sont dans la liste excepts en parametre
+     * Si deux ou plusieurs éléments identiques entre eux et à l'un des éléments de **excepts** alors
+     * les deux sont enlevés
+     * @param excepts
+     * @return
+     */
+    public List<District> contentExceptStrict(List<District> excepts){
+        return districts.stream().filter(d -> !excepts.contains(d)).collect(Collectors.toList());
+    }
+
+    public List<District> contentExcept(List<District> excepts){
+        List<District> copy=new ArrayList<>(this.districts);
+        for(var d:excepts){
+            copy.remove(d);
+        }
+        return copy;
     }
 
     

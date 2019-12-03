@@ -76,6 +76,9 @@ public class Manager implements PropertyChangeListener {
         if(ids.size()!=players.length){
             throw new IllegalArgumentException("Les id des players doivent etre différents");
         }
+        if(players.length<3 || players.length>7){
+            throw new IllegalArgumentException("Il faut au moins trois joueurs et au max sept");
+        }
         // On met les players en cercle
         for (int i = 0; i < players.length - 1; i++) {
             players[i].setNextPlayer(players[i + 1]);

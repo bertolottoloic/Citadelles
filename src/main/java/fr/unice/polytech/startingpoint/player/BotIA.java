@@ -51,8 +51,7 @@ public class BotIA extends BotSmart{
     }
     
     @Override
-    public Player processWhoToExchangeHandWith() {    
-        //ArrayList<District> d = this.hand.badCards(this.getGold());   
+    public Player processWhoToExchangeHandWith() {
         if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())<=((int)(this.hand.size()/2))){
             this.setCardsToExchange(this.hand.badCards(this.getGold()));
             return null;

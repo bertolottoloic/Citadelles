@@ -3,6 +3,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
@@ -52,5 +54,18 @@ class  DeckTest{
         d.exchangeOne(new District(5,5,"noblesse",""));
         assertEquals(oldLenght, d.numberOfCards());
     }
+
+    @Test
+    void withdrawManyTest(){
+        int nbCards=7;
+        assertEquals(7,d.withdrawMany(nbCards).size());
+    }
+
+    @Test
+    void withdraw(){
+        Deck deckMock = mock(Deck.class);
+        assertEquals(null,deckMock.withdraw());
+    }
+
     
 }

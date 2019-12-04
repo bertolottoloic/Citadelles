@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-class BotIAHighCostTest{
+class BotSpencerTest{
 
 
     BotSpender bot, anotherBot;

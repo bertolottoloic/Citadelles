@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.player.Player;
 
+import java.util.Random;
+
 public class BoardTest{
     Board board;
 
@@ -93,5 +95,25 @@ public class BoardTest{
         assertEquals(p1,board.richestPlayer(null)); 
 
         assertEquals(p2,board.richestPlayer(p1)); 
+    }
+
+    @Test
+    public void existsGraveyardPlayerTest() {
+        Player p1=mock(Player.class);
+        when(p1.cityHasTheDistrict("Cimetiere")).thenReturn(true);
+        board.setPlayers(p1);
+        assertEquals(p1,board.existsGraveyardPlayer());
+
+        when(p1.cityHasTheDistrict("Cimetiere")).thenReturn(false);
+        assertEquals(null,board.existsGraveyardPlayer());
+
+    }
+
+    @Test
+    public void randomPlayer(){
+        Player p1=mock(Player.class);
+        board.setPlayers(p1);
+        assertEquals(p1,board.randomPlayer());
+
     }
 }

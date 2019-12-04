@@ -209,9 +209,24 @@ public class Hand {
     	districts.forEach(d -> {
     		if(severalDistrictsColor.contains(d.primaryColor())) {
     			res.add(d);
-    		};
+    		}
     	});
     	res.sort((a,b) -> a.getValue() - b.getValue());
     	return res;
+    }
+    
+    public boolean containsWonder(String wonder) {//TODO test
+		return districts.stream().anyMatch(d -> d.getName().equals(wonder));
+	}
+    
+    public District findDistrictByName(String name) {//TODO test
+    	if(containsWonder(name)) {
+    		for (District d : districts) {
+				if (d.getName().equals(name)) {
+					return d;
+				}
+			}
+    	}
+    	return null;
     }
 }

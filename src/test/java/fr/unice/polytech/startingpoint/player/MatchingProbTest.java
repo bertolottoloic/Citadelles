@@ -19,7 +19,7 @@ public class MatchingProbTest {
     void setUp(){
         p1 = new BotRnd(1);
         p2 = new BotRnd(2);
-        p3 = new BotIA(3);
+        p3 = new BotBuildFast(3);
         p4 = new BotSpender(4);
         mprob=new MatchingProb(List.of(p1,p2,p3,p4));
 

@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.board.Bank;
@@ -25,58 +24,43 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class BotIATest{
+class BotBuildFastTest {
 
-    BotIA bot, anotherBot;
-    District d1 = new District(3,4,DistrictColor.Religion, "quartier");
-    District d2 = new District(6,6, DistrictColor.Wonder,"rue");
+	BotBuildFast bot, anotherBot;
+	District d1 = new District(3, 4, DistrictColor.Religion, "quartier");
+	District d2 = new District(6, 6, DistrictColor.Wonder, "rue");
 	Hand hand;
 	Bank bank;
 	Deck deck;
-	
+
 	MatchingProb matches;
 	DealRoles dealRoles;
 
 
-    @BeforeEach
-	void setup(){
-		bot=new BotIA(1);
-		hand=new Hand();
-		bank=new Bank();
-		deck=new Deck();
-		dealRoles=new DealRoles();
+	@BeforeEach
+	void setup() {
+		bot = new BotBuildFast(1);
+		hand = new Hand();
+		bank = new Bank();
+		deck = new Deck();
+		dealRoles = new DealRoles();
 
 		bot.setDeck(deck);
 		bank.setBourses(List.of(bot));
 	}
 
-	@Disabled
-    @Test
-    void coinsOrDistrictTest() {
- 	   assertTrue(bot.coinsOrDistrict());
- 	   
- 	   City c= mock(City.class);
- 	   when(c.getSizeOfCity()).thenReturn(7);
- 	   bot.setCity(c);
- 	   assertTrue(bot.coinsOrDistrict());
-		
- 	   bank.withdraw(10, bot);
- 	   when(c.getSizeOfCity()).thenReturn(5);
- 	   Deck d = bot.getDeck();
- 	   d.getList().clear();
- 	   d.getList().add(new District(3,4,"religion", "random1"));
- 	   d.getList().add(new District(3,4,"religion", "random2"));
- 	   d.getList().add(new District(3,4,"religion", "random3"));
- 	   d.getList().add(new District(3,4,"religion", "random4"));
- 	   d.getList().add(new District(3,4,"religion", "random5"));
- 	   assertTrue(bot.coinsOrDistrict());
- 	   
- 	   hand.add(d1);
- 	   hand.add(new District(2, 2, "unecouleur", "random6"));
- 	   bot.setHand(hand);
- 	   assertFalse(bot.coinsOrDistrict());
-    }
-   
+	@Test
+	void coinsOrDistrictTest() {
+		assertTrue(bot.coinsOrDistrict());
+
+		bank.withdraw(10, bot);
+
+		hand.add(d1);
+		hand.add(new District(2, 2, "unecouleur", "random6"));
+		bot.setHand(hand);
+		assertFalse(bot.coinsOrDistrict());
+	}
+
 	@Test
 	void discardTest() {
 		ArrayList<District> dis = new ArrayList<>();
@@ -86,7 +70,7 @@ class BotIATest{
 		dis.add(d1);
 		dis.add(d2);
 		dis.add(d3);
-		
+
 		bot.setBoard(new Board());
 		assertEquals(3, dis.size());
 
@@ -102,12 +86,12 @@ class BotIATest{
 		dis.add(d1);
 		dis.add(d2);
 		dis.add(d3);
-		
+
 		assertEquals(3, dis.size());
 		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d3));
-		
+
 		dis.clear();
 		d1 = new District(3, 3, "religion", "quartier1");
 		d2 = new District(1, 6, "religion", "quartier2");
@@ -115,12 +99,12 @@ class BotIATest{
 		dis.add(d1);
 		dis.add(d2);
 		dis.add(d3);
-		
+
 		assertEquals(3, dis.size());
 		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
-	
+
 		dis.clear();
 		d1 = new District(5, 3, "religion", "quartier1");
 		d2 = new District(1, 6, "religion", "quartier2");
@@ -128,18 +112,18 @@ class BotIATest{
 		dis.add(d1);
 		dis.add(d2);
 		dis.add(d3);
-		
+
 		assertEquals(3, dis.size());
 		bot.discard(dis);
 		assertEquals(1, dis.size());
 		assertTrue(dis.contains(d2));
-		
+
 		dis.clear();
 		d1 = new District(5, 3, "religion", "quartier1");
 		d2 = new District(1, 6, "religion", "quartier2");
 		dis.add(d1);
 		dis.add(d2);
-		
+
 		assertEquals(2, dis.size());
 		bot.discard(dis);
 		assertEquals(1, dis.size());
@@ -147,27 +131,36 @@ class BotIATest{
 	}
 
 	@Test
-	void whatToBuildTest(){
+	void whatToBuildTest() {
 
-    	Role role = mock(Role.class);
-    	when(role.toString()).thenReturn("Architect");
-    	bot.setCharacter(role);
-    	hand.add(d1);
-    	hand.add(d2);
-    	bot.setHand(hand);
-    	assertEquals(d1,bot.whatToBuild(10));
-		assertEquals(null,bot.whatToBuild(2));
+		Role role = mock(Role.class);
+		when(role.toString()).thenReturn("Architect");
+		bot.setCharacter(role);
+		hand.add(d1);
+		hand.add(d2);
+		bot.setHand(hand);
+		assertEquals(d1, bot.whatToBuild(10));
+		assertEquals(null, bot.whatToBuild(2));
 
 
 		when(role.toString()).thenReturn("Warlord");
-		assertEquals(d1,bot.whatToBuild(10));
+		assertEquals(d1, bot.whatToBuild(10));
+		assertEquals(null, bot.whatToBuild(2));
 
-		assertEquals(null,bot.whatToBuild(2));
+		District donjon =(new District(5,5,"merveille","Donjon"));
+		bot.hand.add(donjon);
+		assertTrue(bot.whatToBuild(5).equals(donjon));
+
+		District Laboratoire =(new District(5,5,"merveille","Laboratoire"));
+		bot.hand.remove(donjon);
+		bot.hand.add(Laboratoire);
+		assertTrue(bot.whatToBuild(7).equals(Laboratoire));
+
 
 	}
 
 	@Test
-	void isBuildingTest(){
+	void isBuildingTest() {
 		Role role = mock(Role.class);
 		bot.setCharacter(role);
 		when(role.toString()).thenReturn("Wizard");
@@ -175,8 +168,8 @@ class BotIATest{
 		hand.add(d1);
 		hand.add(d2);
 		bot.setHand(hand);
-		System.out.println(bot.getGold()+"	"+
-		bot.getHand().badCards(bot.getGold()).size());
+		System.out.println(bot.getGold() + "	" +
+				bot.getHand().badCards(bot.getGold()).size());
 		assertFalse(bot.isBuildingFirst());
 
 		when(role.toString()).thenReturn("Warlord");
@@ -186,28 +179,28 @@ class BotIATest{
 		assertTrue(bot.isBuildingFirst());
 
 	}
-	
+
 	@Test
 	void wantsToUseFabric() {
 		assertFalse(bot.wantsToUseFabric());
-		
+
 		bot.takeCoinsFromBank(6);
 		assertTrue(bot.wantsToUseFabric());
-		
+
 		City c = mock(City.class);
 		when(c.getSizeOfCity()).thenReturn(8);
 		bot.setCity(c);
-		
+
 		assertFalse(bot.wantsToUseFabric());
 	}
-	
+
 	@Test
 	void isUsingLaboTest() {
 		assertEquals(Optional.empty(), bot.wantsToUseLabo());
 		City c = mock(City.class);
 		when(c.containsWonder("Laboratoire")).thenReturn(true);
 		bot.setCity(c);
-		
+
 		bot.setHand(hand);
 		hand.add(d1);
 		hand.add(d2);
@@ -215,57 +208,58 @@ class BotIATest{
 		bot.setBoard(new Board());
 		bot.takeCoinsFromBank(5);
 		assertFalse(hand.cardsAboveGold(bot.getGold()).isEmpty());
-		
+
 		when(c.getSizeOfCity()).thenReturn(8);
 		District tmpDis = hand.highCostDistrict(bot.getGold());
 		assertFalse(hand.cardsAboveGold(bot.getGold()).contains(tmpDis));
-		
+
 		int tmpDeckNb = bot.getDeck().numberOfCards();
 		int tmpGold = bot.getGold();
 		int tmpHandSize = bot.getHand().size();
 		bot.isUsingLabo();
-		
+
 		assertEquals(tmpDeckNb + 1, bot.getDeck().numberOfCards());
 		assertEquals(tmpGold + 1, bot.getGold());
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
 	}
-	
+
 	@BeforeEach
 	void setMultiPlayers() {
-		anotherBot = new BotIA(2);
+		anotherBot = new BotBuildFast(2);
 		bot.city.add(d1);
-		
+
 		Board b = new Board();
 		anotherBot.setBoard(b);
 		b.setPlayers(bot, anotherBot);
 	}
+
 	@Test
-	void wantsToUseGraveyardTest(){
+	void wantsToUseGraveyardTest() {
 		Board b = mock(Board.class);
 		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
 		bot.setBoard(b);
 		assertTrue(bot.deleteDistrictFromCity(d1));
-		
+
 		City c = mock(City.class);
 		when(c.containsWonder("Cimetiere")).thenReturn(true);
 		anotherBot.setCity(c);
 		anotherBot.setBank(new Bank());
-		anotherBot.getBank().setBourses(List.of(bot,anotherBot));
+		anotherBot.getBank().setBourses(List.of(bot, anotherBot));
 		anotherBot.takeCoinsFromBank(5);
 		anotherBot.setCharacter(new Merchant());
-		
+
 		assertTrue(anotherBot.wantsToUseGraveyard(d1));
 		anotherBot.isUsingGraveyard(d1);
 
 		bot.city.add(d2);
 		bot.deleteDistrictFromCity(d2);
 		anotherBot.takeCoinsFromBank(3);
-		
+
 		assertTrue(anotherBot.wantsToUseGraveyard(d2));
 	}
-		
+
 	@Test
-	void targetToChooseForMurdererTest(){
+	void targetToChooseForMurdererTest() {
 		dealRoles = new DealRoles();
 		bot.setDealRoles(dealRoles);
 		bot.setCharacter(new Merchant());
@@ -283,7 +277,7 @@ class BotIATest{
 	}
 
 	@Test
-	void targetToChooseForThiefTest(){
+	void targetToChooseForThiefTest() {
 		dealRoles = new DealRoles();
 		bot.setDealRoles(dealRoles);
 		bot.setCharacter(new Thief());
@@ -301,7 +295,7 @@ class BotIATest{
 	}
 
 	@Test
-	void processWhoToExchangeHandWithTest(){
+	void processWhoToExchangeHandWithTest() {
 		District d1 = new District(1, 1, "religion", "Temple");
 		District d2 = new District(1, 1, "commerce", "Taverne");
 		District d3 = new District(2, 2, "religion", "Eglise");
@@ -318,7 +312,7 @@ class BotIATest{
 		Board board = mock(Board.class);
 		when(board.playerWithTheBiggestHand(bot)).thenReturn(target);
 		bot.setBoard(board);
-		assertEquals(target,bot.processWhoToExchangeHandWith());
+		assertEquals(target, bot.processWhoToExchangeHandWith());
 		d1 = new District(4, 4, "noblesse", "Palais");
 		d2 = new District(4, 4, "noblesse", "Palais");
 		d3 = new District(1, 1, "religion", "Eglise");
@@ -330,44 +324,53 @@ class BotIATest{
 		districts.add(d4);
 		bot.setHand(new Hand(districts));
 		bot.takeCoinsFromBank(2);
-		assertEquals(null,bot.processWhoToExchangeHandWith());
+		assertEquals(null, bot.processWhoToExchangeHandWith());
 	}
 
 	@Test
-	void attributeProbsToPlayerTest(){
-		
-		Player p1=new BotIA(7);
-		Player p2=new BotIA(2);
-		Player p3=new BotIA(3);
-		Player p4=new BotIA(5);
+	void attributeProbsToPlayerTest() {
+
+		Player p1 = new BotBuildFast(7);
+		Player p2 = new BotBuildFast(2);
+		Player p3 = new BotBuildFast(3);
+		Player p4 = new BotBuildFast(5);
 		dealRoles.readyToDistribute(4);
-		Board b=new Board();
+		Board b = new Board();
 
-		Player[] players={p1,p2,p3,p4};
+		Player[] players = {p1, p2, p3, p4};
 		for (int i = 0; i < players.length - 1; i++) {
-            players[i].setNextPlayer(players[i + 1]);
-        }
+			players[i].setNextPlayer(players[i + 1]);
+		}
 		players[players.length - 1].setNextPlayer(players[0]);
-		
-		b.setPlayers(p1,p2,p3,p4);
-		List.of(p1,p2,p3,p4).forEach(p->p.setBoard(b));
 
-		
+		b.setPlayers(p1, p2, p3, p4);
+		List.of(p1, p2, p3, p4).forEach(p -> p.setBoard(b));
+
+
 		p1.setDealRoles(dealRoles);
 		p2.setDealRoles(dealRoles);
 		p3.setDealRoles(dealRoles);
 		p4.setDealRoles(dealRoles);
 
-		int nblefts=dealRoles.getLeftRoles().size();
-		List.of(p1,p2,p3,p4).forEach(p->p.chooseRole());
+		int nblefts = dealRoles.getLeftRoles().size();
+		List.of(p1, p2, p3, p4).forEach(p -> p.chooseRole());
 
-		
-		
+
 		assertEquals(2, dealRoles.getVisible().size());
-		assertTrue(dealRoles.getLeftRoles().size()<=nblefts-3);
+		assertTrue(dealRoles.getLeftRoles().size() <= nblefts - 3);
 		assertEquals(3, p4.getMatches().possibleRolesFor(p1.getId()).size());
 		assertEquals(6, p1.getMatches().possibleRolesFor(p4.getId()).size());
 		assertEquals(2, p2.getMatches().possibleRolesFor(p1.getId()).size());
+	}
+
+
+	@Test
+	public void roleToOptimizeCoinsTest(){
+		BotBuildFast botMock = mock(BotBuildFast.class);
+		assertEquals(Optional.empty(),botMock.roleToOptimizeCoins(dealRoles.getRoles()));
+
+		//voir beforeEach
+		assertEquals("Bishop",bot.roleToOptimizeCoins(dealRoles.getRoles()).get().toString());
 	}
 
 }

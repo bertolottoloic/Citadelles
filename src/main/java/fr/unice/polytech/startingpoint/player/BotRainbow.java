@@ -9,35 +9,31 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotRainbow extends BotSmart{
-
-
     public BotRainbow(int id){
         super(id);
     }
 
+    /*-------------------------OVERRIDING --------------------------------------------------------*/
 
-/*-------------------------OVERRIDING --------------------------------------------------------*/
-    
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
-        String maxColor=hand.bestColorDistrict();
-        Role choosenRole=bestRoleToChoose(toConsiderRoles,maxColor);
-        
-        return choosenRole;
+        String maxColor=hand.bestColorDistrict();       
+        return bestRoleToChoose(toConsiderRoles,maxColor);
     }
-
+    
     @Override
     public List<District> processWhatToBuild() {
-        District tmp=this.whatToBuild(this.getGold());
-        if(tmp!=null){
-            return new ArrayList<District>(List.of(tmp));
-        }
-
-        return new ArrayList<>();
-        // TODO Auto-generated method stub
+        List<District> specialBuilding = super.processWhatToBuild();
+    	if(super.processWhatToBuild().isEmpty()) {
+    		District tmp=this.whatToBuild(this.getGold());
+            if(tmp!=null){
+                return new ArrayList<>(List.of(tmp));
+            }
+    	}
+    	return specialBuilding;
     }
 
-    //TODO override discard here
+    
     @Override
     public void discard(List<District> d) {
         d.sort((a,b)->
@@ -47,15 +43,18 @@ public class BotRainbow extends BotSmart{
         this.missingColors().forEach(c -> missingColors.add(c.name()));
         int tmp=this.getCharacter().getNumberDistrictKeepable();
         while(d.size()>tmp){
+            //TODO revoir
             if(d.get(0).getCost()>getGold() || !missingColors.contains(d.get(0).getColorsList().get(0))){
                 this.deck.putbackOne(d.remove(0));
-            }
-            else{
-                this.deck.putbackOne(d.remove(d.size()-1));
-            }
-        }
+            } else {
+				this.deck.putbackOne(d.remove(d.size() - 1));
+			}
+		}
+    	
     }
-
+    
+	
+    
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
@@ -64,8 +63,6 @@ public class BotRainbow extends BotSmart{
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
     }
-    
-
 
     @Override
     public Optional<District> wantsToUseLabo() {
@@ -101,19 +98,25 @@ public class BotRainbow extends BotSmart{
         return !city.containsAllColors() ||
         		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
     }
+    
+    /*------------------------------------------------------------------------------*/
 
-/*------------------------------------------------------------------------------*/
-
-    District whatToBuild(int limit){
-        ArrayList<DistrictColor> missingColors = missingColors();
-        if(missingColors.size()==0){
+    District whatToBuild(int limit){//TODO test
+        List<DistrictColor> missingColors = missingColors();
+        if(missingColors.isEmpty()){
             return hand.highCostDistrict(limit);
         }
         else {
-            ArrayList<District> districts = new ArrayList<District>();
+            List<District> districts = new ArrayList<>();
             for (District d : hand.toList()) {
                 if(missingColors.contains(d.primaryColor())&&d.getCost()<=limit) {
                     districts.add(d);
+                }
+                if(d.getName().equals("Cimetiere") && limit <= 5 && !getCharacter().toString().equals("Warlord")
+                		|| d.getName().equals("Cour des Miracles") && limit <= 2
+                		|| d.getName().equals("Manufacture") && limit <= 8
+                		|| d.getName().equals("Laboratoire") && limit <= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
+                	return d;
                 }
             }
             districts.sort((a,b)->

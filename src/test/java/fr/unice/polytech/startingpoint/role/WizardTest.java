@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,15 @@ public class WizardTest {
 
     @BeforeEach
     void setUp(){
-        player=new Player(1);
+        player=new Player(1){
+            @Override
+            public List<District> getCardsToExchange() {
+                ArrayList<District> cardsToExchange = new ArrayList<District>(player.getHand().toList());
+                cardsToExchange.remove(0);
+                cardsToExchange.remove(0);
+                return cardsToExchange;
+            }
+        };
         target = new Player(2);
         deck=new Deck();
         bank=new Bank();
@@ -62,11 +71,9 @@ public class WizardTest {
         Role wizard = dealRoles.getRole("Wizard");
         player.setCharacter(wizard);
         player.takeCardsAtBeginning();
-        ArrayList<District> cardsToExchange = new ArrayList<District>(player.getHand().toList());
         ArrayList<District> hand = new ArrayList<District>(player.getHand().toList());
-        cardsToExchange.remove(0);
-        cardsToExchange.remove(0);
-        player.setCardsToExchange(cardsToExchange);
+        
+        
         wizard.useSpecialPower();
         assertEquals(true,player.getHand().toList().contains(hand.get(0)));
         assertEquals(true,player.getHand().toList().contains(hand.get(1)));

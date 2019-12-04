@@ -21,14 +21,13 @@ public class Player {
 	protected Player nextPlayer;
 	protected Board board;
 
-	protected boolean gameOver=false;
 
 	/*Attributs qui permettront à l'IA de designer ses cibles*/
 	protected Role targetToKill;
 	protected Role targetToRob;
 	protected Player targetToDestroyDistrict;
 	protected District districtToDestroy;
-	protected ArrayList<District> cardsToExchange;
+	protected List<District> cardsToExchange;
 	protected Player targetToExchangeHandWith;
 	protected PropertyChangeSupport support;
 
@@ -312,6 +311,10 @@ public class Player {
 	public List<District> processWhatToBuild() {
 		return new ArrayList<>();
 	}
+
+	public List<District> processCardsToExchange(){
+		return new ArrayList<>();
+	}
 	/*---------------------------------End ToOverride--------------------------------------*/
 
 
@@ -433,6 +436,7 @@ public class Player {
 		targetToExchangeHandWith=null;
 		targetToKill=null;
 		targetToRob=null;
+		cardsToExchange=null;
 		if(matches!=null){
 			matches.reInitialize();
 		}
@@ -460,8 +464,8 @@ public class Player {
 			seule fois du fait que le jeu doit prendre fin au lieu de plusieurs
 			fois
 			*/
-			support.firePropertyChange("gameOver",gameOver , true);
-			this.gameOver=true;//inutile en fait : c'est là pour le principe
+			support.firePropertyChange("gameOver",false , true);
+			
 		}
 		this.isUsingLabo();
 	}
@@ -476,7 +480,8 @@ public class Player {
         targetToRob=processWhoToRob();
         targetToExchangeHandWith=processWhoToExchangeHandWith();
         targetToDestroyDistrict = processWhoseDistrictToDestroy();
-        districtToDestroy = processDistrictToDestroy(this.targetToDestroyDistrict);
+		districtToDestroy = processDistrictToDestroy(this.targetToDestroyDistrict);
+		cardsToExchange=processCardsToExchange();
 		System.out.println("Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();	
 		this.isUsingLabo();
@@ -625,10 +630,10 @@ public class Player {
 		this.targetToExchangeHandWith = targetToExchangeHandWith;
 	}
 
-	public ArrayList<District> getCardsToExchange(){
+	public List<District> getCardsToExchange(){
 		return new ArrayList<District>(cardsToExchange);
 	}
-
+	@Deprecated
 	public void setCardsToExchange(ArrayList<District> cards){
 		this.cardsToExchange = new ArrayList<District>(cards);
 	}

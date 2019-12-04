@@ -1,14 +1,16 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.District;
-import fr.unice.polytech.startingpoint.board.DistrictColor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 
 public class Hand {
     private ArrayList<District> districts=new ArrayList<>();
@@ -90,6 +92,20 @@ public class Hand {
             }
         }
         return n;
+    }
+
+    /**
+     * Renvoie un set des primaryColors de la hand
+     * @return
+     */
+    public Set<DistrictColor> colorsOfHand(){
+        var colors= new HashSet<DistrictColor>();
+
+        districts.forEach(d->{
+            colors.add(d.primaryColor());
+        });
+
+        return colors;
     }
 
 	public int size() {

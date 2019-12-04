@@ -1,11 +1,13 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Role;
 
 public class BotSmart extends Player {
@@ -45,18 +47,20 @@ public class BotSmart extends Player {
         }
     }
 
-    /* -------------OVERRINDING ------------------*/
+    /* -------------OVERRIDING ------------------*/
 
     @Override
+    public List<District> processCardsToExchange() {
+        return this.hand.badCards(this.getGold());
+    }
+    @Override
     public Player processWhoToExchangeHandWith() {
-        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
-            this.setCardsToExchange(this.hand.badCards(this.getGold()));
+        if((this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
             return null;
         }
         if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
             return this.getBoard().playerWithTheBiggestHand(this);
         }
-        this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
         return null;
     }
 
@@ -175,6 +179,18 @@ public class BotSmart extends Player {
             
         }
     }
+
+    public ArrayList<DistrictColor> missingColors(){
+        Set <DistrictColor> tmpHand=hand.colorsOfHand();
+        Set <DistrictColor> tmpCity=city.colorsOfCity();
+        
+        Set<DistrictColor> tmp=new HashSet<DistrictColor>(Set.of(DistrictColor.values()));;
+        tmp.removeAll(tmpHand);
+        tmp.removeAll(tmpCity);
+        
+        return new ArrayList<DistrictColor>(tmp);
+    }
+
 
 
 

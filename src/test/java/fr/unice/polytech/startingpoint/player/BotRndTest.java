@@ -68,8 +68,5 @@ class BotRndTest {
 		assertEquals(2, b1.city.getSizeOfCity());
 		b1.building();
 		assertEquals(2, b1.city.getSizeOfCity());
-		b1.getDeck().getList().clear();
-		b1.building();
-		assertTrue(b1.gameOver);
 	}
 }

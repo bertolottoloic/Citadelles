@@ -1,13 +1,12 @@
 package fr.unice.polytech.startingpoint.player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Role;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 public class BotRainbow extends BotSmart{
 
@@ -46,7 +45,8 @@ public class BotRainbow extends BotSmart{
         );
         ArrayList<String> missingColors = new ArrayList<>();
         this.missingColors().forEach(c -> missingColors.add(c.name()));
-        while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
+        int tmp=this.getCharacter().getNumberDistrictKeepable();
+        while(d.size()>tmp){
             if(d.get(0).getCost()>getGold() || !missingColors.contains(d.get(0).getColorsList().get(0))){
                 this.deck.putbackOne(d.remove(0));
             }
@@ -122,21 +122,5 @@ public class BotRainbow extends BotSmart{
         }
     }
 
-    ArrayList<DistrictColor> missingColors(){
-        HashMap<DistrictColor,Integer> countColors=hand.countColors();
-        HashMap<DistrictColor,Integer> countColorsC=city.countColors();
-        countColorsC.forEach((k,v) ->{
-            if(countColors.get(k)<v)
-                countColors.put(k,v);
-        });
-        ArrayList<DistrictColor> missingColors = new ArrayList<>();
-        for(DistrictColor key : countColors.keySet()){
-            if(countColors.get(key)==0){
-                missingColors.add(key);
-            }
-        }
-
-        return missingColors;
-    }
-
+    
 }

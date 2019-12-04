@@ -1,17 +1,23 @@
 package fr.unice.polytech.startingpoint.player;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
 
-import fr.unice.polytech.startingpoint.board.*;
+import fr.unice.polytech.startingpoint.board.Bank;
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Thief;
@@ -153,22 +159,20 @@ class BotRainbowTest {
 
 	@Test
 	void discardTest(){
-		HashMap<DistrictColor,Integer> districts = new HashMap<>();
-		districts.put(DistrictColor.Commerce,1);
-		districts.put(DistrictColor.Noble,1);
-		districts.put(DistrictColor.Religion,1);
-		districts.put(DistrictColor.Wonder,1);
-		City city = mock(City.class);
-		when(city.countColors()).thenReturn(districts);
-		Hand hand = new Hand();
-		bot.setHand(hand);
-		bot.setCity(city);
 		bot.setCharacter(new Thief());
 		bot.takeCoinsFromBank(5);
 		ArrayList<District> cards = new ArrayList<>();
-		District expect = new District(1, 1, "soldatesque", "Tour de guet");
-		cards.add(new District(1, 1, "commerce", "Taverne"));
-		cards.add(expect);
+
+		bot.getCity().toList().add(
+			new District(1, 1, DistrictColor.Warlord, "Tour de guet"));
+		bot.getCity().toList().add(
+			new District(1, 1, DistrictColor.Wonder, "Tower of Essentil"));
+		
+
+		
+		cards.add(new District(1, 1, DistrictColor.Commerce, "Taverne"));
+		cards.add(new District(1, 1, DistrictColor.Warlord, "PorteAvions"));
+		var expect =new District(1, 1, DistrictColor.Commerce, "Taverne");
 		bot.discard(cards);
 		assertEquals(expect, cards.get(0));
 	}

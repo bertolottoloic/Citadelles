@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -195,5 +196,21 @@ public class City {
         return null;
     }
     
+    public HashMap<DistrictColor,Integer> countColors(){
+        HashMap<DistrictColor,Integer> countColors=new HashMap<>();
+        countColors.put(DistrictColor.Religion,0);
+        countColors.put(DistrictColor.Commerce,0);
+        countColors.put(DistrictColor.Warlord,0);
+        countColors.put(DistrictColor.Noble,0);
+        countColors.put(DistrictColor.Wonder,0);
+        for (DistrictColor color :countColors.keySet()){
+            districts.forEach(d->{
+                if(d.hasColor(color)){
+                    countColors.computeIfPresent(color,(k,v)->v+1);
+                }
+            });
+        }
+        return countColors;
+    }
 
 }

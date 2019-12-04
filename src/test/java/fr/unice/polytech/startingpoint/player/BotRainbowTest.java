@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import static org.mockito.Mockito.*;
 import fr.unice.polytech.startingpoint.board.*;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Merchant;
+import fr.unice.polytech.startingpoint.role.Thief;
 
 class BotRainbowTest {
 
@@ -146,6 +149,32 @@ class BotRainbowTest {
 		bot.deleteDistrictFromCity(tmp);
 		
 		assertFalse(anotherBot.wantsToUseGraveyard(tmp));
+	}
+
+	@Test
+	void discardTest(){
+		District d1 = new District(1, 1, "religion", "Temple");
+		District d2 = new District(1, 1, "commerce", "Taverne");
+		District d3 = new District(3, 3, "noblesse", "Palais");
+		District d4 = new District(1, 1, "soldatesque", "Tour de guet");
+		HashMap<DistrictColor,Integer> districts = new HashMap<>();
+		districts.put(DistrictColor.Commerce,1);
+		districts.put(DistrictColor.Noble,1);
+		districts.put(DistrictColor.Religion,1);
+		districts.put(DistrictColor.Wonder,1);
+		City city = mock(City.class);
+		when(city.countColors()).thenReturn(districts);
+		Hand hand = new Hand();
+		bot.setHand(hand);
+		bot.setCity(city);
+		bot.setCharacter(new Thief());
+		bot.takeCoinsFromBank(5);
+		ArrayList<District> cards = new ArrayList<>();
+		District expect = new District(4, 4, "merveille", "Laboratoire");
+		cards.add(expect);
+		cards.add(new District(1, 1, "commerce", "Taverne"));
+		bot.discard(cards);
+		assertEquals(expect, cards.get(0));
 	}
 
 }

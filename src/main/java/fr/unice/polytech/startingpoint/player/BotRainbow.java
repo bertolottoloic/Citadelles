@@ -77,17 +77,36 @@ public class BotRainbow extends BotSmart{
 
     ArrayList<DistrictColor> missingColors(){
         HashMap<DistrictColor,Integer> countColors=hand.countColors();
+        HashMap<DistrictColor,Integer> countColorsC=city.countColors();
+        countColorsC.forEach((k,v) ->{ 
+        if(countColors.get(k)<v)
+            countColors.put(k,v);
+        });
         ArrayList<DistrictColor> missingColors = new ArrayList<>();
         for(DistrictColor key : countColors.keySet()){
             if(countColors.get(key)==0){
                 missingColors.add(key);
             }
         }
+
         return missingColors;
     }
 
     //TODO override discard here
-
+    @Override
+    public void discard(List<District> d) {
+        d.sort((a,b)->
+                Integer.compare(a.getCost(),b.getCost())
+        );
+        while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
+            if(d.get(0).getCost()>getGold() || !this.missingColors().contains(d.get(0).getColorsList().get(0))){
+                this.deck.putbackOne(d.remove(0));
+            }
+            else{
+                this.deck.putbackOne(d.remove(d.size()-1));
+            }
+        }
+    }
 
     @Override
     public boolean coinsOrDistrict() {

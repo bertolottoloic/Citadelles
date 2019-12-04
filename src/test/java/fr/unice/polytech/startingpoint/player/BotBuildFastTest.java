@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import fr.unice.polytech.startingpoint.role.Bishop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class BotIATest {
+class BotBuildFastTest {
 
-	BotIA bot, anotherBot;
+	BotBuildFast bot, anotherBot;
 	District d1 = new District(3, 4, DistrictColor.Religion, "quartier");
 	District d2 = new District(6, 6, DistrictColor.Wonder, "rue");
 	Hand hand;
@@ -40,7 +39,7 @@ class BotIATest {
 
 	@BeforeEach
 	void setup() {
-		bot = new BotIA(1);
+		bot = new BotBuildFast(1);
 		hand = new Hand();
 		bank = new Bank();
 		deck = new Deck();
@@ -226,7 +225,7 @@ class BotIATest {
 
 	@BeforeEach
 	void setMultiPlayers() {
-		anotherBot = new BotIA(2);
+		anotherBot = new BotBuildFast(2);
 		bot.city.add(d1);
 
 		Board b = new Board();
@@ -331,10 +330,10 @@ class BotIATest {
 	@Test
 	void attributeProbsToPlayerTest() {
 
-		Player p1 = new BotIA(7);
-		Player p2 = new BotIA(2);
-		Player p3 = new BotIA(3);
-		Player p4 = new BotIA(5);
+		Player p1 = new BotBuildFast(7);
+		Player p2 = new BotBuildFast(2);
+		Player p3 = new BotBuildFast(3);
+		Player p4 = new BotBuildFast(5);
 		dealRoles.readyToDistribute(4);
 		Board b = new Board();
 
@@ -378,7 +377,7 @@ class BotIATest {
 
 	@Test
 	public void roleToOptimizeCoinsTest(){
-		BotIA botMock = mock(BotIA.class);
+		BotBuildFast botMock = mock(BotBuildFast.class);
 		assertEquals(Optional.empty(),botMock.roleToOptimizeCoins(dealRoles.getRoles()));
 
 		//voir beforeEach

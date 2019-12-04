@@ -20,7 +20,7 @@ public class Main {
         stats.put(4,0);
         while (n < 1000) {
             Player p1 = new BotRnd(1);
-            Player p2 = new BotIA(2);
+            Player p2 = new BotBuildFast(2);
             Player p3 = new BotSpender(3);
             Player p4 = new BotRainbow(4);
 

@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
 
-public class BotIA extends BotSmart{
-    public BotIA(int id) {
+public class BotBuildFast extends BotSmart{
+    public BotBuildFast(int id) {
         super(id);
         
     }

@@ -24,38 +24,7 @@ public class BotRainbow extends BotSmart{
         
         return choosenRole;
     }
-    Role bestRoleToChoose(List<Role> roles, String color){
-        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
-        if(optWizard.isPresent()){
-            return optWizard.get();
-        }
-        optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
-        if(optWizard.isPresent()){
-            return optWizard.get();
-        }
-        optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
 
-        if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
-            return optWizard.get();
-        }
-        int position;
-        switch (color){
-            case "religion": position=5;
-                break;
-            case "soldatesque": position =8;
-                break;
-            case "noble": position =4;
-                break;
-            default : position =6;
-        }
-        for(Role role : roles){
-            if(role.getPosition()==position){
-                return role;
-            }
-        }
-        return roles.get(0);
-
-    }
 
     District whatToBuild(int limit){
         ArrayList<DistrictColor> missingColors = missingColors();
@@ -92,6 +61,17 @@ public class BotRainbow extends BotSmart{
         return missingColors;
     }
 
+    @Override
+    public List<District> processWhatToBuild() {
+        District tmp=this.whatToBuild(this.getGold());
+        if(tmp!=null){
+            return new ArrayList<District>(List.of(tmp));
+        }
+
+        return new ArrayList<>();
+        // TODO Auto-generated method stub
+    }
+
     //TODO override discard here
     @Override
     public void discard(List<District> d) {
@@ -120,24 +100,6 @@ public class BotRainbow extends BotSmart{
 
     
 
-    @Override
-    protected boolean isBuildingFirst() {
-        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-            return false;
-        }
-        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-            int countBadCards=getHand().badCards(getGold()).size();
-            if(countBadCards>getHand().size()/2){
-                return false;
-            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-            else{
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
-    }
 
     @Override
     public Optional<District> wantsToUseLabo() {

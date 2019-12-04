@@ -24,38 +24,7 @@ public class BotSpender extends BotSmart {
         return choosenRole;
     }
 
-    //TODO ???
-    Role bestRoleToChoose(List<Role> roles, String color){
-        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
-        if(optWizard.isPresent()){
-            return optWizard.get();
-        }
-        optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
-        if(optWizard.isPresent()){
-            return optWizard.get();
-        }
-        optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
 
-        if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
-            return optWizard.get();
-        }
-        int position;
-        switch (color){
-            case "religion": position=5;
-                break;
-            case "soldatesque": position =8;
-                break;
-            case "noble": position =4;
-                break;
-            default : position =6;
-        }
-        for(Role role : roles){
-            if(role.getPosition()==position){
-                return role;
-            }
-        }
-        return roles.get(0);
-    }
 
 
 

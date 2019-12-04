@@ -122,22 +122,37 @@ public class BotRainbow extends BotSmart{
 
     @Override
     public Optional<District> wantsToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
-        if(!list.isEmpty()
-                && city.getSizeOfCity() >= 6) {
-            District dis = hand.lowCostDistrict();
-            if(!list.contains(dis)) {
+    	List<District> districts = hand.discardDistrictsForMultiColors();
+    	if(districts.isEmpty()) {
+    		District dis = hand.lowCostDistrict();
+    		if(dis == null) {
+    	        return Optional.empty();
+    		} else if(dis.getValue() < getGold()) {
                 return Optional.of(dis);
-            }
+    		}
+        } else {
+        	return Optional.of(districts.get(0));
         }
-        return Optional.empty();
+		return Optional.empty();
     }
-
+    
+    @Override
+	protected boolean wantsToUseGraveyard(District dis) {
+		if (city.containsWonder("Cimetiere")) {
+			if (dis != null && !getCharacter().toString().equals("Warlord")) {
+				if (missingColors().contains(dis.primaryColor()) ||
+						dis.getCost() < getGold() && dis.getValue() > 4) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
     @Override
     public boolean wantsToUseFabric() {
-        // TODO Auto-generated method stub
-        return super.wantsToUseFabric();
+        return !city.containsAllColors() ||
+        		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
     }
 
 }

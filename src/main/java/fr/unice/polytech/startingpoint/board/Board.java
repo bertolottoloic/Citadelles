@@ -57,7 +57,7 @@ public class Board{
 
 	public Player existsGraveyardPlayer() {
 		for(Player p : players) {
-			if(p.hasTheDistrict("Cimetiere")) {
+			if(p.cityHasTheDistrict("Cimetiere")) {
 				return p;
 			}
 		}

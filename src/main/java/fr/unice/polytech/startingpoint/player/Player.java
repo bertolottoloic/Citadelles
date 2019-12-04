@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.player;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -201,7 +202,6 @@ public class Player {
 		return false;
 	}
 
-
 	protected boolean isBuildingFirst() {
 		if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
 			return false;
@@ -218,6 +218,7 @@ public class Player {
 		else {
 			return true;
 		}
+		
 	}
 
 	Role bestRoleToChoose(List<Role> roles, String color){
@@ -230,7 +231,6 @@ public class Player {
 			return optWizard.get();
 		}
 		optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
-
 		if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
 			return optWizard.get();
 		}
@@ -250,7 +250,6 @@ public class Player {
 			}
 		}
 		return roles.get(0);
-
 	}
 
 	
@@ -273,7 +272,7 @@ public class Player {
 	 */
 	public Optional<District> wantsToUseLabo(){
 		for(District handDis : hand.toList()) {
-			if(hasTheDistrict(handDis.getName())){
+			if(cityHasTheDistrict(handDis.getName())){
 				return Optional.of(handDis);
 			}
 		}
@@ -310,6 +309,12 @@ public class Player {
 	}
 
 	public List<District> processWhatToBuild() {
+		if (handHasTheDistrict("Ecole de Magie") && 6 < getGold()) {
+			List<String> oneOfTheseRoles = Arrays.asList("King", "Bishop", "Merchant", "Warlord");
+			if (oneOfTheseRoles.contains(getCharacter().toString())) {
+				return new ArrayList<>(List.of(hand.findDistrictByName("Ecole de Magie")));
+			}
+		}
 		return new ArrayList<>();
 	}
 	/*---------------------------------End ToOverride--------------------------------------*/
@@ -552,10 +557,13 @@ public class Player {
          return points;
 	}
 
-	public boolean hasTheDistrict(String districtName){
+	public boolean cityHasTheDistrict(String districtName){
 		return this.city.containsWonder(districtName);
 	}
 	
+	public boolean handHasTheDistrict(String districtName){
+		return this.hand.containsWonder(districtName);
+	}
 
 	/**
 	 * Pour qu'on puisse utiliser HashMap<Player,Integer>

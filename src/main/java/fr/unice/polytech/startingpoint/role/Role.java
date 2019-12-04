@@ -125,13 +125,13 @@ public abstract class Role {
      * @return
      */
     public int getNumberDistrictPickable() {
-        if(player.hasTheDistrict("Manufacture") && player.isUsingFabric()){
+        if(player.cityHasTheDistrict("Manufacture") && player.isUsingFabric()){
             return 3;
         }
-        else if(player.hasTheDistrict("Bibliotheque")){
+        else if(player.cityHasTheDistrict("Bibliotheque")){
                 return 2;
         }
-        else if(player.hasTheDistrict("Observatoire")){
+        else if(player.cityHasTheDistrict("Observatoire")){
             return 3;
         }
         else{
@@ -183,13 +183,13 @@ public abstract class Role {
     }
 
     public int getNumberDistrictKeepable() {
-        if(player.hasTheDistrict("Manufacture")&& player.isUsingFabric()){
+        if(player.cityHasTheDistrict("Manufacture")&& player.isUsingFabric()){
             return 3;
         }
-        else if(player.hasTheDistrict("Bibliotheque")){
+        else if(player.cityHasTheDistrict("Bibliotheque")){
                 return 2;
         }
-        else if(player.hasTheDistrict("Observatoire")){
+        else if(player.cityHasTheDistrict("Observatoire")){
             return 1;
         }
         else{

@@ -10,52 +10,43 @@ import java.util.List;
 import java.util.Optional;
 
 public class BotRainbow extends BotSmart{
-
-
     public BotRainbow(int id){
         super(id);
     }
 
+    /*-------------------------OVERRIDING --------------------------------------------------------*/
 
-/*-------------------------OVERRIDING --------------------------------------------------------*/
-    
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
-        String maxColor=hand.bestColorDistrict();
-        Role choosenRole=bestRoleToChoose(toConsiderRoles,maxColor);
-        
-        return choosenRole;
+        String maxColor=hand.bestColorDistrict();       
+        return bestRoleToChoose(toConsiderRoles,maxColor);
     }
-
+    
     @Override
     public List<District> processWhatToBuild() {
-        District tmp=this.whatToBuild(this.getGold());
-        if(tmp!=null){
-            return new ArrayList<District>(List.of(tmp));
-        }
-
-        return new ArrayList<>();
-        // TODO Auto-generated method stub
-    }
-
-    //TODO override discard here
-    @Override
-    public void discard(List<District> d) {
-        d.sort((a,b)->
-                Integer.compare(a.getCost(),b.getCost())
-        );
-        ArrayList<String> missingColors = new ArrayList<>();
-        this.missingColors().forEach(c -> missingColors.add(c.name()));
-        while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
-            if(d.get(0).getCost()>getGold() || !missingColors.contains(d.get(0).getColorsList().get(0))){
-                this.deck.putbackOne(d.remove(0));
+    	if(super.processWhatToBuild()==null) {
+    		District tmp=this.whatToBuild(this.getGold());
+            if(tmp!=null){
+                return new ArrayList<>(List.of(tmp));
             }
-            else{
-                this.deck.putbackOne(d.remove(d.size()-1));
-            }
-        }
+    	}
+    	return super.processWhatToBuild();
     }
-
+    
+	@Override
+	public void discard(List<District> d) {
+		d.sort((a, b) -> Integer.compare(a.getCost(), b.getCost()));
+		ArrayList<String> missingColors = new ArrayList<>();
+		this.missingColors().forEach(c -> missingColors.add(c.name()));
+		while (d.size() > this.getCharacter().getNumberDistrictKeepable()) {// On ne garde qu'une carte
+			if (d.get(0).getCost() > getGold() || !missingColors.contains(d.get(0).getColorsList().get(0))) {
+				this.deck.putbackOne(d.remove(0));
+			} else {
+				this.deck.putbackOne(d.remove(d.size() - 1));
+			}
+		}
+	}
+    
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
@@ -64,8 +55,6 @@ public class BotRainbow extends BotSmart{
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
     }
-    
-
 
     @Override
     public Optional<District> wantsToUseLabo() {
@@ -101,19 +90,25 @@ public class BotRainbow extends BotSmart{
         return !city.containsAllColors() ||
         		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
     }
+    
+    /*------------------------------------------------------------------------------*/
 
-/*------------------------------------------------------------------------------*/
-
-    District whatToBuild(int limit){
-        ArrayList<DistrictColor> missingColors = missingColors();
-        if(missingColors.size()==0){
+    District whatToBuild(int limit){//TODO test
+        List<DistrictColor> missingColors = missingColors();
+        if(missingColors.isEmpty()){
             return hand.highCostDistrict(limit);
         }
         else {
-            ArrayList<District> districts = new ArrayList<District>();
+            List<District> districts = new ArrayList<>();
             for (District d : hand.toList()) {
                 if(missingColors.contains(d.primaryColor())&&d.getCost()<=limit) {
                     districts.add(d);
+                }
+                if(d.getName().equals("Cimetiere") && limit <= 5 && !getCharacter().equals("Warlord")
+                		|| d.getName().equals("Cour des Miracles") && limit <= 2 && gameOver == false
+                		|| d.getName().equals("Manufacture") && limit <= 8
+                		|| d.getName().equals("Laboratoire") && limit <= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
+                	return d;
                 }
             }
             districts.sort((a,b)->
@@ -121,7 +116,7 @@ public class BotRainbow extends BotSmart{
             return(districts.size()>1)?districts.get(districts.size()-1):hand.lowCostDistrict();
         }
     }
-
+    
     ArrayList<DistrictColor> missingColors(){
         HashMap<DistrictColor,Integer> countColors=hand.countColors();
         HashMap<DistrictColor,Integer> countColorsC=city.countColors();
@@ -138,5 +133,4 @@ public class BotRainbow extends BotSmart{
 
         return missingColors;
     }
-
 }

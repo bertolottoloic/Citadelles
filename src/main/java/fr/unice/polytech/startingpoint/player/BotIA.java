@@ -12,59 +12,59 @@ import fr.unice.polytech.startingpoint.role.Role;
 public class BotIA extends BotSmart{
     public BotIA(int id) {
         super(id);
+        
     }
-
+    
     /* -----------------------OVERRIDING ------------------------------------*/
-
-
-    //TODO optimiser par rapport à la couleur
+    
+  //TODO optimiser par rapport à la couleur
     @Override
     public List<District> processWhatToBuild() {
         //District tmp=this.whatToBuild(this.getGold());
         List<District> toConsider;
-        if(city.getSizeOfCity()==7){//si on est sur le point de finir
+        if(city.getSizeOfCity()==7){//si on est sur le point de finir 
             //on peut construire des cartes de cout 1 puisque le condotierre
             // ne peut pas détruire
             //les cités finies
             toConsider=getHand().toList().stream()
-                    .filter(d->!city.alreadyContains(d))
-                    .collect(Collectors.toList());
+            .filter(d->!city.alreadyContains(d))
+            .collect(Collectors.toList());
         }
         else{//ne pas construire des cartes de cout 1 sinon le condotierre peut les détruire facilement
             //sans rien payer
             toConsider=getHand().toList().stream()
-                    .filter(d->!city.alreadyContains(d)&& d.getCost()>1)
-                    .collect(Collectors.toList());
+            .filter(d->!city.alreadyContains(d)&& d.getCost()>1)
+            .collect(Collectors.toList());
         }
         return buildables(
-                toConsider,
-                getGold()
-        )
-                .getDistricts().stream()
-                .sorted((a,b)->-Integer.compare(a.getValue(), b.getValue()))
-                .collect(Collectors.toList());
+                        toConsider,
+                        getGold()
+                )
+            .getDistricts().stream()
+            .sorted((a,b)->-Integer.compare(a.getValue(), b.getValue()))
+            .collect(Collectors.toList());
     }
-
+    
     @Override
     public Player processWhoseDistrictToDestroy() {
         return board.playerWithTheBiggestCity(this);
     }
-
+    
     @Override
-    public Player processWhoToExchangeHandWith() {
-        //ArrayList<District> d = this.hand.badCards(this.getGold());
+    public Player processWhoToExchangeHandWith() {    
+        //ArrayList<District> d = this.hand.badCards(this.getGold());   
         if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())<=((int)(this.hand.size()/2))){
             this.setCardsToExchange(this.hand.badCards(this.getGold()));
             return null;
         }
         if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
 
-            return this.getBoard().playerWithTheBiggestHand(this);
+            return this.getBoard().playerWithTheBiggestHand(this); 
         }
         this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
         return null;
     }
-
+    
     @Override
     public District processDistrictToDestroy(Player target) {
         Optional<District> tmp=target.city.cheaperDistrict();
@@ -75,7 +75,7 @@ public class BotIA extends BotSmart{
             return null;
         }
     }
-
+    
     @Override
     public Role processWhoToKill() {
         this.attributeProbsToPlayer();
@@ -92,10 +92,10 @@ public class BotIA extends BotSmart{
         if(optKilled.isPresent()){
             targets.remove(optKilled.get().toString());
         }*/
-
+        
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
-
+    
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
         if(this.nextPlayer.alreadyChosenRole){
@@ -123,9 +123,6 @@ public class BotIA extends BotSmart{
         .or(()->Optional.of(super.processChooseRole(toConsiderRoles))).get();
     }
     
-    
-
-
     @Override
     protected boolean isBuildingFirst() {
         if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
@@ -140,7 +137,7 @@ public class BotIA extends BotSmart{
             //si il le peut vérifier la valeur totale qu'aura sa cité
             //comparer avec la valeur totale de la cité de celui qui la cité avec la plus grande valeur
             //si this.city.totalValue()>= other.city.value then true
-            //otherwise
+            //otherwise 
             return true;
         }
         else if(getCharacter().toString().equals("Wizard")){//si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
@@ -156,16 +153,14 @@ public class BotIA extends BotSmart{
             return true;
         }
     }
-
+    
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 5
                 || hand.badCards(getGold()).size()<=hand.size()/2;
 
     }
-
-
-
+    
     /**
      * TODO quand on a dans sa main une carte identique à une 
      * de celle de sa cité il est avantageux d'utiliser
@@ -203,54 +198,55 @@ public class BotIA extends BotSmart{
 		return false;
 	}
     
-
-    @Override
+	@Override
     public boolean wantsToUseFabric() {
         return getGold() >= 5
     			&& city.getSizeOfCity() < 7;
     }
-
-
-
-    /*-------------------------------------------------------------*/
-
+	
+	/*-------------------------------------------------------------*/
+    
     /**
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
      */
-    District whatToBuild(int limit){
-        if(getCharacter().toString().equals("Architect")) {
-            District lowerCost = hand.lowCostDistrict();
-            if (lowerCost.getCost() <= limit) {
-                return lowerCost;
-            } else {
-                return null;
-            }
-        }
-        else{
-            District lowerCost = hand.lowCostDistrictForNextTurn(getGold()); //prend le district le plus cher de manière à avoir assez de golds pour le tour suivant
-            if(lowerCost.getCost()<=limit){
-                return lowerCost;
+    District whatToBuild(int limit){//TODO test
+    	if (handHasTheDistrict("Donjon") && !cityHasTheDistrict("Donjon") && 3 <= limit) {
+    		return hand.findDistrictByName("Donjon");
+    	}
+    	if (handHasTheDistrict("Laboratoire") && 6 <= limit && getHand().highCostDistrict(getGold()) != null) {
+			return hand.findDistrictByName("Laboratoire");
+		}
+            if(getCharacter().toString().equals("Architect")) {
+                District lowerCost = hand.lowCostDistrict();
+                if (lowerCost.getCost() <= limit) {
+                    return lowerCost;
+                } else {
+                    return null;
+                }
             }
             else{
-                return null;
+                District lowerCost = hand.lowCostDistrictForNextTurn(getGold()); //prend le district le plus cher de manière à avoir assez de golds pour le tour suivant
+                if(lowerCost.getCost()<=limit){
+                    return lowerCost;
+                }
+                else{
+                    return null;
+                }
             }
-        }
     }
-
-
-
+    
     /**
-     * Fonction pour récupérer le Role permettant
-     * d'avoir le plus d'argent
-     * On utilisera hidden que si le joueur est le
-     * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
-     */
+         * Fonction pour récupérer le Role permettant 
+         * d'avoir le plus d'argent
+         * On utilisera hidden que si le joueur est le 
+         * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
+         */
     /**
-     * Fonction pour récupérer le Role permettant d'avoir le plus d'argent lors de
-     * la collecte d'argent des quartiers On utilisera hidden que si le joueur est
-     * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
-     */
+	 * Fonction pour récupérer le Role permettant d'avoir le plus d'argent lors de
+	 * la collecte d'argent des quartiers On utilisera hidden que si le joueur est
+	 * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
+	 */
     public Optional<Role> roleToOptimizeCoins(List<Role> toConsider) {
 
         if (city.getSizeOfCity() == 0) {
@@ -274,7 +270,4 @@ public class BotIA extends BotSmart{
         }
 
     }
-
-
-
 }

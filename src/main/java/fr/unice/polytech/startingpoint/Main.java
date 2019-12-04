@@ -6,11 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import fr.unice.polytech.startingpoint.game.Manager;
-import fr.unice.polytech.startingpoint.player.BotIA;
-import fr.unice.polytech.startingpoint.player.BotRainbow;
-import fr.unice.polytech.startingpoint.player.BotRnd;
-import fr.unice.polytech.startingpoint.player.BotSpender;
-import fr.unice.polytech.startingpoint.player.Player;
+import fr.unice.polytech.startingpoint.player.*;
 
 public class Main {
     private static HashMap<Integer,Integer> stats=new HashMap<>();

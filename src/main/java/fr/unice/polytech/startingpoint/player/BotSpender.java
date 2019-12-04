@@ -15,7 +15,7 @@ public class BotSpender extends BotSmart {
 
    
     
-
+/*--------------------------@OVERRIDING---------------------------*/
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
         String maxColor=hand.bestColorDistrict();
@@ -23,9 +23,6 @@ public class BotSpender extends BotSmart {
         
         return choosenRole;
     }
-
-
-
 
 
     @Override
@@ -60,7 +57,62 @@ public class BotSpender extends BotSmart {
         // TODO Auto-generated method stub
     }
 
-    
+    @Override
+    public void discard(List<District> d){
+        d.sort((a,b)->
+                Integer.compare(a.getCost(),b.getCost())
+        );
+        while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
+            if(d.get(0).getCost()>getGold()){
+                this.deck.putbackOne(d.remove(0));
+            }
+            else{
+                this.deck.putbackOne(d.remove(d.size()-1));
+            }
+        }
+    }
+
+    @Override
+    public boolean coinsOrDistrict() {//TODO Test
+        return getGold() < 8
+                || hand.badCards(getGold()).size()<=hand.size()/2;
+    }
+
+
+    /**
+     * Strategy : get rid of the lowest valued district
+     */
+    @Override
+    public Optional<District> wantsToUseLabo() {
+        District dis = hand.lowCostDistrict();
+        if(dis == null) {
+            return Optional.empty();
+        } else if(dis.getValue() < getGold()) {
+            return Optional.of(dis);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    protected boolean wantsToUseGraveyard(District dis) {
+        if (city.containsWonder("Cimetiere")) {
+            if (dis != null && !getCharacter().toString().equals("Warlord")) {
+                if (dis.getCost() < getGold() && dis.getValue() > 4) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean wantsToUseFabric() {
+        return getGold() >= 8
+                && !hand.highValuedDistrict(getGold()-3);
+    }
+
+    /* -----------------------------------------------*/
 
 
     District whatToBuild(int limit){
@@ -73,62 +125,6 @@ public class BotSpender extends BotSmart {
         }
     }
 
-    @Override
-    public void discard(List<District> d){
-            d.sort((a,b)->
-                    Integer.compare(a.getCost(),b.getCost())
-            );
-            while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
-                if(d.get(0).getCost()>getGold()){
-                    this.deck.putbackOne(d.remove(0));
-                }
-                else{
-                    this.deck.putbackOne(d.remove(d.size()-1));
-                }
-            }
-    }
 
-    @Override
-    public boolean coinsOrDistrict() {//TODO Test
-        return getGold() < 2
-                || hand.badCards(getGold()).size()<=hand.size()/2;
-    }
-
-
-    /**
-     * Strategy : get rid of the lowest valued district
-     */
-    @Override
-    public Optional<District> wantsToUseLabo() {
-    	District dis = hand.lowCostDistrict();
-    	if(dis == null) {
-    		return Optional.empty();
-    	} else if(dis.getValue() < getGold()) {
-            return Optional.of(dis);
-        }
-        return Optional.empty();
-    }
-
-    @Override
-	protected boolean wantsToUseGraveyard(District dis) {
-		if (city.containsWonder("Cimetiere")) {
-			if (dis != null && !getCharacter().toString().equals("Warlord")) {
-				if (dis.getCost() < getGold() && dis.getValue() > 4) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-
-
-    
-
-    @Override
-    public boolean wantsToUseFabric() {
-        return getGold() >= 8
-    			&& !hand.highValuedDistrict(getGold()-3);
-    }
 
 }

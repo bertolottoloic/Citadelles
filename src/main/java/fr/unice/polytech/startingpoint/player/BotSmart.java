@@ -15,18 +15,7 @@ public class BotSmart extends Player {
         super(id);
     }
     //TODO à revoir
-    @Override
-    public Player processWhoToExchangeHandWith() {
-        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
-            this.setCardsToExchange(this.hand.badCards(this.getGold()));
-            return null;
-        } 
-        if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
-            return this.getBoard().playerWithTheBiggestHand(this); 
-        }
-        this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
-        return null;
-    }
+
 
     // TODO tests
 	public Tmp buildables(List<District> toConsider,int limit){
@@ -54,6 +43,21 @@ public class BotSmart extends Player {
                 return resultRight;
             }
         }
+    }
+
+    /* -------------OVERRINDING ------------------*/
+
+    @Override
+    public Player processWhoToExchangeHandWith() {
+        if(Math.abs(this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
+            this.setCardsToExchange(this.hand.badCards(this.getGold()));
+            return null;
+        }
+        if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
+            return this.getBoard().playerWithTheBiggestHand(this);
+        }
+        this.setCardsToExchange(new ArrayList<District>(this.hand.toList()));
+        return null;
     }
 
     @Override
@@ -99,6 +103,41 @@ public class BotSmart extends Player {
     }
 
     /**
+     * TODO enlever d'abord les cartes identiques à celles déja construites
+     * avant de commencer à trier
+     * On garde les cartes les moins cheres
+     * Bien sûr on doit toujours avoir getNumberDistrictKeepable() cartes à la fin
+     */
+    @Override
+    public void discard(List<District> d){
+        d.sort((a,b)->
+                Integer.compare(a.getCost(),b.getCost())
+        );
+        while(d.size()>this.getCharacter().getNumberDistrictKeepable()){
+            this.deck.putbackOne(d.remove(d.size()-1));
+
+        }
+    }
+
+    /**
+     * TODO quand on a dans sa main une carte identique à une
+     * de celle de sa cité il est avantageux d'utiliser
+     * le labo pour gagner de l'argent avec
+     * puisqu'on a pas le droit de le poser de toute facon
+     */
+    @Override
+    public Optional<District> wantsToUseLabo() {
+        ArrayList<District> list = hand.cardsAboveGold(getGold());
+        if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
+            District dis = hand.highCostDistrict(getGold());
+            return Optional.of(dis);
+        }
+        return super.wantsToUseLabo();
+    }
+
+    /* ---------------------------------------------*/
+
+    /**
      * Cette fonction permet d'attribuer
      * des probabilités pour permettre au joueur 
      * de deviner le rôle qu'ont les autres joueurs
@@ -137,38 +176,7 @@ public class BotSmart extends Player {
         }
     }
 
-    /**
-     * TODO enlever d'abord les cartes identiques à celles déja construites
-     * avant de commencer à trier
-     * On garde les cartes les moins cheres
-     * Bien sûr on doit toujours avoir getNumberDistrictKeepable() cartes à la fin
-     */
-    @Override
-    public void discard(List<District> d){
-            d.sort((a,b)->
-                Integer.compare(a.getCost(),b.getCost())
-            );
-            while(d.size()>this.getCharacter().getNumberDistrictKeepable()){
-                this.deck.putbackOne(d.remove(d.size()-1));
-                
-            }
-    }
 
-    /**
-     * TODO quand on a dans sa main une carte identique à une 
-     * de celle de sa cité il est avantageux d'utiliser
-     * le labo pour gagner de l'argent avec 
-     * puisqu'on a pas le droit de le poser de toute facon
-     */
-    @Override
-    public Optional<District> wantsToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
-       		if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
-                   District dis = hand.highCostDistrict(getGold());
-                   return Optional.of(dis);
-            }
-            return super.wantsToUseLabo();
-    }
 
     
 

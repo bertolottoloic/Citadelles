@@ -10,55 +10,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class BotRainbow extends BotSmart{
+
+    
     public BotRainbow(int id){
         super(id);
     }
 
 
+/*-------------------------OVERRIDING --------------------------------------------------------*/
     
-
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
         String maxColor=hand.bestColorDistrict();
         Role choosenRole=bestRoleToChoose(toConsiderRoles,maxColor);
         
         return choosenRole;
-    }
-
-
-    District whatToBuild(int limit){
-        ArrayList<DistrictColor> missingColors = missingColors();
-        if(missingColors.size()==0){
-            return hand.highCostDistrict(limit);
-        }
-        else {
-            ArrayList<District> districts = new ArrayList<District>();
-            for (District d : hand.toList()) {
-                if(missingColors.contains(d.primaryColor())&&d.getCost()<=limit) {
-                    districts.add(d);
-                }
-            }
-            districts.sort((a,b)->
-                    Integer.compare(a.getCost(),b.getCost()));
-            return(districts.size()>1)?districts.get(districts.size()-1):hand.lowCostDistrict();
-        }
-    }
-
-    ArrayList<DistrictColor> missingColors(){
-        HashMap<DistrictColor,Integer> countColors=hand.countColors();
-        HashMap<DistrictColor,Integer> countColorsC=city.countColors();
-        countColorsC.forEach((k,v) ->{ 
-        if(countColors.get(k)<v)
-            countColors.put(k,v);
-        });
-        ArrayList<DistrictColor> missingColors = new ArrayList<>();
-        for(DistrictColor key : countColors.keySet()){
-            if(countColors.get(key)==0){
-                missingColors.add(key);
-            }
-        }
-
-        return missingColors;
     }
 
     @Override
@@ -100,8 +66,6 @@ public class BotRainbow extends BotSmart{
     }
     
 
-    
-
 
     @Override
     public Optional<District> wantsToUseLabo() {
@@ -136,6 +100,43 @@ public class BotRainbow extends BotSmart{
     public boolean wantsToUseFabric() {
         return !city.containsAllColors() ||
         		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
+    }
+
+/*------------------------------------------------------------------------------*/
+
+    District whatToBuild(int limit){
+        ArrayList<DistrictColor> missingColors = missingColors();
+        if(missingColors.size()==0){
+            return hand.highCostDistrict(limit);
+        }
+        else {
+            ArrayList<District> districts = new ArrayList<District>();
+            for (District d : hand.toList()) {
+                if(missingColors.contains(d.primaryColor())&&d.getCost()<=limit) {
+                    districts.add(d);
+                }
+            }
+            districts.sort((a,b)->
+                    Integer.compare(a.getCost(),b.getCost()));
+            return(districts.size()>1)?districts.get(districts.size()-1):hand.lowCostDistrict();
+        }
+    }
+
+    ArrayList<DistrictColor> missingColors(){
+        HashMap<DistrictColor,Integer> countColors=hand.countColors();
+        HashMap<DistrictColor,Integer> countColorsC=city.countColors();
+        countColorsC.forEach((k,v) ->{
+            if(countColors.get(k)<v)
+                countColors.put(k,v);
+        });
+        ArrayList<DistrictColor> missingColors = new ArrayList<>();
+        for(DistrictColor key : countColors.keySet()){
+            if(countColors.get(key)==0){
+                missingColors.add(key);
+            }
+        }
+
+        return missingColors;
     }
 
 }

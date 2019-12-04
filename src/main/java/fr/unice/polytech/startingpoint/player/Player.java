@@ -201,13 +201,26 @@ public class Player {
 		return false;
 	}
 
+
 	protected boolean isBuildingFirst() {
-		
-		return true;
-		
+		if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
+			return false;
+		}
+		else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+			int countBadCards=getHand().badCards(getGold()).size();
+			if(countBadCards>getHand().size()/2){
+				return false;
+			} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+			else{
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
 	}
 
-	Role bestRoleToChoose(ArrayList<Role> roles, String color){
+	Role bestRoleToChoose(List<Role> roles, String color){
 		Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
 		if(optWizard.isPresent()){
 			return optWizard.get();

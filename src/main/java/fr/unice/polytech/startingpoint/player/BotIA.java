@@ -158,8 +158,10 @@ public class BotIA extends BotSmart{
     }
 
     @Override
-    public boolean coinsOrDistrict() {//TODO Test
-        return true;
+    public boolean coinsOrDistrict() {
+        return getGold() < 5
+                || hand.badCards(getGold()).size()<=hand.size()/2;
+
     }
 
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class BotRainbow extends BotSmart{
 
-    
+
     public BotRainbow(int id){
         super(id);
     }

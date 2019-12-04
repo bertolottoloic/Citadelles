@@ -24,13 +24,14 @@ public class BotRainbow extends BotSmart{
     
     @Override
     public List<District> processWhatToBuild() {
-    	if(super.processWhatToBuild()==null) {
+    	List<District> specialBuilding = super.processWhatToBuild();
+    	if(super.processWhatToBuild().isEmpty()) {
     		District tmp=this.whatToBuild(this.getGold());
             if(tmp!=null){
                 return new ArrayList<>(List.of(tmp));
             }
     	}
-    	return super.processWhatToBuild();
+    	return specialBuilding;
     }
     
 	@Override

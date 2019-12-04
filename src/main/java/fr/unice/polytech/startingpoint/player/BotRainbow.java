@@ -98,8 +98,10 @@ public class BotRainbow extends BotSmart{
         d.sort((a,b)->
                 Integer.compare(a.getCost(),b.getCost())
         );
+        ArrayList<String> missingColors = new ArrayList<>();
+        this.missingColors().forEach(c -> missingColors.add(c.name()));
         while(d.size()>this.getCharacter().getNumberDistrictKeepable()){//On ne garde qu'une carte
-            if(d.get(0).getCost()>getGold() || !this.missingColors().contains(d.get(0).getColorsList().get(0))){
+            if(d.get(0).getCost()>getGold() || !missingColors.contains(d.get(0).getColorsList().get(0))){
                 this.deck.putbackOne(d.remove(0));
             }
             else{

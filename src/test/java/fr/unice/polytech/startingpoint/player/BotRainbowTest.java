@@ -153,10 +153,6 @@ class BotRainbowTest {
 
 	@Test
 	void discardTest(){
-		District d1 = new District(1, 1, "religion", "Temple");
-		District d2 = new District(1, 1, "commerce", "Taverne");
-		District d3 = new District(3, 3, "noblesse", "Palais");
-		District d4 = new District(1, 1, "soldatesque", "Tour de guet");
 		HashMap<DistrictColor,Integer> districts = new HashMap<>();
 		districts.put(DistrictColor.Commerce,1);
 		districts.put(DistrictColor.Noble,1);
@@ -170,9 +166,9 @@ class BotRainbowTest {
 		bot.setCharacter(new Thief());
 		bot.takeCoinsFromBank(5);
 		ArrayList<District> cards = new ArrayList<>();
-		District expect = new District(4, 4, "merveille", "Laboratoire");
-		cards.add(expect);
+		District expect = new District(1, 1, "soldatesque", "Tour de guet");
 		cards.add(new District(1, 1, "commerce", "Taverne"));
+		cards.add(expect);
 		bot.discard(cards);
 		assertEquals(expect, cards.get(0));
 	}

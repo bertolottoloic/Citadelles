@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,17 +40,43 @@ public class BotRainbow extends BotSmart{
         d.sort((a,b)->
                 Integer.compare(a.getCost(),b.getCost())
         );
-        ArrayList<String> missingColors = new ArrayList<>();
-        this.missingColors().forEach(c -> missingColors.add(c.name()));
+        ArrayList<DistrictColor> missingColors = new ArrayList<>();
+        this.missingColors().forEach(c -> missingColors.add(c));
         int tmp=this.getCharacter().getNumberDistrictKeepable();
-        while(d.size()>tmp){
-            //TODO revoir
-            if(d.get(0).getCost()>getGold() || !missingColors.contains(d.get(0).getColorsList().get(0))){
-                this.deck.putbackOne(d.remove(0));
-            } else {
-				this.deck.putbackOne(d.remove(d.size() - 1));
-			}
-		}
+        //vérifier si on a déja les 5 couleurs
+        if(city.containsAllColors()){
+            while(d.size()>tmp){
+                if(d.get(0).getCost()>getGold()){
+                    this.deck.putbackOne(d.remove(0));
+                } else {
+                    this.deck.putbackOne(d.remove(d.size() - 1));
+                }
+            }
+        }
+        else{
+            //chercher les districts dont j'ai déja la couleur
+            //vérifier
+            Iterator<District> it=d.iterator();
+            
+            while(it.hasNext() && d.size()>tmp){
+                District present= it.next();
+                if(!missingColors.contains(present.primaryColor())){
+                    it.remove();
+                }
+            }
+            while(d.size()>tmp){
+                if(d.get(0).getCost()>getGold()){
+                    this.deck.putbackOne(d.remove(0));
+                } else {
+                    this.deck.putbackOne(d.remove(d.size() - 1));
+                }
+            }
+            
+
+        }
+        
+        //
+        
     	
     }
     

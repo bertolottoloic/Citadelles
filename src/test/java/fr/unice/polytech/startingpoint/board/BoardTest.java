@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.unice.polytech.startingpoint.player.Player;
 
-import java.util.Random;
-
 public class BoardTest{
     Board board;
 

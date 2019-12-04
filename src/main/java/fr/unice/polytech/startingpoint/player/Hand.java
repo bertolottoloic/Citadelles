@@ -229,4 +229,7 @@ public class Hand {
     	}
     	return null;
     }
+	public void clearEverything() {
+        districts.clear();
+	}
 }

@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

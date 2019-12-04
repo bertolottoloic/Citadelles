@@ -213,4 +213,9 @@ public class City {
         return countColors;
     }
 
+	public void clearEverything() {
+        districts.clear();
+        presentDate=0;
+	}
+
 }

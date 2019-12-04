@@ -47,7 +47,6 @@ class PlayerTest {
 		bank.setBourses(List.of(player,p2));
 		player.setDeck(d);
 		player.setDealRoles(dl);
-        dl.readyToDistribute();
         //player.setBoard(board);
     }
     
@@ -164,7 +163,7 @@ class PlayerTest {
     @Test
     void testChooseRole(){   	
     	assertEquals(null, player.getCharacter());
-    	dl.readyToDistribute();
+    	dl.readyToDistribute(3);
     	player.chooseRole();
     	assertNotNull(player.getCharacter());
     }

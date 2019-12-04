@@ -34,9 +34,9 @@ class DealRolesTest {
 		for (Player p : players) {
             p.reInitializeForNextTurn();
         }
-		dealer.readyToDistribute();
+		dealer.readyToDistribute(3);
 		assertEquals(dealer.getRoles().size(), dealer.getLeftRoles().size()+dealer.getVisible().size()+1);
-		assertEquals(1, dealer.getVisible().size());
+		assertEquals(2, dealer.getVisible().size());
 	}
 	
 	

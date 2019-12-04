@@ -1,6 +1,8 @@
 package fr.unice.polytech.startingpoint.board;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 
@@ -34,9 +36,9 @@ public class BankTest {
     @Test
    public void canWithdrawTest(){
        
-        assertEquals(false,b.canWithdraw(31));
-        assertEquals(true,b.canWithdraw(0));
-        assertEquals(false,b.canWithdraw(-1));
+        assertFalse(b.canWithdraw(31));
+        assertTrue(b.canWithdraw(0));
+        assertFalse(b.canWithdraw(-1));
     }
 
     @Test

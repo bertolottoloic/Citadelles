@@ -11,7 +11,6 @@ public enum DistrictColor {
 
     DistrictColor(String color){
         this.color=color;
-
     }
 
     

@@ -45,19 +45,6 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
-    @Deprecated
-    public void  readyToDistribute(){
-        ArrayList<Role> al = new ArrayList<Role>(roles);
-        Collections.shuffle(al);
-        this.hidden=al.remove(0);
-        Collections.shuffle(al);
-        if(al.get(0).toString().equals("King"))
-            visible.add(al.remove(1)); //Le Roi ne peut pas etre le Role Visible
-        else{
-            visible.add(al.remove(0));
-        }
-        leftRoles.addAll(al);
-    }
 
     public void  readyToDistribute(int nbplayers){
         ArrayList<Role> al = new ArrayList<Role>(roles);

@@ -370,15 +370,4 @@ class BotIATest{
 		assertEquals(2, p2.getMatches().possibleRolesFor(p1.getId()).size());
 	}
 
-	@Test
-	public void buildablesTest(){
-		Tmp t=bot.buildables(List.of(
-		new District(5, 5, DistrictColor.Commerce, "dontcare"),
-		new District(1, 1, DistrictColor.Noble, "dontcare"),
-		new District(5, 5, DistrictColor.Commerce, "dontcare")
-		),9);
-
-		assertEquals(6,t.getVal());
-		assertEquals(2, t.getDistricts().size());
-	}
 }

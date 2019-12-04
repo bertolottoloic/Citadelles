@@ -16,7 +16,6 @@ public class BotSmart extends Player {
     public BotSmart(int id) {
         super(id);
     }
-    //TODO à revoir
 
 
     // TODO tests

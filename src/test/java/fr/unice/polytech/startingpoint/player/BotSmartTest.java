@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,4 +31,15 @@ public class BotSmartTest {
         
         
     }
+    @Test
+	public void buildablesTest(){
+		Tmp t=botSmart.buildables(List.of(
+		new District(5, 5, DistrictColor.Commerce, "dontcare"),
+		new District(1, 1, DistrictColor.Noble, "dontcare"),
+		new District(5, 5, DistrictColor.Commerce, "dontcare")
+		),9);
+
+		assertEquals(6,t.getVal());
+		assertEquals(2, t.getDistricts().size());
+	}
 }

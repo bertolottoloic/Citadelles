@@ -197,7 +197,7 @@ public class BotBuildFast extends BotSmart{
      * utilise une srrategie pour chercher le quartier le moins cher a poser
      * @return le district a poser
      */
-    District whatToBuild(int limit){//TODO test
+    District whatToBuild(int limit){
     	if (handHasTheDistrict("Donjon") && !cityHasTheDistrict("Donjon") && 3 <= limit) {
     		return hand.findDistrictByName("Donjon");
     	}

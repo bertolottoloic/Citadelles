@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import fr.unice.polytech.startingpoint.role.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,12 +21,6 @@ import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
-import fr.unice.polytech.startingpoint.role.Bishop;
-import fr.unice.polytech.startingpoint.role.King;
-import fr.unice.polytech.startingpoint.role.Merchant;
-import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
-import fr.unice.polytech.startingpoint.role.Wizard;
 
 class PlayerTest {
 
@@ -275,6 +271,24 @@ class PlayerTest {
 		District ex = new District(2, 2, "merveille", "Poudlard");
 		player.isUsingGraveyard(ex);
 		assertEquals(1, player.hand.size());
+	}
+	@Test
+	void bestRoleToChoose(){
+		ArrayList<Role> roles = new ArrayList<>();
+		roles.add(new Merchant());
+		roles.add(new Warlord());
+
+		assertEquals("Merchant",player.bestRoleToChoose(roles,"religion").toString());
+
+		roles.add(new Bishop());
+		assertEquals("Bishop",player.bestRoleToChoose(roles,"religion").toString());
+
+		roles.add(new King());
+		assertEquals("King",player.bestRoleToChoose(roles,"noble").toString());
+
+		assertEquals("Warlord",player.bestRoleToChoose(roles,"soldatesque").toString());
+		roles.add(new Architect());
+		assertEquals("Architect",player.bestRoleToChoose(roles,"religion").toString());
 	}
     
 }

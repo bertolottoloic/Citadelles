@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-class BotSpencerTest{
+class BotSpenderTest {
 
 
     BotSpender bot, anotherBot;
@@ -37,7 +37,6 @@ class BotSpencerTest{
         hand.add(d2);
     }
 
-    @Disabled
     @Test
     void coinsOrDistrictTest() {
         assertTrue(bot.coinsOrDistrict());
@@ -63,30 +62,10 @@ class BotSpencerTest{
 
         Deck d = bot.getDeck();
         d.getList().clear();
-        assertTrue(bot.coinsOrDistrict());
-
-        hand.add(new District(2, 2, DistrictColor.Commerce, "random6"));
-        bot.setHand(hand);
-        assertTrue(bot.coinsOrDistrict());
+        assertFalse(bot.coinsOrDistrict());
 
     }
 
-    @Test
-    void bestRoleToChoose(){
-        ArrayList<Role> roles = new ArrayList<>();
-        roles.add(new Merchant());
-        roles.add(new Warlord());
-        roles.add(new Architect());
-        assertEquals("Merchant",bot.bestRoleToChoose(roles,"religion").toString());
-
-        roles.add(new Bishop());
-        assertEquals("Bishop",bot.bestRoleToChoose(roles,"religion").toString());
-
-        roles.add(new King());
-        assertEquals("King",bot.bestRoleToChoose(roles,"noble").toString());
-
-        assertEquals("Warlord",bot.bestRoleToChoose(roles,"soldatesque").toString());
-    }
 
 
     @Test

@@ -140,6 +140,8 @@ public class BotSmart extends Player {
 
     /* ---------------------------------------------*/
 
+
+
     /**
      * Cette fonction permet d'attribuer
      * des probabilités pour permettre au joueur 

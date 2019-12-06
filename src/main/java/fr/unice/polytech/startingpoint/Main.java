@@ -56,6 +56,13 @@ public class Main {
         statistic.log(Level.INFO,results(p1,p2,p3,p4));
     }
 
+    /**
+     *
+     * @param winner
+     *
+     *      incrémente de 1 la nombre de victoire
+     *      d'un joueur ayant remporté une partie.
+     */
     private static void countWinner(ArrayList<Player> winner) {
         for(Player p :winner){
             stats.put(p.getId(),stats.get(p.getId())+1);

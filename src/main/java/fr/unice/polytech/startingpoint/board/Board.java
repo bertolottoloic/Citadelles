@@ -41,6 +41,11 @@ public class Board{
         
     }
 
+    /**
+     *
+     * @param except
+     * @return le joueur ayant le quartier le pus cher.
+     */
     public Player playerWithTheBiggestCity(Player except){
         Comparator<Player> critere1=(p1,p2)->Integer.compare(p1.sizeOfCity(),p2.sizeOfCity());
         Comparator<Player> critere2=(p1,p2)->Integer.compare(p1.totalValueOfCity(),p2.totalValueOfCity());
@@ -48,12 +53,22 @@ public class Board{
             critere1.thenComparing(critere2)
         ).get();
     }
-  
+
+    /**
+     *
+     * @param except
+     * @return le joueur ayant le plus d'argent
+     */
     public Player richestPlayer(Player except){
         return this.players.stream().filter(p->p!=except).max(
             (p1,p2)->Integer.compare(p1.getGold(),p1.getGold())
         ).get();
     }
+
+
+    /**
+     * @return un joueur aléatoire parmi tous les joueurs.
+     */
 
     public Player randomPlayer(){
         var random=new Random();

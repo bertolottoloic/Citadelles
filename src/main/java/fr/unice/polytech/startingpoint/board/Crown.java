@@ -17,6 +17,10 @@ public class Crown {
         return this.player;
     }
 
+    /**
+     * Donne l'objet couronne au joueur p.
+     * @param p
+     */
     public void goesTo(Player p){
         this.player = p;
     }

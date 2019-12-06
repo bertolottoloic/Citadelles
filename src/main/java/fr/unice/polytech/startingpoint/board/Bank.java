@@ -24,7 +24,8 @@ public class Bank{
     }
 
     /**
-     * @param players 
+     * @param players
+     *
      */
     public void setBourses(List<Player> players) {
         bourses = new HashMap<>();
@@ -46,6 +47,10 @@ public class Bank{
         return currNbCoins;
     }
 
+    /**
+     * @param desiredAmount
+     * @return True s'il reste assez d'argent dans la banque, false sinon
+     */
     public boolean canWithdraw(int desiredAmount){
         if(desiredAmount<0){
             return false;
@@ -55,6 +60,13 @@ public class Bank{
         }
         
     }
+
+    /**
+     * La banque ajoute de l'argent au player
+     * @param nb
+     * @param player
+     * @return True si la transaction a été effectué, false sinon
+     */
     public boolean withdraw(int nb, Player player){
 
         if(currNbCoins < nb || nb < 0){
@@ -73,7 +85,7 @@ public class Bank{
      * Fonction pour enlever l'argent du compte du joueur
      * @param nb
      * @param player
-     * @return
+     * @return True si la transaction a été effectué, false sinon
      */
     public boolean deposit(int nb,Player player){
         if((currNbCoins+nb) <=NBCOINS && nb>=0 && bourses.get(player)>=nb){

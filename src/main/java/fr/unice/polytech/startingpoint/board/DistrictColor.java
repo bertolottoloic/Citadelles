@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint.board;
 
 /**
- * @author Anagonou Patrick
- * @author Heba bouzidi
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
  * @author Loic Bertolotto
  * @author Clement Poueyto
  *

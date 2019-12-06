@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Anagonou Patrick
- * @author Heba bouzidi
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
  * @author Loic Bertolotto
  * @author Clement Poueyto
  *

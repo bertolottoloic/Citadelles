@@ -5,7 +5,10 @@ import java.util.List;
 import fr.unice.polytech.startingpoint.board.District;
 
 /**
- * @author Anagonou Patrick
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
  *
  * */
 

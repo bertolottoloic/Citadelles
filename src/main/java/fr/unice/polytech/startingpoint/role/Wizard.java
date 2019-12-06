@@ -6,6 +6,14 @@ import java.util.logging.Level;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.player.Hand;
 
+/**
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class Wizard extends Role{
 
     public Wizard(){

@@ -16,8 +16,8 @@ import fr.unice.polytech.startingpoint.role.Thief;
 import fr.unice.polytech.startingpoint.role.Warlord;
 import fr.unice.polytech.startingpoint.role.Wizard;
 /**
- * @author Anagonou Patrick
- * @author Heba bouzidi
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
  * @author Loic Bertolotto
  * @author Clement Poueyto
  *

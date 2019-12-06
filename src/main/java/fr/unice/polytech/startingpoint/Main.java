@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 import fr.unice.polytech.startingpoint.game.Manager;
 import fr.unice.polytech.startingpoint.player.*;
 /**
- * @author Anagonou Patrick
- * @author Heba bouzidi
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
  * @author Loic Bertolotto
  * @author Clement Poueyto
  *

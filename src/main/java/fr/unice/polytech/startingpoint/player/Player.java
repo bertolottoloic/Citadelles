@@ -15,9 +15,10 @@ import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Role;
+
 /**
- * @author Anagonou Patrick
- * @author Heba bouzidi
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
  * @author Loic Bertolotto
  * @author Clement Poueyto
  *

@@ -1,5 +1,13 @@
 package fr.unice.polytech.startingpoint.role;
 
+/**
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class Architect extends Role {
 
     private boolean alreadyUsePower=false;

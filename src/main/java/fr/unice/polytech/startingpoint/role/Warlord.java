@@ -6,6 +6,14 @@ import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.player.Player;
 
+/**
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class Warlord extends Role {
 
     public Warlord(){

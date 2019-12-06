@@ -6,6 +6,14 @@ import fr.unice.polytech.startingpoint.player.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public abstract class Role {
      protected Logger logger = Logger.getLogger("Running");
      protected Player player;

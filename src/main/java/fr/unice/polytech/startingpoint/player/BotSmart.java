@@ -11,8 +11,8 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Role;
 
 /**
- * @author Anagonou Patrick
- * @author Heba bouzidi
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
  * @author Loic Bertolotto
  * @author Clement Poueyto
  *
@@ -62,7 +62,7 @@ public class BotSmart extends Player {
     }
     @Override
     public Player processWhoToExchangeHandWith() {
-        if((this.hand.size()-this.hand.badCards(this.getGold()).size())>=(this.hand.size()/2)){
+        if((this.hand.size()-this.hand.badCards(this.getGold()).size())<=(this.hand.size()/2)){
             return null;
         }
         if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){

@@ -58,18 +58,17 @@ public class BotSmartTest {
 		assertEquals(2, t.getDistricts().size());
 	}
 
-	@Disabled
     @Test
     void processWhoToExchangeHandWithTest() {
         Deck deck= new Deck();
         District d1 = new District(1, 1, "religion", "Temple");
         District d2 = new District(1, 1, "commerce", "Taverne");
-        District d3 = new District(2, 2, "religion", "Eglise");
         ArrayList<District> districts = new ArrayList<>();
-        botSmart.takeCoinsFromBank(3);
+        Bank b = mock(Bank.class);
+        when(b.getPlayerMoney(botSmart)).thenReturn(3);
+        botSmart.setBank(b);
         districts.add(d1);
         districts.add(d2);
-        districts.add(d3);
         Hand hand = new Hand(districts);
         botSmart.setHand(hand);
         Player target = new Player(2);
@@ -78,10 +77,10 @@ public class BotSmartTest {
         Board board = mock(Board.class);
         when(board.playerWithTheBiggestHand(botSmart)).thenReturn(target);
         botSmart.setBoard(board);
-        assertEquals(target.toString(), botSmart.processWhoToExchangeHandWith());
+        assertEquals(target, botSmart.processWhoToExchangeHandWith());
         d1 = new District(4, 4, "noblesse", "Palais");
         d2 = new District(4, 4, "noblesse", "Palais");
-        d3 = new District(1, 1, "religion", "Eglise");
+        District d3 = new District(1, 1, "religion", "Eglise");
         District d4 = new District(1, 1, "religion", "Eglise");
         districts = new ArrayList<>();
         districts.add(d1);
@@ -89,7 +88,7 @@ public class BotSmartTest {
         districts.add(d3);
         districts.add(d4);
         botSmart.setHand(new Hand(districts));
-        botSmart.takeCoinsFromBank(2);
+        when(b.getPlayerMoney(botSmart)).thenReturn(5);
         assertEquals(null, botSmart.processWhoToExchangeHandWith());
     }
 

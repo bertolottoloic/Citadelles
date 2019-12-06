@@ -2,6 +2,14 @@ package fr.unice.polytech.startingpoint.role;
 
 import java.util.logging.Level;
 
+/**
+ * @author Patrick Anagonou 
+ * @author Heba Bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class Thief extends Role {
 
     public Thief(){

@@ -12,7 +12,7 @@ import fr.unice.polytech.startingpoint.game.Manager;
 import fr.unice.polytech.startingpoint.player.*;
 
 public class Main {
-    private static HashMap<String,Integer> stats=new HashMap<>();
+    private static HashMap<Integer,Integer> stats=new HashMap<>();
     private static Logger resume;
     private static Logger statistic;
     private static int numberOfGames = 1000;
@@ -27,35 +27,39 @@ public class Main {
     public static void main(String... args) throws IllegalArgumentException,FileNotFoundException,IOException {
         resume.setLevel(Level.OFF);
         statistic.setLevel(Level.INFO);
+        Player p1 = null;
+        Player p2 = null;
+        Player p3 = null;
+        Player p4 = null;
         int n=0;
-        stats.put("BotRnd",0);
-        stats.put("BotBuildFast",0);
-        stats.put("BotSpender",0);
-        stats.put("BotRainbow",0);
+        stats.put(1,0);
+        stats.put(2,0);
+        stats.put(3,0);
+        stats.put(4,0);
         while (n < numberOfGames) {
-            Player p1 = new BotRnd(1);
-            Player p2 = new BotBuildFast(2);
-            Player p3 = new BotSpender(3);
-            Player p4 = new BotRainbow(4);
+            p1 = new BotRainbow(1);
+            p2 = new BotRainbow(2);
+            p3 = new BotSpender(3);
+            p4 = new BotSpender(4);
             Manager manager = new Manager();
             manager.letsPlay(p1, p4,p2, p3);
             countWinner(manager.getWinner());
             n++;
         }
-        statistic.log(Level.INFO,results());
+        statistic.log(Level.INFO,results(p1,p2,p3,p4));
     }
 
     private static void countWinner(ArrayList<Player> winner) {
         for(Player p :winner){
-            stats.put(p.getClass().getSimpleName(),stats.get(p.getClass().getSimpleName())+1);
+            stats.put(p.getId(),stats.get(p.getId())+1);
         }
     }
 
-    private static String results(){
-        String res = "";
+    private static String results(Player...players){
+        String res = "Pourcentages de victoires des bots sur "+numberOfGames+" parties :\n";
         DecimalFormat df = new DecimalFormat("0.0");
-        for(String e : stats.keySet()) {
-            res += e + " : " + df.format(((((double)stats.get(e))/numberOfGames)*100)) + "\n";
+        for(Integer e : stats.keySet()) {
+            res += players[e-1].getClass().getSimpleName() + " = " + df.format(((((double)stats.get(e))/numberOfGames)*100)) + " %\n";
         }
         return res;
     }

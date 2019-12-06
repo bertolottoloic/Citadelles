@@ -58,10 +58,6 @@ public class BotSmartTest {
 		assertEquals(2, t.getDistricts().size());
 	}
 
-	@Test
-    public void discard(){
-        botSmart.hand
-    }
 	@Disabled
     @Test
     void processWhoToExchangeHandWithTest() {

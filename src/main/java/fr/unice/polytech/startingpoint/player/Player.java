@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
@@ -45,6 +47,8 @@ public class Player {
 	protected Bank bank;
 	protected Deck deck;
 	protected DealRoles dealRoles;
+	private Logger logger = Logger.getLogger("Running");
+
 	
 
 	/**
@@ -81,7 +85,7 @@ public class Player {
 		if(bank.deposit(theDistrict.getCost(),this)) {
 			city.add(theDistrict);
 			hand.remove(theDistrict);
-			System.out.println("Joueur "+id+" construit \n"+theDistrict.toString());
+			logger.log(Level.INFO,"Joueur "+id+" construit \n"+theDistrict.toString());
 			return true;
 		}
 		return false;
@@ -128,7 +132,7 @@ public class Player {
 	 */
 	public void takeCoinsFromBank(int nb){
 		if(bank.withdraw(nb,this)){
-			System.out.println("Joueur "+id+" retire " + nb + " de la banque. ");
+			logger.log(Level.INFO,"Joueur "+id+" retire " + nb + " de la banque. ");
 		}
 	}
 
@@ -144,7 +148,7 @@ public class Player {
 	
 	
 	final void surrenderToThief(){
-			System.out.println("Moi le joueur "+id+" j'ai été volé");
+			logger.log(Level.INFO,"Moi le joueur "+id+" j'ai été volé");
 			Player thief=dealRoles.getRole("Thief").getPlayer();
 			if(thief!=null){
 				bank.transferFromTo(this, thief);//donne l'argent au player de Thief
@@ -325,7 +329,7 @@ public class Player {
 	final public void playTurn(){
 		this.city.nextDay();
 		if(character.isMurdered()){
-			System.out.println("Joueur "+id+" passe son tour car il a été tué");
+			logger.log(Level.INFO,"Joueur "+id+" passe son tour car il a été tué");
 			return; //on sort de la fonction sans plus rien faire
 		}
 		else if(character.isStolen()){
@@ -344,7 +348,7 @@ public class Player {
 			List<District> districts=this.deck.withdrawMany(this.character.getNumberDistrictPickable());
 			this.discard(districts);
 			hand.addAll(districts);
-			System.out.println("Joueur "+id+" prend "+districts.size()+" districts. \n" +
+			logger.log(Level.INFO,"Joueur "+id+" prend "+districts.size()+" districts. \n" +
 					"Il reste "+this.deck.numberOfCards()+" districts dans le deck.");
 		}
 		this.isUsingLabo();
@@ -395,7 +399,7 @@ public class Player {
 		Optional<District> od=wantsToUseLabo();
 		if(city.containsWonder("Laboratoire")&& od.isPresent() && !hasUsedLabo) {
 			if(hand.remove(od.get())){
-				System.out.println("Joueur " + getId() + " possède et peut utiliser le laboratoire");
+				logger.log(Level.INFO,"Joueur " + getId() + " possède et peut utiliser le laboratoire");
 				this.deck.putbackOne(od.get());
 				takeCoinsFromBank(1);
 				hasUsedLabo = true;
@@ -409,7 +413,7 @@ public class Player {
 	
 	protected void isUsingGraveyard(District d) {
 		if(wantsToUseGraveyard(d)) {
-			System.out.println("Joueur " + getId() + " possède et peut utiliser le cimetière");
+			logger.log(Level.INFO,"Joueur " + getId() + " possède et peut utiliser le cimetière");
 			bank.deposit(1, this);
 			hand.add(d);
 		}
@@ -476,7 +480,7 @@ public class Player {
         targetToDestroyDistrict = processWhoseDistrictToDestroy();
 		districtToDestroy = processDistrictToDestroy(this.targetToDestroyDistrict);
 		cardsToExchange=processCardsToExchange();
-		System.out.println("Joueur "+id+" active son effet de rôle");
+		logger.log(Level.INFO,"Joueur "+id+" active son effet de rôle");
 		character.useSpecialPower();	
 		this.isUsingLabo();
 	}

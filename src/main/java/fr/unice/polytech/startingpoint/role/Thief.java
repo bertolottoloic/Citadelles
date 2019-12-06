@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
+import java.util.logging.Level;
+
 public class Thief extends Role {
 
     public Thief(){
@@ -14,7 +16,7 @@ public class Thief extends Role {
     private void action(Role c){
         if (!c.isMurdered()) {
             c.stolen();
-            System.out.println(toString() + " ( joueur numero " + player.getId() + " )" + "vole le " + c.toString());
+            logger.log(Level.INFO,toString() + " ( joueur numero " + player.getId() + " )" + "vole le " + c.toString());
         }
     }
 

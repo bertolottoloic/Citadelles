@@ -4,8 +4,10 @@ import fr.unice.polytech.startingpoint.board.*;
 import fr.unice.polytech.startingpoint.player.*;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public abstract class Role {
+     protected Logger logger = Logger.getLogger("Running");
      protected Player player;
      private final int position;
      protected int numberDistrictBuildable = 1;

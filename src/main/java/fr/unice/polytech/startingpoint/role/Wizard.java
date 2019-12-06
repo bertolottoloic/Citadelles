@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.player.Hand;
@@ -25,11 +26,11 @@ public class Wizard extends Role{
             hand.addAll(player.getDeck().exchangeMany(this.player.getCardsToExchange()));
 
             this.player.setHand(new Hand(hand));
-            System.out.println(this+" (joueur numero "+this.player.getId()+") echange des cartes avec le deck");
+            logger.log(Level.INFO,this+" (joueur numero "+this.player.getId()+") echange des cartes avec le deck");
         }
         else{
             this.action();
-            System.out.println(this+" (joueur numero "+this.player.getId()+") echange ses cartes avec le joueur numero "+this.player.getTargetToExchangeHandWith().getId());
+            logger.log(Level.INFO,this+" (joueur numero "+this.player.getId()+") echange ses cartes avec le joueur numero "+this.player.getTargetToExchangeHandWith().getId());
         }
         
 

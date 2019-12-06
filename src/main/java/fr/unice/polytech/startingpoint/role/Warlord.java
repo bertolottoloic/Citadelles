@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.role;
 
+import java.util.logging.Level;
+
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.player.Player;
@@ -15,7 +17,7 @@ public class Warlord extends Role {
         if(target.deleteDistrictFromCity(toDestroy)){
             //le joueur paie le prix du district -1
             this.player.getBank().deposit(toDestroy.getCost()-1,this.player);
-            System.out.println(this+" (joueur numéro "+this.player.getId()+") détruit le district \n"+this.player.getDistrictToDestroy()+" du joueur numéro "+this.player.getTargetToDestroyDistrict().getId());
+            logger.log(Level.INFO,this+" (joueur numéro "+this.player.getId()+") détruit le district \n"+this.player.getDistrictToDestroy()+" du joueur numéro "+this.player.getTargetToDestroyDistrict().getId());
         }    
     }
 

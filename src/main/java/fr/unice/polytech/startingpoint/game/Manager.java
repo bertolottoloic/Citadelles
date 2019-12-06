@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
@@ -16,6 +18,7 @@ import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
 
 public class Manager implements PropertyChangeListener {
+    private Logger logger = Logger.getLogger("Running");
     private int i=1;
     private Crown crown = new Crown();
     private Board board = new Board();
@@ -37,7 +40,7 @@ public class Manager implements PropertyChangeListener {
         /**
          * On reInitialize les Roles on reInitialize les Personnages
          */
-        System.out.println("#########    Round#"+(i++)+"   #########");
+        logger.log(Level.INFO,"#########    Round#"+(i++)+"   #########");
         dealRoles.reInitializeRoles();
         for (Player p : players) {
             p.reInitializeForNextTurn();
@@ -62,7 +65,7 @@ public class Manager implements PropertyChangeListener {
         while(it.hasNext()) {
         	Player p = it.next().getPlayer();
             if(p != null){
-                System.out.println("Tour du joueur " +p.getId()+" : "+p.getCharacter());
+                logger.log(Level.INFO,"Tour du joueur " +p.getId()+" : "+p.getCharacter());
                 p.playTurn();
             }
         }
@@ -121,23 +124,10 @@ public class Manager implements PropertyChangeListener {
                     + "******************\n";
         }
         res += "WINNER : \n" + winner.toString();
-        System.out.println(res);
+        logger.log(Level.INFO,res);
     }
 
     public void endGame(Player... players) {
-
-        /*int maxScore = -1;
-        for (Player p : players) {
-            int score = p.points();
-            if (score > maxScore) {
-                maxScore = score;
-                winner.clear();
-                winner.add(p);
-            } else if (score == maxScore) {
-                winner.add(p);
-            }
-
-        }*/
         winner.add(List.of(players).stream().max((a,b)->Integer.compare(a.points(), b.points())).get());
         
     }

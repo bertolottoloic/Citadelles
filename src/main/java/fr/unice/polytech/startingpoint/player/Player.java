@@ -15,6 +15,13 @@ import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Role;
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
 
 public class Player {
 	private final int id;

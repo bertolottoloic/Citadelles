@@ -7,6 +7,14 @@ import java.util.Random;
 
 import fr.unice.polytech.startingpoint.player.Player;
 
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class Board{
     private ArrayList<Player> players;
 

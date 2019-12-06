@@ -16,7 +16,13 @@ import fr.unice.polytech.startingpoint.board.Crown;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.player.Player;
 import fr.unice.polytech.startingpoint.role.Role;
-
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
 public class Manager implements PropertyChangeListener {
     private Logger logger = Logger.getLogger("Running");
     private int i=1;

@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class MatchingProb {
     private HashMap<String,Integer> mappingRoleIndex=new HashMap<>();
     private HashMap<Integer,Integer> mappingPlayerIndex=new HashMap<>();

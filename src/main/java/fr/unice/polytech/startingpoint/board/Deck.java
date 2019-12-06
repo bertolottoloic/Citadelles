@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
 
 public class Deck{
     private ArrayList <District> list;

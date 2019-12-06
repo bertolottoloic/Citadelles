@@ -12,6 +12,14 @@ import java.util.Set;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public class City {
     private ArrayList<District> districts=new ArrayList<>();
     private int presentDate=0;

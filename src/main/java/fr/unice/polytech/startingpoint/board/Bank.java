@@ -5,6 +5,14 @@ import java.util.List;
 
 import fr.unice.polytech.startingpoint.player.Player;
 
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+* */
+
 
 public class Bank{
     private final int  NBCOINS=30;

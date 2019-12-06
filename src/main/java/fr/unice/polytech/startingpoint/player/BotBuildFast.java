@@ -8,7 +8,13 @@ import java.util.stream.Collectors;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.role.Role;
-
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
 public class BotBuildFast extends BotSmart{
     public BotBuildFast(int id) {
         super(id);

@@ -4,6 +4,11 @@ import java.util.List;
 
 import fr.unice.polytech.startingpoint.board.District;
 
+/**
+ * @author Anagonou Patrick
+ *
+ * */
+
 public class Tmp {
     private  int val=0;
         private final List<District> districts;

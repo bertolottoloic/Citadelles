@@ -10,6 +10,13 @@ import java.util.logging.Logger;
 
 import fr.unice.polytech.startingpoint.game.Manager;
 import fr.unice.polytech.startingpoint.player.*;
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
 
 public class Main {
     private static HashMap<Integer,Integer> stats=new HashMap<>();

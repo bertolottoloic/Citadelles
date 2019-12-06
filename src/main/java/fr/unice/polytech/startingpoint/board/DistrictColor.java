@@ -1,5 +1,13 @@
 package fr.unice.polytech.startingpoint.board;
 
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
+
 public enum DistrictColor {
     Noble("noblesse"),
     Wonder("merveille"),

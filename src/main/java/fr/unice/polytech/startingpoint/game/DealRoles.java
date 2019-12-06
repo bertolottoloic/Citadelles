@@ -15,6 +15,13 @@ import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.role.Thief;
 import fr.unice.polytech.startingpoint.role.Warlord;
 import fr.unice.polytech.startingpoint.role.Wizard;
+/**
+ * @author Anagonou Patrick
+ * @author Heba bouzidi
+ * @author Loic Bertolotto
+ * @author Clement Poueyto
+ *
+ * */
 
 public class DealRoles{
     private ArrayList<Role> leftRoles = new ArrayList<>();

@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint.player;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -220,38 +219,6 @@ public class Player {
 		}
 		
 	}
-
-	Role bestRoleToChoose(List<Role> roles, String color){
-		Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
-		if(optWizard.isPresent()){
-			return optWizard.get();
-		}
-		optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
-		if(optWizard.isPresent()){
-			return optWizard.get();
-		}
-		optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
-		if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
-			return optWizard.get();
-		}
-		int position;
-		switch (color){
-			case "religion": position=5;
-				break;
-			case "soldatesque": position =8;
-				break;
-			case "noble": position =4;
-				break;
-			default : position =6;
-		}
-		for(Role role : roles){
-			if(role.getPosition()==position){
-				return role;
-			}
-		}
-		return roles.get(0);
-	}
-
 	
 	public void discard(List<District> d) {
 		d.sort((a,b)->
@@ -309,12 +276,6 @@ public class Player {
 	}
 
 	public List<District> processWhatToBuild() {
-		if (handHasTheDistrict("Ecole de Magie") && 6 < getGold()) {
-			List<String> oneOfTheseRoles = Arrays.asList("King", "Bishop", "Merchant", "Warlord");
-			if (oneOfTheseRoles.contains(getCharacter().toString())) {
-				return new ArrayList<>(List.of(hand.findDistrictByName("Ecole de Magie")));
-			}
-		}
 		return new ArrayList<>();
 	}
 

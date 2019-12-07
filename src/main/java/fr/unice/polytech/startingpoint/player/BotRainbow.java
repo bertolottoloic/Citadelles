@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
@@ -32,14 +34,15 @@ public class BotRainbow extends BotSmart{
     
     @Override
     public List<District> processWhatToBuild() {
-        List<District> specialBuilding = super.processWhatToBuild();
-    	if(super.processWhatToBuild().isEmpty()) {
-    		District tmp=this.whatToBuild(this.getGold());
-            if(tmp!=null){
-                return new ArrayList<>(List.of(tmp));
-            }
-    	}
-    	return specialBuilding;
+        int gold=this.getGold();
+        var newDisctricts=buildNewColors(gold);
+        if(city.containsAllColors() || newDisctricts.size()==0){
+            return super.processWhatToBuild();
+        }
+        else{
+            newDisctricts.sort((a,b)->-Integer.compare(a.getValue(), b.getValue()));
+            return newDisctricts;
+        }
     }
 
     
@@ -86,8 +89,8 @@ public class BotRainbow extends BotSmart{
     
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 2
-                || hand.badCards(getGold()).size()<=hand.size()/2
+        return getGold() < 4
+                || hand.badCards(getGold()).size()<hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
@@ -151,6 +154,26 @@ public class BotRainbow extends BotSmart{
             districts.sort((a,b)->
                     Integer.compare(a.getCost(),b.getCost()));
             return(districts.size()>1)?districts.get(districts.size()-1):hand.lowCostDistrict();
+        }
+    }
+
+    public List<District> buildNewColors(int limit){
+        if(city.containsAllColors()){
+            return List.of();
+        }
+        Set <DistrictColor> tmpHand=hand.colorsOfHand();
+        Set <DistrictColor> tmpCity=city.colorsOfCity();
+        tmpHand.removeAll(tmpCity);
+
+        if(tmpHand.size()==0){
+            //si il n'y a pas dans la main des couleurs non construites
+            return List.of();
+        }
+        else{
+            var toConsider= hand.toList().stream().filter(d->tmpHand.contains(d.primaryColor()))
+            .collect(Collectors.toList());
+
+            return buildables(toConsider, limit).getDistricts();
         }
     }
 

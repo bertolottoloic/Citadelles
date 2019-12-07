@@ -46,6 +46,38 @@ class BotRainbowTest {
 		bot.setDeck(deck);
 		bank.setBourses(List.of(bot));
 	}
+	@BeforeEach
+	void setMultiPlayers() {
+		anotherBot = new BotRainbow(2);
+		bot.city.add(d1);
+		
+		Board b = new Board();
+		anotherBot.setBoard(b);
+		b.setPlayers(bot, anotherBot);
+	}
+
+	@Test
+	void buildNewColorsTest(){
+		bot.getCity().toList().clear();
+		assertEquals(0, bot.getCity().getSizeOfCity());
+		bot.getCity().toList().add(
+			new District(2, 2, DistrictColor.Commerce, "Carrefour"));
+		bot.getCity().toList().add(
+			new District(2, 2, DistrictColor.Warlord, "PorteAvions"));
+
+		District cathedral=new District(4, 4, DistrictColor.Religion, "Cathedrale");
+		bot.getHand().toList().add(
+			cathedral
+		);
+		bot.getHand().toList().add(
+			new District(4, 4, DistrictColor.Commerce, "Casino")
+		);
+
+		assertEquals(1,bot.buildNewColors(8).size());
+		assertTrue(bot.buildNewColors(8).contains(cathedral));
+
+		
+	}
 
     @Test
     void wantsToUseFabric() {/*
@@ -113,15 +145,7 @@ class BotRainbowTest {
 		assertEquals(tmpHandSize, bot.getHand().size());
 	}
 	
-	@BeforeEach
-	void setMultiPlayers() {
-		anotherBot = new BotRainbow(2);
-		bot.city.add(d1);
-		
-		Board b = new Board();
-		anotherBot.setBoard(b);
-		b.setPlayers(bot, anotherBot);
-	}
+	
 	
 	@Test
 	void wantsToUseGraveyardTest(){
@@ -176,5 +200,7 @@ class BotRainbowTest {
 		bot.discard(cards);
 		assertEquals(expect, cards.get(0));
 	}
+
+	
 
 }

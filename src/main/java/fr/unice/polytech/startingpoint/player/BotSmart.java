@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
@@ -25,6 +26,66 @@ public class BotSmart extends Player {
         super(id);
     }
 
+    /**
+	 * Fonction pour récupérer le Role permettant d'avoir le plus d'argent lors de
+	 * la collecte d'argent des quartiers On utilisera hidden que si le joueur est
+	 * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
+	 */
+    public Optional<Role> roleToOptimizeCoins(List<Role> toConsider) {
+
+        if (city.getSizeOfCity() == 0) {
+            // une autre
+            return Optional.empty();
+        } else {
+            ArrayList<String> availableColors = new ArrayList<>();
+            toConsider.stream().map(d -> d.getColor()).forEach(s -> {
+                if (s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse")) {
+                    availableColors.add(s);
+                }
+            });
+            String bestColor = this.city.mostPotentiallyPayingColor(availableColors);
+
+            for (Role r : toConsider) {
+                if (r.getColor().equals(bestColor)) {
+                    return Optional.of(r);
+                }
+            }
+            return Optional.empty();
+        }
+    }
+
+        Role bestRoleToChoose(List<Role> roles, String color){
+            Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
+            if(optWizard.isPresent()){
+                return optWizard.get();
+            }
+            optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
+            if(optWizard.isPresent()){
+                return optWizard.get();
+            }
+            optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
+            if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
+                return optWizard.get();
+            }
+            int position;
+            switch (color){
+                case "religion": position=5;
+                    break;
+                case "soldatesque": position =8;
+                    break;
+                case "noble": position =4;
+                    break;
+                default : position =6;
+            }
+            for(Role role : roles){
+                if(role.getPosition()==position){
+                    return role;
+                }
+            }
+            return roles.get(0);
+        }
+
+    
 
 	public Tmp buildables(List<District> toConsider,int limit){
         if(toConsider.isEmpty() || limit<=0){
@@ -125,6 +186,32 @@ public class BotSmart extends Player {
             this.deck.putbackOne(d.remove(d.size()-1));
 
         }
+    }
+
+    @Override
+    public List<District> processWhatToBuild() {
+        List<District> toConsider;
+        if(city.getSizeOfCity()==7){//si on est sur le point de finir 
+            //on peut construire des cartes de cout 1 puisque le condotierre
+            // ne peut pas détruire
+            //les cités finies
+            toConsider=getHand().toList().stream()
+            .filter(d->!city.alreadyContains(d))
+            .collect(Collectors.toList());
+        }
+        else{//ne pas construire des cartes de cout 1 sinon le condotierre peut les détruire facilement
+            //sans rien payer
+            toConsider=getHand().toList().stream()
+            .filter(d->!city.alreadyContains(d)&& d.getCost()>1)
+            .collect(Collectors.toList());
+        }
+        return buildables(
+                        toConsider,
+                        getGold()
+                )
+            .getDistricts().stream()
+            .sorted((a,b)->-Integer.compare(a.getValue(), b.getValue()))
+            .collect(Collectors.toList());
     }
 
     /**

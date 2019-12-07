@@ -294,42 +294,7 @@ class BotBuildFastTest {
 		assertEquals(dealRoles.getRole("Merchant"), bot.processWhoToRob());
 	}
 
-	@Test
-	void attributeProbsToPlayerTest() {
-
-		Player p1 = new BotBuildFast(7);
-		Player p2 = new BotBuildFast(2);
-		Player p3 = new BotBuildFast(3);
-		Player p4 = new BotBuildFast(5);
-		dealRoles.readyToDistribute(4);
-		Board b = new Board();
-
-		Player[] players = {p1, p2, p3, p4};
-		for (int i = 0; i < players.length - 1; i++) {
-			players[i].setNextPlayer(players[i + 1]);
-		}
-		players[players.length - 1].setNextPlayer(players[0]);
-
-		b.setPlayers(p1, p2, p3, p4);
-		List.of(p1, p2, p3, p4).forEach(p -> p.setBoard(b));
-
-
-		p1.setDealRoles(dealRoles);
-		p2.setDealRoles(dealRoles);
-		p3.setDealRoles(dealRoles);
-		p4.setDealRoles(dealRoles);
-
-		int nblefts = dealRoles.getLeftRoles().size();
-		List.of(p1, p2, p3, p4).forEach(p -> p.chooseRole());
-
-
-		assertEquals(2, dealRoles.getVisible().size());
-		assertTrue(dealRoles.getLeftRoles().size() <= nblefts - 3);
-		assertEquals(3, p4.getMatches().possibleRolesFor(p1.getId()).size());
-		assertEquals(6, p1.getMatches().possibleRolesFor(p4.getId()).size());
-		assertEquals(2, p2.getMatches().possibleRolesFor(p1.getId()).size());
-	}
-
+	
 
 	@Test
 	public void roleToOptimizeCoinsTest(){

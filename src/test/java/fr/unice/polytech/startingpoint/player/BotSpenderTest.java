@@ -1,18 +1,25 @@
 package fr.unice.polytech.startingpoint.player;
 
-import fr.unice.polytech.startingpoint.board.*;
-import fr.unice.polytech.startingpoint.role.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import fr.unice.polytech.startingpoint.board.Bank;
+import fr.unice.polytech.startingpoint.board.Board;
+import fr.unice.polytech.startingpoint.board.Deck;
+import fr.unice.polytech.startingpoint.board.District;
+import fr.unice.polytech.startingpoint.board.DistrictColor;
+import fr.unice.polytech.startingpoint.role.Merchant;
+import fr.unice.polytech.startingpoint.role.Role;
 
 
 class BotSpenderTest {

@@ -89,9 +89,6 @@ public class BotBuildFast extends BotSmart{
     
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
-        if(this.nextPlayer.alreadyChosenRole){
-            toConsiderRoles.add(this.dealRoles.getHidden());
-        }
         Optional<Role> alt1=this.roleToOptimizeCoins(
             toConsiderRoles
         );
@@ -141,8 +138,7 @@ public class BotBuildFast extends BotSmart{
     
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 5
-                || hand.badCards(getGold()).size()<=hand.size()/2;
+        return getGold() < 5;
 
     }
     
@@ -227,32 +223,5 @@ public class BotBuildFast extends BotSmart{
          * On utilisera hidden que si le joueur est le 
          * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
          */
-    /**
-	 * Fonction pour récupérer le Role permettant d'avoir le plus d'argent lors de
-	 * la collecte d'argent des quartiers On utilisera hidden que si le joueur est
-	 * le dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
-	 */
-    public Optional<Role> roleToOptimizeCoins(List<Role> toConsider) {
-
-        if (city.getSizeOfCity() == 0) {
-            // une autre
-            return Optional.empty();
-        } else {
-            ArrayList<String> availableColors = new ArrayList<>();
-            toConsider.stream().map(d -> d.getColor()).forEach(s -> {
-                if (s.equals("soldatesque") || s.equals("commerce") || s.equals("religion") || s.equals("noblesse")) {
-                    availableColors.add(s);
-                }
-            });
-            String bestColor = this.city.mostPotentiallyPayingColor(availableColors);
-
-            for (Role r : toConsider) {
-                if (r.getColor().equals(bestColor)) {
-                    return Optional.of(r);
-                }
-            }
-            return Optional.empty();
-        }
-
-    }
+    
 }

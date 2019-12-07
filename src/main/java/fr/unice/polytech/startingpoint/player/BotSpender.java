@@ -121,7 +121,7 @@ public class BotSpender extends BotSmart {
 		if (handHasTheDistrict("Laboratoire") && 5 < limit && getHand().lowCostDistrict() != null) {
 			return hand.findDistrictByName("Laboratoire");
 		}
-		if(handHasTheDistrict("Cimetiere") && 5 < limit && !getCharacter().equals("Warlord")) {
+		if(handHasTheDistrict("Cimetiere") && 5 < limit && !getCharacter().toString().equals("Warlord")) {
 			return hand.findDistrictByName("Cimetiere");
 		}
 		District district = getHand().highCostDistrict(limit);

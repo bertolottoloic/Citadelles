@@ -26,6 +26,7 @@ public class Hand {
     Hand(){
         this.districts=new ArrayList<>();
     }
+    
     public Hand(List<District> liste){
         this.districts=new ArrayList<>(liste);
     }
@@ -106,7 +107,7 @@ public class Hand {
         districts.forEach(d->{
             colors.add(d.primaryColor());
         });
-
+ 
         return colors;
     }
 
@@ -115,16 +116,21 @@ public class Hand {
 	}
 
     public int nbCardsCostingLessThan(int limit){
-        return (int)districts.stream().filter(d->d.getCost()<=limit).count();
-    }
+		return (int)districts.stream().filter(d -> d.getCost() <= limit).count();
+	}
+
 	public District highCostDistrict(int gold) {
-        District highCost=districts.get(0);
-        for(District d : districts){
-            if(d.getCost() > highCost.getCost()&&(d.getCost()<=gold)) {
-                highCost=d;
-            }
-        }
-        return highCost;
+		if (districts.isEmpty()) {
+			return null;
+		} else {
+			District highCost = districts.get(0);
+			for (District d : districts) {
+				if (d.getCost() > highCost.getCost() && (d.getCost() <= gold)) {
+					highCost = d;
+				}
+			}
+			return highCost;
+		}
 	}
 
 	public ArrayList<District> badCards(int gold) {
@@ -217,11 +223,11 @@ public class Hand {
     	return res;
     }
     
-    public boolean containsWonder(String wonder) {//TODO test
+    public boolean containsWonder(String wonder) {
 		return districts.stream().anyMatch(d -> d.getName().equals(wonder));
 	}
     
-    public District findDistrictByName(String name) {//TODO test
+    public District findDistrictByName(String name) {
     	if(containsWonder(name)) {
     		for (District d : districts) {
 				if (d.getName().equals(name)) {

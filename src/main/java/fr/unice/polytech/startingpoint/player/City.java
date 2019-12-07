@@ -221,6 +221,10 @@ public class City {
         return countColors;
     }
 
+    public boolean containsColor(DistrictColor dc){
+        return colorsOfCity().contains(dc);
+    }
+
 	public void clearEverything() {
         districts.clear();
         presentDate=0;

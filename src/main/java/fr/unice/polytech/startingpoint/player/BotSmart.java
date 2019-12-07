@@ -64,7 +64,7 @@ public class BotSmart extends Player {
                 return optWizard.get();
             }
             optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
-            if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
+            if(badCards().size()>hand.size()/2&& optWizard.isPresent()){
                 return optWizard.get();
             }
             int position;
@@ -118,11 +118,11 @@ public class BotSmart extends Player {
 
     @Override
     public List<District> processCardsToExchange() {
-        return this.hand.badCards(this.getGold());
+        return badCards();
     }
     @Override
     public Player processWhoToExchangeHandWith() {
-        if((this.hand.size()-this.hand.badCards(this.getGold()).size())<=(this.hand.size()/2)){
+        if((this.hand.size()-badCards().size())<=(this.hand.size()/2)){
             return null;
         }
         if(this.getBoard().playerWithTheBiggestHand(this).getHand().size()>=this.hand.size()){
@@ -230,6 +230,26 @@ public class BotSmart extends Player {
         return super.wantsToUseLabo();
     }
 
+    @Override
+    protected boolean isBuildingFirst() {
+        if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
+            return false;
+        }
+        else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
+            int countBadCards=badCards().size();
+            if(countBadCards>getHand().size()/2){
+                return false;
+            } // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+            else{
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+
+    }
+
     /* ---------------------------------------------*/
 
 
@@ -286,7 +306,15 @@ public class BotSmart extends Player {
 
 
 
-
+    public ArrayList<District> badCards() {
+        ArrayList<District> badCards = new ArrayList<>();
+        hand.toList().forEach(d -> {
+            if(d.getCost()+3<getGold()||d.getCost()>getGold()){
+                badCards.add(d);
+            }
+        });
+        return badCards;
+    }
     
 
 }

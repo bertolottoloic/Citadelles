@@ -185,7 +185,17 @@ public class BotBuildFast extends BotSmart{
         return getGold() >= 5
     			&& city.getSizeOfCity() < 7;
     }
-	
+
+    @Override
+    public ArrayList<District> badCards(){
+        ArrayList<District> badCards = new ArrayList<>();
+        hand.toList().forEach(d -> {
+            if(d.getCost()>3){
+                badCards.add(d);
+            }
+        });
+        return badCards;
+    }
 	/*-------------------------------------------------------------*/
     
     /**

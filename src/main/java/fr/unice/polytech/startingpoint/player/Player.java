@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -202,22 +203,8 @@ public class Player {
 	}
 
 	protected boolean isBuildingFirst() {
-		if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
-			return false;
-		}
-		else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
-			int countBadCards=getHand().badCards(getGold()).size();
-			if(countBadCards>getHand().size()/2){
-				return false;
-			} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-			else{
-				return true;
-			}
-		}
-		else {
-			return true;
-		}
-		
+		Random r = new Random();
+		return r.nextBoolean();
 	}
 	
 	public void discard(List<District> d) {

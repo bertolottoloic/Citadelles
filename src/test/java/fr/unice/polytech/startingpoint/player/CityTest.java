@@ -230,4 +230,12 @@ public class CityTest {
         }
         assertEquals(3, counter);
     }
+
+    @Test
+    public void containsColorTest(){
+        District d = new District(1,1,"commerce","Taverne");
+        city = new City();
+        city.add(d);
+        assertTrue(city.containsColor(d.primaryColor()));
+    }
 }

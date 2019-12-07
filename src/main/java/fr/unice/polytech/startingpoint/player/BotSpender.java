@@ -78,8 +78,9 @@ public class BotSpender extends BotSmart {
 
     @Override
     public boolean coinsOrDistrict() {
+        ArrayList<District> b = badCards();
         return getGold() < 2
-                || hand.badCards(getGold()).size()<=hand.size()/2;
+                || badCards().size()<=hand.size()/2;
     }
 
 
@@ -114,7 +115,18 @@ public class BotSpender extends BotSmart {
         return getGold() >= 8
     			&& !hand.highValuedDistrict(getGold()-3);
     }
-    
+
+    @Override
+    public ArrayList<District> badCards(){
+        ArrayList<District> badCards = new ArrayList<>();
+        hand.toList().forEach(d -> {
+            if(d.getCost()<3){
+                badCards.add(d);
+            }
+        });
+        return badCards;
+    }
+
     /* -----------------------------------------------*/
     
     District whatToBuild(int limit) {

@@ -201,6 +201,18 @@ class BotRainbowTest {
 		assertEquals(expect, cards.get(0));
 	}
 
-	
+	@Test
+	public void badCardsTest(){
+		District d = new District(4,4,"noblesse","Palais");
+		ArrayList<District> card = new ArrayList<>();
+		card.add(d);
+		City c = mock(City.class);
+		when(c.containsColor(d.primaryColor())).thenReturn(true);
+		bot.setCity(c);
+		Hand h = mock(Hand.class);
+		when(h.toList()).thenReturn(card);
+		bot.setHand(h);
+		assertEquals(d,bot.badCards().get(0));
+	}
 
 }

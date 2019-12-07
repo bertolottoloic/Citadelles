@@ -132,18 +132,6 @@ public class Hand {
 			return highCost;
 		}
 	}
-
-	public ArrayList<District> badCards(int gold) {
-		ArrayList<District> badCards = new ArrayList<>();
-        districts.forEach(d -> {
-            if(d.getCost()+3<gold||d.getCost()>gold){
-                badCards.add(d);
-            }
-        });
-        return badCards;
-    }
-    
-
     
     public ArrayList<District> cardsAboveGold(int gold){
     	ArrayList<District> res = new ArrayList<>();

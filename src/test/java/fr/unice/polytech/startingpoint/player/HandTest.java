@@ -1,9 +1,13 @@
 package fr.unice.polytech.startingpoint.player;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +22,8 @@ public class HandTest {
 
     @BeforeEach
     void setUp(){
+    	d1 = new District(3,4,DistrictColor.Religion, "quartier");
         d2 = new District(6,6, DistrictColor.Wonder,"rue");
-        d1 = new District(3,4,DistrictColor.Religion, "quartier");
         d3=new District(3,4,DistrictColor.Religion, "quartier");
         hand=new Hand();
     }
@@ -28,19 +32,49 @@ public class HandTest {
         hand.add(d1); hand.add(d2); hand.add(d2);
         assertEquals(2,hand.nbTooExpensiveDistricts(4));
     }
+    
+    @Test
+    void colorsOfHandTest() {
+    	hand.add(new District(2, 2, DistrictColor.Wonder, "Poudlard"));
+    	hand.add(new District(2, 2, DistrictColor.Noble, "Chateau"));
+    	hand.add(new District(2, 2, DistrictColor.Wonder, "Caserne"));
+    	hand.add(new District(2, 2, DistrictColor.Religion, "Eglise"));
+        Set<DistrictColor> colors = hand.colorsOfHand();
+        assertTrue(colors.contains(DistrictColor.Wonder));
+        assertFalse(colors.contains(DistrictColor.Commerce));
+        assertEquals(3, hand.colorsOfHand().size());
+    }
+    
+    @Test
+    void nbCardsCostingLessThanTest() {
+    	assertEquals(0, hand.nbCardsCostingLessThan(1));
+    	hand.addAll(Arrays.asList(d1, d2, d3));
+    	assertEquals(2, hand.nbCardsCostingLessThan(3));
+    }
+    
+    @Test
+    void highCostDistrictTest() {
+    	assertNull(hand.highCostDistrict(2));
+    	hand.addAll(Arrays.asList(d1, d2, d3));
+    	assertEquals(d1, hand.highCostDistrict(3));
+    	assertEquals(d2, hand.highCostDistrict(7));
+    }
 
     @Test
     void lowCostDistrictTest(){
-       hand.add(d2);
-       hand.add(d1);
-       assertEquals(d1,hand.lowCostDistrict());
+    	assertNull(hand.lowCostDistrict());
+    	hand.add(d2);
+    	hand.add(d1);
+    	assertEquals(d1,hand.lowCostDistrict());
    }
 
    @Test
     void highValuedDistrictTest(){
+	   assertFalse(hand.highValuedDistrict(0));
+	   hand.add(d1);
+	   assertFalse(hand.highValuedDistrict(4));
        hand.add(d2);
-       hand.add(d1);
-       assertEquals(true,hand.highValuedDistrict(3));
+       assertTrue(hand.highValuedDistrict(5));
    }
    
    @Test
@@ -88,7 +122,7 @@ public class HandTest {
         List<District> resultat=hand.contentExceptStrict(List.of(d1));
         assertEquals(false, resultat.contains(d1));
         assertEquals(false, resultat.contains(d3));
-        assertEquals(true, resultat.contains(d2));
+        assertTrue( resultat.contains(d2));
         
     }
 
@@ -99,8 +133,8 @@ public class HandTest {
         hand.add(d3);
 
         List<District> resultat=hand.contentExcept(List.of(d1));
-        assertEquals(true, resultat.contains(d1));
-        assertEquals(true, resultat.contains(d2));
+        assertTrue(resultat.contains(d1));
+        assertTrue(resultat.contains(d2));
         assertEquals(2, resultat.size());
     }
         
@@ -117,6 +151,19 @@ public class HandTest {
     	hand.add(new District(5, 8, DistrictColor.Wonder, "un autre quartier"));
     	assertEquals(4, hand.discardDistrictsForMultiColors().size());
     	assertEquals(d1, hand.discardDistrictsForMultiColors().get(0));
-    	
+    }
+    
+    @Test
+    void testContainsWonder() {
+    	assertFalse(hand.containsWonder("Caserne"));
+    	hand.add(new District(2, 2, DistrictColor.Wonder, "Caserne"));
+		assertTrue(hand.containsWonder("Caserne"));
+    }
+    
+    @Test
+    void testFindDistrictByName() {
+    	assertNull(hand.findDistrictByName("Cimetiere"));
+    	hand.addAll(Arrays.asList(d1, d2, d3));
+    	assertEquals(d2, hand.findDistrictByName("rue"));
     }
 }

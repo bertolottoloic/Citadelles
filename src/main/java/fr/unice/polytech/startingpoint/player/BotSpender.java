@@ -77,7 +77,7 @@ public class BotSpender extends BotSmart {
     }
 
     @Override
-    public boolean coinsOrDistrict() {//TODO Test
+    public boolean coinsOrDistrict() {
         return getGold() < 2
                 || hand.badCards(getGold()).size()<=hand.size()/2;
     }
@@ -117,7 +117,7 @@ public class BotSpender extends BotSmart {
     
     /* -----------------------------------------------*/
     
-    District whatToBuild(int limit) {// TODO test
+    District whatToBuild(int limit) {
 		if (handHasTheDistrict("Laboratoire") && 5 < limit && getHand().lowCostDistrict() != null) {
 			return hand.findDistrictByName("Laboratoire");
 		}

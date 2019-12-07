@@ -34,12 +34,6 @@ public class Hand {
 		if (districts.isEmpty()) {
 			return null;
 		} else {
-			/*District lowCost = districts.get(0);
-			for (District d : districts) {
-				if (d.getCost() < lowCost.getCost()) {
-					lowCost = d;
-				}
-            }*/
             return districts.stream().min((a,b)->Integer.compare(a.getCost(),b.getCost())).get();
 		}
 	}

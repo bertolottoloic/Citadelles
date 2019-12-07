@@ -23,7 +23,6 @@ public class BotBuildFast extends BotSmart{
     
     /* -----------------------OVERRIDING ------------------------------------*/
     
-  //TODO optimiser par rapport à la couleur
     @Override
     public List<District> processWhatToBuild() {
         //District tmp=this.whatToBuild(this.getGold());
@@ -80,12 +79,11 @@ public class BotBuildFast extends BotSmart{
     public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
         targets.remove(this.getCharacter().toString());//on exclut son propre role
-        //TODO exclure celui qui a deja ete tué
         /*Optional<Role> optKilled=dealRoles.roleKilled();
         if(optKilled.isPresent()){
             targets.remove(optKilled.get().toString());
-        }*/
-        
+        }
+        */
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
     
@@ -125,12 +123,6 @@ public class BotBuildFast extends BotSmart{
             return false;
         }
         else if(getCharacter().toString().equals("Warlord")){
-            //TODO compléter l'algorithme
-            //vérifier si il peut construire
-            //si il le peut vérifier la valeur totale qu'aura sa cité
-            //comparer avec la valeur totale de la cité de celui qui la cité avec la plus grande valeur
-            //si this.city.totalValue()>= other.city.value then true
-            //otherwise 
             return true;
         }
         else if(getCharacter().toString().equals("Wizard")){//si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
@@ -155,7 +147,7 @@ public class BotBuildFast extends BotSmart{
     }
     
     /**
-     * TODO quand on a dans sa main une carte identique à une 
+     *quand on a dans sa main une carte identique à une
      * de celle de sa cité il est avantageux d'utiliser
      * le labo pour gagner de l'argent avec 
      * puisqu'on a pas le droit de le poser de toute facon

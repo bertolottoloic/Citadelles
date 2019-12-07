@@ -19,7 +19,6 @@ public class Wizard extends Role{
     public Wizard(){
         super(3);
     }
-    //TODO revoir 
     private void action(){
         this.player.exchangeHands();
     }

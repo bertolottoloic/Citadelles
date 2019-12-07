@@ -26,7 +26,6 @@ public class BotSmart extends Player {
     }
 
 
-    // TODO tests
 	public Tmp buildables(List<District> toConsider,int limit){
         if(toConsider.isEmpty() || limit<=0){
             return new Tmp(0,new ArrayList<District>());
@@ -104,17 +103,15 @@ public class BotSmart extends Player {
     public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
         targets.remove(this.getCharacter().toString());//on exclut son propre role
-        //TODO exclure celui qui a deja ete tué
         /*Optional<Role> optKilled=dealRoles.roleKilled();
         if(optKilled.isPresent()){
             targets.remove(optKilled.get().toString());
-        }*/
-        
+        }
+        */
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
     /**
-     * TODO enlever d'abord les cartes identiques à celles déja construites
      * avant de commencer à trier
      * On garde les cartes les moins cheres
      * Bien sûr on doit toujours avoir getNumberDistrictKeepable() cartes à la fin
@@ -131,7 +128,7 @@ public class BotSmart extends Player {
     }
 
     /**
-     * TODO quand on a dans sa main une carte identique à une
+     * quand on a dans sa main une carte identique à une
      * de celle de sa cité il est avantageux d'utiliser
      * le labo pour gagner de l'argent avec
      * puisqu'on a pas le droit de le poser de toute facon

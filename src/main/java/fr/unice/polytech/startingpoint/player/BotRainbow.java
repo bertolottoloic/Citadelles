@@ -79,13 +79,7 @@ public class BotRainbow extends BotSmart{
                     this.deck.putbackOne(d.remove(d.size() - 1));
                 }
             }
-            
-
         }
-        
-        //
-        
-    	
     }
     
 	
@@ -136,7 +130,7 @@ public class BotRainbow extends BotSmart{
     
     /*------------------------------------------------------------------------------*/
 
-    District whatToBuild(int limit){//TODO test
+    District whatToBuild(int limit){
         List<DistrictColor> missingColors = missingColors();
         if(missingColors.isEmpty()){
             return hand.highCostDistrict(limit);

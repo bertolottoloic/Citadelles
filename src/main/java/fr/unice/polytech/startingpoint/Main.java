@@ -24,6 +24,7 @@ public class Main {
     private static Logger statistic;
     private static int numberOfGames = 1000;
 
+
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s %n");
@@ -32,32 +33,51 @@ public class Main {
     }
 
     public static void main(String... args) throws IllegalArgumentException,FileNotFoundException,IOException {
-        resume.setLevel(Level.OFF);
-        statistic.setLevel(Level.INFO);
+        resume.setLevel(Level.OFF); //informations de la partie
+        statistic.setLevel(Level.INFO); //statitisques de la partie
         Player p1 = null;
         Player p2 = null;
         Player p3 = null;
         Player p4 = null;
+
+        /**
+         * 1000 parties du meilleur bot contre le second
+         */
         int n=0;
-        stats.put(1,0);
-        stats.put(2,0);
-        stats.put(3,0);
-        stats.put(4,0);
+        setScores();
         while (n < numberOfGames) {
-            p1 = new BotRainbow(1);
-            p2 = new BotRainbow(2);
-            p3 = new BotSpender(3);
-            p4 = new BotSpender(4);
+            p1 = new BotSpender(1);
+            p2 = new BotSpender(2);
+            p3 = new BotRainbow(3);
+            p4 = new BotRainbow(4);
             Manager manager = new Manager();
             manager.letsPlay(p1, p4,p2, p3);
             countWinner(manager.getWinner());
             n++;
         }
         statistic.log(Level.INFO,results(p1,p2,p3,p4));
+
+
+        /**
+         * 1000 parties du meilleur bot contre lui-même
+         */
+        n=0;
+        setScores();
+        while (n < numberOfGames) {
+            p1 = new BotRainbow(1);
+            p2 = new BotRainbow(2);
+            p3 = new BotRainbow(3);
+            p4 = new BotRainbow(4);
+            Manager manager = new Manager();
+            manager.letsPlay(p1, p4,p2, p3);
+            countWinner(manager.getWinner());
+            n++;
+        }
+        statistic.log(Level.INFO,results(p1,p2,p3,p4));
+
     }
 
     /**
-     *
      * @param winner
      *
      *      incrémente de 1 la nombre de victoire
@@ -69,6 +89,12 @@ public class Main {
         }
     }
 
+    private static void setScores(){
+        stats.put(1,0);
+        stats.put(2,0);
+        stats.put(3,0);
+        stats.put(4,0);
+    }
     private static String results(Player...players){
         String res = "Pourcentages de victoires des bots sur "+numberOfGames+" parties :\n";
         DecimalFormat df = new DecimalFormat("0.0");

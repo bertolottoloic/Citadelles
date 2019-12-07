@@ -89,10 +89,11 @@ public class BotBuildFast extends BotSmart{
     
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
-        Optional<Role> alt1=this.roleToOptimizeCoins(
+        Optional<Role> alt1= toConsiderRoles.stream().filter(r->r.toString().equals("Architect")).findAny();
+        Optional<Role> alt2=this.roleToOptimizeCoins(
             toConsiderRoles
         );
-        Optional<Role> alt2= toConsiderRoles.stream().filter(r->r.toString().equals("Architect")).findAny();
+        
         
         
         Optional<Role> alt3= toConsiderRoles.stream().filter(r->r.toString().equals("Merchant")).findAny();

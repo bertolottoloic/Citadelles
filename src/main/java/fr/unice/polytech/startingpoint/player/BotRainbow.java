@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -35,13 +36,21 @@ public class BotRainbow extends BotSmart{
     @Override
     public List<District> processWhatToBuild() {
         int gold=this.getGold();
-        var newDisctricts=buildNewColors(gold);
-        if(city.containsAllColors() || newDisctricts.size()==0){
+        var newDistricts=buildNewColors(gold);
+        if(city.containsAllColors() || newDistricts.size()==0){
             return super.processWhatToBuild();
         }
         else{
-            newDisctricts.sort((a,b)->-Integer.compare(a.getValue(), b.getValue()));
-            return newDisctricts;
+            newDistricts.sort((a,b)->-Integer.compare(a.getValue(), b.getValue()));
+            if(newDistricts.size()<this.getCharacter().getNumberDistrictBuildable()){
+                var smartBuild=new HashSet<District>(super.processWhatToBuild());
+                smartBuild.addAll(newDistricts);
+                return new ArrayList<>(smartBuild);
+                
+            }
+            
+
+            return newDistricts;
         }
     }
 

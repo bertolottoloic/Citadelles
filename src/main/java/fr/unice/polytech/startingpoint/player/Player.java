@@ -417,8 +417,10 @@ public class Player {
 			var toBuild = this.processWhatToBuild();
 			int maxbuild=this.getCharacter().getNumberDistrictBuildable();
 			while(maxbuild>0 && !toBuild.isEmpty()){
-				addToTheCity(toBuild.remove(0));
-				maxbuild--;
+				if(addToTheCity(toBuild.remove(0))){
+					maxbuild--;
+				}
+				
 			}
 		}
 

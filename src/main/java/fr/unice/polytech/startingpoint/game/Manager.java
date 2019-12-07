@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import fr.unice.polytech.startingpoint.board.Bank;
 import fr.unice.polytech.startingpoint.board.Board;
@@ -134,7 +135,12 @@ public class Manager implements PropertyChangeListener {
     }
 
     public void endGame(Player... players) {
-        winner.add(List.of(players).stream().max((a,b)->Integer.compare(a.points(), b.points())).get());
+        int max=List.of(players).stream().max((a,b)->Integer.compare(a.points(), b.points())).get().points();
+        winner.addAll(
+            List.of(players).stream().filter(p->p.points()==max).collect(Collectors.toList()));
+            if(winner.size()>1){
+            }
+
         
     }
 

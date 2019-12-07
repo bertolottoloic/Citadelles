@@ -9,7 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import fr.unice.polytech.startingpoint.game.Manager;
-import fr.unice.polytech.startingpoint.player.*;
+import fr.unice.polytech.startingpoint.player.BotBuildFast;
+import fr.unice.polytech.startingpoint.player.BotRainbow;
+import fr.unice.polytech.startingpoint.player.BotSpender;
+import fr.unice.polytech.startingpoint.player.Player;
 /**
  * @author Patrick Anagonou 
  * @author Heba Bouzidi
@@ -33,7 +36,13 @@ public class Main {
     }
 
     public static void main(String... args) throws IllegalArgumentException,FileNotFoundException,IOException {
-        resume.setLevel(Level.OFF); //informations de la partie
+        if(args.length>0 && args[0].equals("verbose")){
+            resume.setLevel(Level.INFO);
+        }
+        else{
+            resume.setLevel(Level.OFF); //informations de la partie
+        }
+        
         statistic.setLevel(Level.INFO); //statitisques de la partie
         Player p1 = null;
         Player p2 = null;
@@ -46,12 +55,12 @@ public class Main {
         int n=0;
         setScores();
         while (n < numberOfGames) {
-            p1 = new BotSpender(1);
-            p2 = new BotSpender(2);
-            p3 = new BotRainbow(3);
-            p4 = new BotRainbow(4);
+            p1 = new BotBuildFast(1);
+            p2 = new BotBuildFast(2);
+            p3 = new BotBuildFast(3);
+            p4 = new BotBuildFast(4);
             Manager manager = new Manager();
-            manager.letsPlay(p1, p4,p2, p3);
+            manager.letsPlay(p1, p2,p3, p4);
             countWinner(manager.getWinner());
             n++;
         }
@@ -69,7 +78,7 @@ public class Main {
             p3 = new BotRainbow(3);
             p4 = new BotRainbow(4);
             Manager manager = new Manager();
-            manager.letsPlay(p1, p4,p2, p3);
+            manager.letsPlay(p1, p2,p3, p4);
             countWinner(manager.getWinner());
             n++;
         }

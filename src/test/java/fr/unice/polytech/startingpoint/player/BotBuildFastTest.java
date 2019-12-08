@@ -16,9 +16,11 @@ import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.role.Architect;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
 import fr.unice.polytech.startingpoint.role.Thief;
+import fr.unice.polytech.startingpoint.role.Warlord;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -35,18 +37,52 @@ class BotBuildFastTest {
 
 	MatchingProb matches;
 	DealRoles dealRoles;
+	Board board;
 
 
 	@BeforeEach
 	void setup() {
-		bot = new BotBuildFast(1);
+		bot = new BotBuildFast(1){
+			@Override
+			public void attributeProbsToPlayer() {
+				
+			}
+		};
 		hand = new Hand();
 		bank = new Bank();
 		deck = new Deck();
+		board= new Board();
 		dealRoles = new DealRoles();
 
 		bot.setDeck(deck);
+		bot.setBoard(board);
 		bank.setBourses(List.of(bot));
+	}
+
+	@Test
+	void processChooseRoleTest1(){
+		var merchant=new Merchant();
+		var toConsiderRoles=List.of(
+			new Thief(),
+			merchant,
+			new Warlord()
+		);
+
+		assertEquals(merchant, bot.processChooseRole(toConsiderRoles));
+	}
+
+	@Test
+	void processChooseRoleTest2(){
+		var merchant=new Merchant();
+		var architect=new Architect();
+		var toConsiderRoles=List.of(
+			new Thief(),
+			merchant,
+			new Warlord(),
+			architect
+		);
+
+		assertEquals(architect, bot.processChooseRole(toConsiderRoles));
 	}
 
 	@Test

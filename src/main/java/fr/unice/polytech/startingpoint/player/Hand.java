@@ -88,13 +88,7 @@ public class Hand {
      * @return int : nombre de district
      */
     public int nbTooExpensiveDistricts(int gold){
-        int n=0;
-        for(District d : districts) {
-            if (gold < d.getCost()) {
-                n++;
-            }
-        }
-        return n;
+        return (int)districts.stream().filter(d->d.getCost()>gold).count();
     }
 
     /**

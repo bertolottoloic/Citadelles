@@ -163,12 +163,7 @@ public class BotSmart extends Player {
     @Override
     public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
-        targets.remove(this.getCharacter().toString());//on exclut son propre role
-        /*Optional<Role> optKilled=dealRoles.roleKilled();
-        if(optKilled.isPresent()){
-            targets.remove(optKilled.get().toString());
-        }
-        */
+        targets.remove(this.getCharacter().toString());
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 

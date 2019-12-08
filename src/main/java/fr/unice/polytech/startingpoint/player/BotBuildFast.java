@@ -68,13 +68,7 @@ public class BotBuildFast extends BotSmart{
         }
     }
     
-    @Override
-    public Role processWhoToKill() {
-        this.attributeProbsToPlayer();
-        Set<String> targets = matches.possibleRolesFor(this.board.playerWithTheBiggestCity(this).getId());
-        targets.remove(this.getCharacter().toString());//on exclut son propre role
-        return this.dealRoles.getRole(targets.stream().findFirst().get());
-    }
+    
     @Override
     public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());

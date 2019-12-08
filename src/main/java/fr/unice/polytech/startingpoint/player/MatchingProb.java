@@ -15,7 +15,15 @@ import java.util.Set;
  * @author Clement Poueyto
  *
  * */
-
+/**
+ * Cette classe représente un tableau à double entrée
+ * On peut imaginer en ligne d'entete les Personnages
+ * et comme premiere colonne les id des joueurs
+ * Les valeurs contenues au niveau des croisements
+ * correspondent à la probabilité pour un joueur d'avoir
+ * ce personnage
+ * @author ANAGONOU Patrick
+ */
 public class MatchingProb {
     private HashMap<String,Integer> mappingRoleIndex=new HashMap<>();
     private HashMap<Integer,Integer> mappingPlayerIndex=new HashMap<>();

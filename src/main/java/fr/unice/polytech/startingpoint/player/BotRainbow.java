@@ -99,7 +99,7 @@ public class BotRainbow extends BotSmart{
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 4
-                || hand.badCards(getGold()).size()<hand.size()/2
+                || hand.nbTooExpensiveDistricts(this.getGold())<hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
@@ -141,30 +141,6 @@ public class BotRainbow extends BotSmart{
     }
     
     /*------------------------------------------------------------------------------*/
-
-    District whatToBuild(int limit){
-        List<DistrictColor> missingColors = missingColors();
-        if(missingColors.isEmpty()){
-            return hand.highCostDistrict(limit);
-        }
-        else {
-            List<District> districts = new ArrayList<>();
-            for (District d : hand.toList()) {
-                if(missingColors.contains(d.primaryColor())&&d.getCost()<=limit) {
-                    districts.add(d);
-                }
-                if(d.getName().equals("Cimetiere") && limit <= 5 && !getCharacter().toString().equals("Warlord")
-                		|| d.getName().equals("Cour des Miracles") && limit <= 2
-                		|| d.getName().equals("Manufacture") && limit <= 8
-                		|| d.getName().equals("Laboratoire") && limit <= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
-                	return d;
-                }
-            }
-            districts.sort((a,b)->
-                    Integer.compare(a.getCost(),b.getCost()));
-            return(districts.size()>1)?districts.get(districts.size()-1):hand.lowCostDistrict();
-        }
-    }
 
     public List<District> buildNewColors(int limit){
         if(city.containsAllColors()){

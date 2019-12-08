@@ -36,8 +36,21 @@ public class Main {
     }
 
     public static void main(String... args) throws IllegalArgumentException,FileNotFoundException,IOException {
-        if(args.length>0 && args[0].equals("verbose")){
-            resume.setLevel(Level.INFO);
+        if(args.length>0){
+            if(args[0].equals("verbose")){
+                resume.setLevel(Level.INFO);
+            }
+            else{
+                resume.setLevel(Level.OFF); //informations de la partie
+            }
+            
+            if(args.length>1){
+                try {
+                   numberOfGames=Integer.parseInt(args[1]); 
+                } catch (Exception e) {
+                    
+                }
+            }
         }
         else{
             resume.setLevel(Level.OFF); //informations de la partie
@@ -55,9 +68,9 @@ public class Main {
         int n=0;
         setScores();
         while (n < numberOfGames) {
-            p1 = new BotBuildFast(1);
+            p1 = new BotRainbow(1);
             p2 = new BotBuildFast(2);
-            p3 = new BotBuildFast(3);
+            p3 = new BotSpender(3);
             p4 = new BotBuildFast(4);
             Manager manager = new Manager();
             manager.letsPlay(p1, p2,p3, p4);

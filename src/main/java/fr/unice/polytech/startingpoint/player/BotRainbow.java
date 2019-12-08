@@ -99,7 +99,7 @@ public class BotRainbow extends BotSmart{
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 4
-                || badCards().size()<hand.size()/2
+                || hand.badCards(getGold()).size()<hand.size()/2
                 || city.getSizeOfCity() >= 6
                 || deck.numberOfCards() < 4
                 || hand.size()>2;
@@ -139,17 +139,7 @@ public class BotRainbow extends BotSmart{
         return !city.containsAllColors() ||
         		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));
     }
-
-    @Override
-    public ArrayList<District> badCards(){
-        ArrayList<District> badCards = new ArrayList<>();
-        hand.toList().forEach(d -> {
-            if(city.containsColor(d.primaryColor())){
-                badCards.add(d);
-            }
-        });
-        return badCards;
-    }
+    
     /*------------------------------------------------------------------------------*/
 
     District whatToBuild(int limit){

@@ -169,7 +169,7 @@ class BotBuildFastTest {
 		hand.add(d2);
 		bot.setHand(hand);
 		System.out.println(bot.getGold() + "	" +
-				bot.badCards().size());
+				bot.getHand().badCards(bot.getGold()).size());
 		assertFalse(bot.isBuildingFirst());
 
 		when(role.toString()).thenReturn("Warlord");
@@ -295,16 +295,6 @@ class BotBuildFastTest {
 	}
 
 	
-    @Test
-    public void badCardsTest(){
-	    District d = new District(4,4,"noblesse","Palais");
-	    ArrayList<District> card = new ArrayList<>();
-	    card.add(d);
-	    Hand h = mock(Hand.class);
-	    when(h.toList()).thenReturn(card);
-	    bot.setHand(h);
-	    assertEquals(d,bot.badCards().get(0));
-    }
 
 	@Test
 	public void roleToOptimizeCoinsTest(){

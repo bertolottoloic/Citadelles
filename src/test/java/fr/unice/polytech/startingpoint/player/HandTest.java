@@ -78,6 +78,14 @@ public class HandTest {
    }
    
    @Test
+   void nbBadCardsTest() {
+	   hand.add(d2);
+       hand.add(new District(1, 2, DistrictColor.Commerce, "cul-de-sac"));
+       hand.add(new District(5, 2, DistrictColor.Warlord, "rue"));
+       assertEquals(2, hand.badCards(5).size());
+   }
+   
+   @Test
    void cardsAboveGoldTest() {
 	   hand.add(d2);
        hand.add(d1);

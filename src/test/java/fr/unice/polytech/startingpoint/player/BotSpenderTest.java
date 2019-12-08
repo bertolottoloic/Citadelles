@@ -62,7 +62,7 @@ class BotSpenderTest {
         when(c.getSizeOfCity()).thenReturn(5);
         bot.setCity(c);
         Hand h=mock(Hand.class);
-        when(h.toList()).thenReturn(badCards);
+        when(h.badCards(bot.getGold())).thenReturn(badCards);
         when(h.size()).thenReturn(2);
         bot.setHand(h);
         assertFalse(bot.coinsOrDistrict());
@@ -165,17 +165,12 @@ class BotSpenderTest {
     void isBuildingFirstTest(){
         Role role = mock(Role.class);
         bot.setCharacter(role);
-        Hand handTest = mock(Hand.class);
+        Hand handTest = new Hand();
         bot.setHand(handTest);
         when(role.toString()).thenReturn("Wizard");
         assertTrue(bot.isBuildingFirst());
-        District d1 = new District(2,2,"religion","Temple");
-        District d2 = new District(2,2,"religion","Temple");
-        ArrayList<District> cards = new ArrayList<>();
-        cards.add(d1);
-        cards.add(d2);
-        when(handTest.toList()).thenReturn(cards);
-        bot.setHand(handTest);
+
+        bot.setHand(hand);
         when(role.toString()).thenReturn("Wizard");
         assertFalse(bot.isBuildingFirst());
 
@@ -249,18 +244,7 @@ class BotSpenderTest {
 		anotherBot.setBoard(b);
 		b.setPlayers(bot, anotherBot);
 	}
-
-    @Test
-    public void badCardsTest(){
-        District d = new District(2,2,"noblesse","Palais");
-        ArrayList<District> card = new ArrayList<>();
-        card.add(d);
-        Hand h = mock(Hand.class);
-        when(h.toList()).thenReturn(card);
-        bot.setHand(h);
-        assertEquals(d,bot.badCards().get(0));
-    }
-
+	
 	@Test
 	void wantsToUseGraveyardTest(){	
 		Board b = mock(Board.class);

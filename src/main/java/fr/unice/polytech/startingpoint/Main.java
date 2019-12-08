@@ -9,8 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import fr.unice.polytech.startingpoint.game.Manager;
-import fr.unice.polytech.startingpoint.player.*;
-
+import fr.unice.polytech.startingpoint.player.BotBuildFast;
+import fr.unice.polytech.startingpoint.player.BotRainbow;
+import fr.unice.polytech.startingpoint.player.BotSpender;
+import fr.unice.polytech.startingpoint.player.Player;
 /**
  * @author Patrick Anagonou 
  * @author Heba Bouzidi
@@ -53,10 +55,10 @@ public class Main {
         int n=0;
         setScores();
         while (n < numberOfGames) {
-            p1 = new BotRnd(1);
+            p1 = new BotBuildFast(1);
             p2 = new BotBuildFast(2);
-            p3 = new BotSpender(3);
-            p4 = new BotRainbow(4);
+            p3 = new BotBuildFast(3);
+            p4 = new BotBuildFast(4);
             Manager manager = new Manager();
             manager.letsPlay(p1, p2,p3, p4);
             countWinner(manager.getWinner());

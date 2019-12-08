@@ -7,12 +7,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TmpTest {
+public class TupleIntDistrictsListTest {
 
-    Tmp t;
+    TupleIntDistrictsList t;
     @BeforeEach
     void setUp(){
-        t=new Tmp(0,List.of());
+        t=new TupleIntDistrictsList(0,List.of());
 
     }
 

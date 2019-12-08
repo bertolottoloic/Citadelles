@@ -62,7 +62,7 @@ public class BotSmartTest {
 
     @Test
 	public void buildablesTest(){
-		Tmp t=botSmart.buildables(List.of(
+		TupleIntDistrictsList t=botSmart.buildables(List.of(
 		new District(5, 5, DistrictColor.Commerce, "dontcare"),
 		new District(1, 1, DistrictColor.Noble, "dontcare"),
 		new District(5, 5, DistrictColor.Commerce, "dontcare")

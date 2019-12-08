@@ -118,10 +118,10 @@ class PlayerTest {
     	player.setBoard(board);
     	board.setPlayers(player, p2); 
     	District d = new District(0, 2, DistrictColor.Commerce, "quartier");
-    	Mockito.verify(p2, Mockito.never()).wantsToUseGraveyard(d);
+    	Mockito.verify(p2, Mockito.never()).isUsingGraveyard(d);
     	when(board.existsGraveyardPlayer()).thenReturn(p2);
     	player.deletion(d);
-    	Mockito.verify(p2).wantsToUseGraveyard(d);
+    	Mockito.verify(p2).isUsingGraveyard(d);
     }
     
     @Test

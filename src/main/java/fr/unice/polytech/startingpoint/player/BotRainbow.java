@@ -36,13 +36,13 @@ public class BotRainbow extends BotSmart{
     @Override
     public List<District> processWhatToBuild() {
         int gold=this.getGold();
-        List<District> newDistricts=buildNewColors(gold);
+        ArrayList<District> newDistricts = new ArrayList<>(buildNewColors(gold));
         hand.toList().forEach(d -> {
         	if(d.getName().equals("Cimetiere") && gold >= 5 && !getCharacter().toString().equals("Warlord")
             		|| d.getName().equals("Cour des Miracles") && gold >= 2
             		|| d.getName().equals("Manufacture") && gold >= 8
             		|| d.getName().equals("Laboratoire") && gold >= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
-            	if(!newDistricts.contains(d))	newDistricts.add(d);
+            	newDistricts.add(d);
             }
         });        
         if(city.containsAllColors() || newDistricts.isEmpty()){

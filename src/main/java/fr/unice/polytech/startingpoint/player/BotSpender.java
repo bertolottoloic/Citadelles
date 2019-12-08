@@ -97,13 +97,11 @@ public class BotSpender extends BotSmart {
         return Optional.empty();
     }
 
-    @Override
+	@Override
 	protected boolean wantsToUseGraveyard(District dis) {
-		if (city.containsWonder("Cimetiere")) {
-			if (dis != null && !getCharacter().toString().equals("Warlord")) {
-				if (dis.getCost() < getGold() && dis.getValue() > 4) {
-					return true;
-				}
+		if (dis != null && !getCharacter().toString().equals("Warlord")) {
+			if (dis.getCost() < getGold() && dis.getValue() > 4) {
+				return true;
 			}
 		}
 		return false;

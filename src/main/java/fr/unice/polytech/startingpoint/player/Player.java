@@ -127,7 +127,7 @@ public class Player {
 		Player p;
 		if(board!=null && board.existsGraveyardPlayer() != null) {
 			p = board.existsGraveyardPlayer();
-			p.wantsToUseGraveyard(d);
+			p.isUsingGraveyard(d);
 		}
 		return city.removeDistrict(d);
 	}

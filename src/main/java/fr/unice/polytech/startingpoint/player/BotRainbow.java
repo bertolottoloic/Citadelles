@@ -36,14 +36,22 @@ public class BotRainbow extends BotSmart{
     @Override
     public List<District> processWhatToBuild() {
         int gold=this.getGold();
-        var newDistricts=buildNewColors(gold);
-        if(city.containsAllColors() || newDistricts.size()==0){
+        List<District> newDistricts=buildNewColors(gold);
+        hand.toList().forEach(d -> {
+        	if(d.getName().equals("Cimetiere") && gold >= 5 && !getCharacter().toString().equals("Warlord")
+            		|| d.getName().equals("Cour des Miracles") && gold >= 2
+            		|| d.getName().equals("Manufacture") && gold >= 8
+            		|| d.getName().equals("Laboratoire") && gold >= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
+            	if(!newDistricts.contains(d))	newDistricts.add(d);
+            }
+        });        
+        if(city.containsAllColors() || newDistricts.isEmpty()){
             return super.processWhatToBuild();
         }
         else{
             newDistricts.sort((a,b)->-Integer.compare(a.getValue(), b.getValue()));
             if(newDistricts.size()<this.getCharacter().getNumberDistrictBuildable()){
-                var smartBuild=new HashSet<District>(super.processWhatToBuild());
+            	Set<District> smartBuild=new HashSet<>(super.processWhatToBuild());
                 smartBuild.addAll(newDistricts);
                 return new ArrayList<>(smartBuild);
                 
@@ -123,12 +131,9 @@ public class BotRainbow extends BotSmart{
     
     @Override
 	protected boolean wantsToUseGraveyard(District dis) {
-		if (city.containsWonder("Cimetiere")) {
-			if (dis != null && !getCharacter().toString().equals("Warlord")) {
-				if (missingColors().contains(dis.primaryColor()) ||
-						dis.getCost() < getGold() && dis.getValue() > 4) {
-					return true;
-				}
+		if (dis != null && !getCharacter().toString().equals("Warlord")) {
+			if (missingColors().contains(dis.primaryColor()) || dis.getCost() < getGold() && dis.getValue() > 4) {
+				return true;
 			}
 		}
 		return false;
@@ -152,12 +157,6 @@ public class BotRainbow extends BotSmart{
             for (District d : hand.toList()) {
                 if(missingColors.contains(d.primaryColor())&&d.getCost()<=limit) {
                     districts.add(d);
-                }
-                if(d.getName().equals("Cimetiere") && limit <= 5 && !getCharacter().toString().equals("Warlord")
-                		|| d.getName().equals("Cour des Miracles") && limit <= 2
-                		|| d.getName().equals("Manufacture") && limit <= 8
-                		|| d.getName().equals("Laboratoire") && limit <= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
-                	return d;
                 }
             }
             districts.sort((a,b)->

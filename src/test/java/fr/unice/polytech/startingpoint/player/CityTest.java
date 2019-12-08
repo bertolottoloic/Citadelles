@@ -200,7 +200,7 @@ public class CityTest {
     	District tmp = new District(1, 1, DistrictColor.Religion, "Chapelle");
     	city.add(new District(6, 7, DistrictColor.Wonder, "Poudlard"));
     	city.add(tmp);
-    	assertEquals(tmp, city.cheaperDistrict().get());
+    	assertEquals(tmp, city.cheapestDistrict().get());
     }
     
     @Test

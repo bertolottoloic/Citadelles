@@ -21,6 +21,7 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Thief;
+import fr.unice.polytech.startingpoint.role.Warlord;
 
 class BotRainbowTest {
 
@@ -149,14 +150,9 @@ class BotRainbowTest {
 	
 	@Test
 	void wantsToUseGraveyardTest(){
-		Board b = mock(Board.class);
-		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
-		bot.setBoard(b);
-		assertTrue(bot.deleteDistrictFromCity(d1));
-		
-		City c = mock(City.class);
-		when(c.containsWonder("Cimetiere")).thenReturn(true);
-		anotherBot.setCity(c);
+		anotherBot.setCharacter(new Warlord());
+		assertFalse(anotherBot.wantsToUseGraveyard(d1));
+		anotherBot.setCity(new City());
 		anotherBot.setBank(new Bank());
 		anotherBot.getBank().setBourses(List.of(bot,anotherBot));
 		anotherBot.takeCoinsFromBank(5);

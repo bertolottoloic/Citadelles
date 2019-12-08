@@ -20,6 +20,7 @@ import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Warlord;
 
 
 class BotSpenderTest {
@@ -247,14 +248,9 @@ class BotSpenderTest {
 	
 	@Test
 	void wantsToUseGraveyardTest(){	
-		Board b = mock(Board.class);
-		when(b.existsGraveyardPlayer()).thenReturn(anotherBot);
-		bot.setBoard(b);
+		anotherBot.setCharacter(new Warlord());
 		assertFalse(bot.deleteDistrictFromCity(d1));
-
-		City c = mock(City.class);
-		when(c.containsWonder("Cimetiere")).thenReturn(true);
-		anotherBot.setCity(c);
+		anotherBot.setCity(new City());
 		anotherBot.setBank(new Bank());
 		anotherBot.getBank().setBourses(List.of(bot,anotherBot));
 		anotherBot.takeCoinsFromBank(7);

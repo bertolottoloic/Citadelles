@@ -96,7 +96,7 @@ public class BotSmart extends Player {
             return buildables(toConsider.subList(1,toConsider.size()), limit);
         }
         else{
-            var nextItem=toConsider.get(0);
+            District nextItem=toConsider.get(0);
             //Explore left branch
             Tmp resultLeft=buildables(toConsider.subList(1, toConsider.size()), limit-nextItem.getCost());
             resultLeft.addVal(nextItem.getValue());
@@ -138,7 +138,7 @@ public class BotSmart extends Player {
 
     @Override
     public District processDistrictToDestroy(Player target) {
-        Optional<District> tmp=target.city.cheaperDistrict();
+        Optional<District> tmp=target.city.cheapestDistrict();
         if(tmp.isPresent()){
             return tmp.get();
         }

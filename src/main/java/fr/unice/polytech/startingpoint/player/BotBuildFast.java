@@ -59,7 +59,7 @@ public class BotBuildFast extends BotSmart{
 
     @Override
     public District processDistrictToDestroy(Player target) {
-        Optional<District> tmp=target.city.cheaperDistrict();
+        Optional<District> tmp=target.city.cheapestDistrict();
         if(tmp.isPresent()){
             return tmp.get();
         }
@@ -152,24 +152,21 @@ public class BotBuildFast extends BotSmart{
             }
             return super.wantsToUseLabo();
     }
-    
+
 	@Override
 	protected boolean wantsToUseGraveyard(District dis) {
-		if (city.containsWonder("Cimetiere")) {
-			if (dis != null && !getCharacter().toString().equals("Warlord")) {
-				District lowest = hand.lowCostDistrict();
-				if(lowest == null) {
-					if(dis.getCost() < getGold()) {
-	       				return true;
-					}
-				} else {
-					if ((lowest.getCost() < getGold() 
-							|| dis.getCost() < getGold()) 
-							&& lowest.getCost() != dis.getCost()) {
-	       				return true;
-					}
+		if (dis != null && !getCharacter().toString().equals("Warlord")) {
+			District lowest = hand.lowCostDistrict();
+			if (lowest == null) {
+				if (dis.getCost() < getGold()) {
+					return true;
+				}
+			} else {
+				if ((lowest.getCost() < getGold() || dis.getCost() < getGold()) && lowest.getCost() != dis.getCost()) {
+					return true;
 				}
 			}
+
 		}
 		return false;
 	}
@@ -187,12 +184,7 @@ public class BotBuildFast extends BotSmart{
      * @return le district a poser
      */
     District whatToBuild(int limit){
-    	if (handHasTheDistrict("Donjon") && !cityHasTheDistrict("Donjon") && 3 <= limit) {
-    		return hand.findDistrictByName("Donjon");
-    	}
-    	if (handHasTheDistrict("Laboratoire") && 6 <= limit && getHand().highCostDistrict(getGold()) != null) {
-			return hand.findDistrictByName("Laboratoire");
-		}
+    	
             if(getCharacter().toString().equals("Architect")) {
                 District lowerCost = hand.lowCostDistrict();
                 if (lowerCost.getCost() <= limit) {

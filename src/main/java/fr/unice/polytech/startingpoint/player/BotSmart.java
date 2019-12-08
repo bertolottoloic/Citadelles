@@ -138,7 +138,7 @@ public class BotSmart extends Player {
 
     @Override
     public District processDistrictToDestroy(Player target) {
-        Optional<District> tmp=target.city.cheapestDistrict();
+        Optional<District> tmp=target.city.cheaperDistrict();
         if(tmp.isPresent()){
             return tmp.get();
         }

@@ -186,7 +186,7 @@ public class City {
 		return districts;
 	}
 
-    public Optional<District> cheapestDistrict(){
+    public Optional<District> cheaperDistrict(){
 		return districts.stream().min(
                 (a,b)->Integer.compare(a.getCost(), b.getCost())
             );

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.unice.polytech.startingpoint.role.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +19,6 @@ import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
-import fr.unice.polytech.startingpoint.role.Merchant;
-import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
 
 
 class BotSpenderTest {
@@ -131,6 +129,30 @@ class BotSpenderTest {
         assertEquals(1, dis.size());
         assertTrue(dis.contains(d2));
     }
+
+    @Test
+    void processChooseRoleTest(){
+        ArrayList<Role> roles = new ArrayList<>();
+        roles.add(new Merchant());
+        roles.add(new Warlord());
+
+        assertEquals("Merchant",bot.processChooseRole(roles).toString());
+        bot.setHand(hand);
+        roles.add(new Bishop());
+        hand.clearEverything();
+        hand.add(new District(2,2,"religion","test"));
+        assertEquals("Bishop",bot.processChooseRole(roles).toString());
+        hand.clearEverything();
+        hand.add(new District(2,2,"noblesse","noblesse"));
+        roles.add(new King());
+        assertEquals("King",bot.processChooseRole(roles).toString());
+        hand.clearEverything();
+        hand.add(new District(2,2,"soldatesque","soldatesque"));
+        assertEquals("Warlord",bot.processChooseRole(roles).toString());
+        roles.add(new Architect());
+        assertEquals("Architect",bot.processChooseRole(roles).toString());
+    }
+
 
     @Test
     void whatToBuild(){

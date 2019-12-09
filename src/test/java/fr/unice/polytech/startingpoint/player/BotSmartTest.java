@@ -53,7 +53,7 @@ public class BotSmartTest {
     }
 
     @Test
-    public void coinsOrDistrict(){
+    public void coinsOrDistrictTest(){
        botSmart.takeCoinsFromBank(4);
        assertTrue(botSmart.coinsOrDistrict());
        botSmart.takeCoinsFromBank(4);
@@ -143,7 +143,7 @@ public class BotSmartTest {
     }
     
     @Test
-	void bestRoleToChoose(){
+	void bestRoleToChooseTest(){
 		ArrayList<Role> roles = new ArrayList<>();
 		roles.add(new Merchant());
 		roles.add(new Warlord());
@@ -154,7 +154,7 @@ public class BotSmartTest {
 		assertEquals("Bishop",botSmart.bestRoleToChoose(roles,"religion").toString());
 
 		roles.add(new King());
-		assertEquals("King",botSmart.bestRoleToChoose(roles,"noble").toString());
+		assertEquals("King",botSmart.bestRoleToChoose(roles,"noblesse").toString());
 
 		assertEquals("Warlord",botSmart.bestRoleToChoose(roles,"soldatesque").toString());
 		roles.add(new Architect());

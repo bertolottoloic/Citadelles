@@ -73,7 +73,7 @@ public class BotSmart extends Player {
                     break;
                 case "soldatesque": position =8;
                     break;
-                case "noble": position =4;
+                case "noblesse": position =4;
                     break;
                 default : position =6;
             }

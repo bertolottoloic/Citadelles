@@ -12,11 +12,11 @@ import fr.unice.polytech.startingpoint.board.District;
  *
  * */
 
-public class Tmp {
+public class TupleIntDistrictsList {
     private  int val=0;
         private final List<District> districts;
 
-        Tmp(int val,List<District> districts){
+        TupleIntDistrictsList(int val,List<District> districts){
             this.districts=districts;
             this.val=val;
         }

@@ -7,9 +7,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import fr.unice.polytech.startingpoint.role.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,15 +50,52 @@ class BotRainbowTest {
 		bot.setDeck(deck);
 		bank.setBourses(List.of(bot));
 	}
-	@BeforeEach
-	void setMultiPlayers() {
-		anotherBot = new BotRainbow(2);
-		bot.city.add(d1);
+	@Test
+	void coinsOrDistrictsTest() {
+		assertTrue(bot.coinsOrDistrict());
+
+		bank.withdraw(9,bot);
+		assertTrue(bot.coinsOrDistrict());
 		
-		Board b = new Board();
-		anotherBot.setBoard(b);
-		b.setPlayers(bot, anotherBot);
+        bot.setBoard(new Board());
+        ArrayList<District> badCards = new ArrayList<>();
+        badCards.add(new District(1, 1, "religion", "Temple"));
+        badCards.add(new District(1, 1, "religion", "Temple"));
+        Hand h=mock(Hand.class);
+        when(h.badCards(bot.getGold())).thenReturn(badCards);
+        when(h.size()).thenReturn(2);
+        bot.setHand(h);
+		assertTrue(bot.coinsOrDistrict());
+		
+		ArrayList<DistrictColor> missingC = new ArrayList<>(Arrays.asList(DistrictColor.Religion));
+		bot = mock(BotRainbow.class);
+		when(bot.missingColors()).thenReturn(missingC);
+		assertFalse(bot.coinsOrDistrict());
 	}
+
+	@Test
+	void processChooseRoleTest(){
+		ArrayList<Role> roles = new ArrayList<>();
+		roles.add(new Merchant());
+		roles.add(new Warlord());
+
+		assertEquals("Merchant",bot.processChooseRole(roles).toString());
+		bot.setHand(hand);
+		roles.add(new Bishop());
+		hand.clearEverything();
+		hand.add(new District(2,2,"religion","test"));
+		assertEquals("Bishop",bot.processChooseRole(roles).toString());
+		hand.clearEverything();
+		hand.add(new District(2,2,"noblesse","noblesse"));
+		roles.add(new King());
+		assertEquals("King",bot.processChooseRole(roles).toString());
+		hand.clearEverything();
+		hand.add(new District(2,2,"soldatesque","soldatesque"));
+		assertEquals("Warlord",bot.processChooseRole(roles).toString());
+		roles.add(new Architect());
+		assertEquals("Architect",bot.processChooseRole(roles).toString());
+	}
+
 
 	@Test
 	void buildNewColorsTest(){
@@ -174,10 +213,18 @@ class BotRainbowTest {
 		assertEquals(tmpHandSize, bot.getHand().size());
 	}
 	
-	
+	void setMultiPlayers() {
+		anotherBot = new BotRainbow(2);
+		bot.city.add(d1);
+		
+		Board b = new Board();
+		anotherBot.setBoard(b);
+		b.setPlayers(bot, anotherBot);
+	}
 	
 	@Test
 	void wantsToUseGraveyardTest(){
+		setMultiPlayers();
 		anotherBot.setCharacter(new Warlord());
 		assertFalse(anotherBot.wantsToUseGraveyard(d1));
 		anotherBot.setCity(new City());

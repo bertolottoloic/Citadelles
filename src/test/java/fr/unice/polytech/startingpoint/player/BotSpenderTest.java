@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.unice.polytech.startingpoint.role.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +19,6 @@ import fr.unice.polytech.startingpoint.board.Board;
 import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
-import fr.unice.polytech.startingpoint.role.Merchant;
-import fr.unice.polytech.startingpoint.role.Role;
-import fr.unice.polytech.startingpoint.role.Warlord;
 
 
 class BotSpenderTest {
@@ -48,30 +46,17 @@ class BotSpenderTest {
     @Test
     void coinsOrDistrictTest() {
         assertTrue(bot.coinsOrDistrict());
-        City c= mock(City.class);
-
-        when(c.getSizeOfCity()).thenReturn(7);
-        bot.setCity(c);
-        assertTrue(bot.coinsOrDistrict());
 
         bank.withdraw(10,bot);
-        when(c.getSizeOfCity()).thenReturn(5);
         bot.setBoard(new Board());
         ArrayList<District> badCards = new ArrayList<>();
         badCards.add(new District(1, 1, "religion", "Temple"));
         badCards.add(new District(1, 1, "religion", "Temple"));
-        when(c.getSizeOfCity()).thenReturn(5);
-        bot.setCity(c);
         Hand h=mock(Hand.class);
         when(h.badCards(bot.getGold())).thenReturn(badCards);
         when(h.size()).thenReturn(2);
         bot.setHand(h);
         assertFalse(bot.coinsOrDistrict());
-
-        Deck d = bot.getDeck();
-        d.getList().clear();
-        assertFalse(bot.coinsOrDistrict());
-
     }
 
 
@@ -144,6 +129,30 @@ class BotSpenderTest {
         assertEquals(1, dis.size());
         assertTrue(dis.contains(d2));
     }
+
+    @Test
+    void processChooseRoleTest(){
+        ArrayList<Role> roles = new ArrayList<>();
+        roles.add(new Merchant());
+        roles.add(new Warlord());
+
+        assertEquals("Merchant",bot.processChooseRole(roles).toString());
+        bot.setHand(hand);
+        roles.add(new Bishop());
+        hand.clearEverything();
+        hand.add(new District(2,2,"religion","test"));
+        assertEquals("Bishop",bot.processChooseRole(roles).toString());
+        hand.clearEverything();
+        hand.add(new District(2,2,"noblesse","noblesse"));
+        roles.add(new King());
+        assertEquals("King",bot.processChooseRole(roles).toString());
+        hand.clearEverything();
+        hand.add(new District(2,2,"soldatesque","soldatesque"));
+        assertEquals("Warlord",bot.processChooseRole(roles).toString());
+        roles.add(new Architect());
+        assertEquals("Architect",bot.processChooseRole(roles).toString());
+    }
+
 
     @Test
     void whatToBuild(){
@@ -257,7 +266,7 @@ class BotSpenderTest {
 		anotherBot.setCharacter(new Merchant());
 		
 		assertTrue(anotherBot.wantsToUseGraveyard(d2));
-		anotherBot.isUsingGraveyard(d2);
+		anotherBot.wantsToUseGraveyard(d2);
 		
 		bot.city.add(d1);
 		bot.deleteDistrictFromCity(d1);

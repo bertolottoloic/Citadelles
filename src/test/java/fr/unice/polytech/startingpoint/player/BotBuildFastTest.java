@@ -88,12 +88,7 @@ class BotBuildFastTest {
 	@Test
 	void coinsOrDistrictTest() {
 		assertTrue(bot.coinsOrDistrict());
-
-		bank.withdraw(10, bot);
-
-		hand.add(d1);
-		hand.add(new District(2, 2, "unecouleur", "random6"));
-		bot.setHand(hand);
+		bank.withdraw(6, bot);
 		assertFalse(bot.coinsOrDistrict());
 	}
 
@@ -166,34 +161,6 @@ class BotBuildFastTest {
 		assertTrue(dis.contains(d2));
 	}
 
-	@Test
-	void whatToBuildTest() {
-
-		Role role = mock(Role.class);
-		when(role.toString()).thenReturn("Architect");
-		bot.setCharacter(role);
-		hand.add(d1);
-		hand.add(d2);
-		bot.setHand(hand);
-		assertEquals(d1, bot.whatToBuild(10));
-		assertEquals(null, bot.whatToBuild(2));
-
-
-		when(role.toString()).thenReturn("Warlord");
-		assertEquals(d1, bot.whatToBuild(10));
-		assertEquals(null, bot.whatToBuild(2));
-
-		District donjon =(new District(5,5,"merveille","Donjon"));
-		bot.hand.add(donjon);
-		assertTrue(bot.whatToBuild(5).equals(donjon));
-
-		District Laboratoire =(new District(5,5,"merveille","Laboratoire"));
-		bot.hand.remove(donjon);
-		bot.hand.add(Laboratoire);
-		assertTrue(bot.whatToBuild(7).equals(Laboratoire));
-
-
-	}
 
 	@Test
 	void isBuildingTest() {
@@ -259,7 +226,6 @@ class BotBuildFastTest {
 		assertEquals(tmpHandSize - 1, bot.getHand().size());
 	}
 
-	@BeforeEach
 	void setMultiPlayers() {
 		anotherBot = new BotBuildFast(2);
 		bot.city.add(d1);
@@ -271,6 +237,8 @@ class BotBuildFastTest {
 
 	@Test
 	void wantsToUseGraveyardTest() {
+		setMultiPlayers();
+		bot.getBoard().setPlayers(bot, anotherBot);
 		anotherBot.setCharacter(new Warlord());
 		assertFalse(anotherBot.wantsToUseGraveyard(d1));
 		anotherBot.setCity(new City());
@@ -280,7 +248,7 @@ class BotBuildFastTest {
 		anotherBot.setCharacter(new Merchant());
 
 		assertTrue(anotherBot.wantsToUseGraveyard(d1));
-		anotherBot.isUsingGraveyard(d1);
+		anotherBot.wantsToUseGraveyard(d1);
 
 		bot.city.add(d2);
 		bot.deleteDistrictFromCity(d2);
@@ -329,6 +297,7 @@ class BotBuildFastTest {
 
 	@Test
 	public void roleToOptimizeCoinsTest(){
+		setMultiPlayers();
 		BotBuildFast botMock = mock(BotBuildFast.class);
 		assertEquals(Optional.empty(),botMock.roleToOptimizeCoins(dealRoles.getRoles()));
 

@@ -73,7 +73,7 @@ public class BotSmart extends Player {
                     break;
                 case "soldatesque": position =8;
                     break;
-                case "noble": position =4;
+                case "noblesse": position =4;
                     break;
                 default : position =6;
             }
@@ -87,9 +87,9 @@ public class BotSmart extends Player {
 
     
 
-	public Tmp buildables(List<District> toConsider,int limit){
+	public TupleIntDistrictsList buildables(List<District> toConsider,int limit){
         if(toConsider.isEmpty() || limit<=0){
-            return new Tmp(0,new ArrayList<District>());
+            return new TupleIntDistrictsList(0,new ArrayList<District>());
         }
         else if(toConsider.get(0).getCost()>limit){
             //Explore right branch only
@@ -98,10 +98,10 @@ public class BotSmart extends Player {
         else{
             District nextItem=toConsider.get(0);
             //Explore left branch
-            Tmp resultLeft=buildables(toConsider.subList(1, toConsider.size()), limit-nextItem.getCost());
+            TupleIntDistrictsList resultLeft=buildables(toConsider.subList(1, toConsider.size()), limit-nextItem.getCost());
             resultLeft.addVal(nextItem.getValue());
             //Explore right branch
-            Tmp resultRight=buildables(toConsider.subList(1, toConsider.size()), limit);
+            TupleIntDistrictsList resultRight=buildables(toConsider.subList(1, toConsider.size()), limit);
 
             if(resultLeft.getVal()>resultRight.getVal()){
                 resultLeft.getDistricts().add(nextItem);

@@ -107,11 +107,9 @@ public class BotRainbow extends BotSmart{
     
     @Override
     public boolean coinsOrDistrict() {
-        return getGold() < 4
-                || hand.nbTooExpensiveDistricts(this.getGold())<hand.size()/2
-                || city.getSizeOfCity() >= 6
-                || deck.numberOfCards() < 4
-                || hand.size()>2;
+        return getGold() < 2
+                || hand.badCards(getGold()).size()<=hand.size()/2
+                || missingColors().size() > 2;
     }
 
     @Override

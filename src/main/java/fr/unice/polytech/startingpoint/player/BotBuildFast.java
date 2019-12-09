@@ -25,7 +25,6 @@ public class BotBuildFast extends BotSmart{
     
     @Override
     public List<District> processWhatToBuild() {
-        //District tmp=this.whatToBuild(this.getGold());
         List<District> toConsider;
         if(city.getSizeOfCity()==7){//si on est sur le point de finir 
             //on peut construire des cartes de cout 1 puisque le condotierre
@@ -178,37 +177,5 @@ public class BotBuildFast extends BotSmart{
     }
 	
 	/*-------------------------------------------------------------*/
-    
-    /**
-     * utilise une srrategie pour chercher le quartier le moins cher a poser
-     * @return le district a poser
-     */
-    District whatToBuild(int limit){
-    	
-            if(getCharacter().toString().equals("Architect")) {
-                District lowerCost = hand.lowCostDistrict();
-                if (lowerCost.getCost() <= limit) {
-                    return lowerCost;
-                } else {
-                    return null;
-                }
-            }
-            else{
-                District lowerCost = hand.lowCostDistrictForNextTurn(getGold()); //prend le district le plus cher de manière à avoir assez de golds pour le tour suivant
-                if(lowerCost.getCost()<=limit){
-                    return lowerCost;
-                }
-                else{
-                    return null;
-                }
-            }
-    }
-    
-    /**
-         * Fonction pour récupérer le Role permettant 
-         * d'avoir le plus d'argent
-         * On utilisera hidden que si le joueur est le 
-         * dernier à choisir son role ie nextPlayer.alreadyChosenRole==true
-         */
-    
+
 }

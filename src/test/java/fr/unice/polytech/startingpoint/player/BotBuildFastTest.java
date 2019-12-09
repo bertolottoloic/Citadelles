@@ -161,34 +161,6 @@ class BotBuildFastTest {
 		assertTrue(dis.contains(d2));
 	}
 
-	@Test
-	void whatToBuildTest() {
-
-		Role role = mock(Role.class);
-		when(role.toString()).thenReturn("Architect");
-		bot.setCharacter(role);
-		hand.add(d1);
-		hand.add(d2);
-		bot.setHand(hand);
-		assertEquals(d1, bot.whatToBuild(10));
-		assertEquals(null, bot.whatToBuild(2));
-
-
-		when(role.toString()).thenReturn("Warlord");
-		assertEquals(d1, bot.whatToBuild(10));
-		assertEquals(null, bot.whatToBuild(2));
-
-		District donjon =(new District(5,5,"merveille","Donjon"));
-		bot.hand.add(donjon);
-		assertTrue(bot.whatToBuild(5).equals(donjon));
-
-		District Laboratoire =(new District(5,5,"merveille","Laboratoire"));
-		bot.hand.remove(donjon);
-		bot.hand.add(Laboratoire);
-		assertTrue(bot.whatToBuild(7).equals(Laboratoire));
-
-
-	}
 
 	@Test
 	void isBuildingTest() {

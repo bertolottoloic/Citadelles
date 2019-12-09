@@ -19,6 +19,7 @@ import fr.unice.polytech.startingpoint.board.Deck;
 import fr.unice.polytech.startingpoint.board.District;
 import fr.unice.polytech.startingpoint.board.DistrictColor;
 import fr.unice.polytech.startingpoint.game.DealRoles;
+import fr.unice.polytech.startingpoint.role.Architect;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Thief;
 import fr.unice.polytech.startingpoint.role.Warlord;
@@ -59,18 +60,19 @@ class BotRainbowTest {
 
 	@Test
 	void buildNewColorsTest(){
-		bot.getCity().toList().clear();
+		bot.getCity().clearEverything();
 		assertEquals(0, bot.getCity().getSizeOfCity());
-		bot.getCity().toList().add(
+		
+		bot.getCity().add(
 			new District(2, 2, DistrictColor.Commerce, "Carrefour"));
-		bot.getCity().toList().add(
+		bot.getCity().add(
 			new District(2, 2, DistrictColor.Warlord, "PorteAvions"));
 
 		District cathedral=new District(4, 4, DistrictColor.Religion, "Cathedrale");
-		bot.getHand().toList().add(
+		bot.getHand().add(
 			cathedral
 		);
-		bot.getHand().toList().add(
+		bot.getHand().add(
 			new District(4, 4, DistrictColor.Commerce, "Casino")
 		);
 
@@ -80,10 +82,36 @@ class BotRainbowTest {
 		
 	}
 
+	@Test
+	void processWTBTest(){
+		bot.setCharacter(new Architect());
+		bot.getCity().clearEverything();
+		assertEquals(0, bot.getCity().getSizeOfCity());
+		
+		bot.getCity().add(
+			new District(2, 2, DistrictColor.Commerce, "Carrefour"));
+		bot.getCity().add(
+			new District(2, 2, DistrictColor.Warlord, "PorteAvions"));
+
+		District cathedral=new District(4, 4, DistrictColor.Religion, "Cathedrale");
+		bot.getHand().add(
+			cathedral
+		);
+		bot.getHand().add(
+			new District(3, 3, DistrictColor.Commerce, "Casino")
+		);
+
+		bot.takeCoinsFromBank(2);
+		assertEquals(0,bot.processWhatToBuild().size());
+		assertFalse(bot.processWhatToBuild().contains(cathedral));
+		
+		bot.takeCoinsFromBank(2);
+		assertEquals(1,bot.processWhatToBuild().size());
+		assertTrue(bot.processWhatToBuild().contains(cathedral));
+	}
+
     @Test
-    void wantsToUseFabric() {/*
-        return !city.containsAllColors() ||
-        		(getGold() >= 8	&& !hand.highValuedDistrict(getGold()-3));*/
+    void wantsToUseFabric() {
     	assertTrue(bot.wantsToUseFabric());
     	
     	City c = mock(City.class);
@@ -183,9 +211,9 @@ class BotRainbowTest {
 		bot.takeCoinsFromBank(5);
 		ArrayList<District> cards = new ArrayList<>();
 
-		bot.getCity().toList().add(
+		bot.getCity().add(
 			new District(1, 1, DistrictColor.Warlord, "Tour de guet"));
-		bot.getCity().toList().add(
+		bot.getCity().add(
 			new District(1, 1, DistrictColor.Wonder, "Tower of Essentil"));
 		
 

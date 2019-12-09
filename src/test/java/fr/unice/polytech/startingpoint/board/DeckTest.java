@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 
@@ -63,8 +63,8 @@ class  DeckTest{
 
     @Test
     void withdraw(){
-        Deck deckMock = mock(Deck.class);
-        assertEquals(null,deckMock.withdraw());
+        
+        assertNotNull(d.withdraw());
     }
 
     

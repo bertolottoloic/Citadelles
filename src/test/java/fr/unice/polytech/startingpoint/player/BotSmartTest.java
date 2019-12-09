@@ -39,9 +39,9 @@ public class BotSmartTest {
     @Test
     void missingColorsTest(){
         assertEquals(5,botSmart.missingColors().size());
-        botSmart.getCity().toList().add(
+        botSmart.getCity().add(
             new District(7,4,DistrictColor.Commerce,"something"));
-        botSmart.getCity().toList().add(
+        botSmart.getCity().add(
             new District(7,4,DistrictColor.Warlord,"anotherthing"));
         botSmart.getCity().toList().add(
             new District(7,4,DistrictColor.Religion,"anotherthing"));

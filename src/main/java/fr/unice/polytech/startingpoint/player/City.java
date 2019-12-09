@@ -181,7 +181,7 @@ public class City {
     public Optional<District> getWonder(String name){
         return districts.stream().filter(d -> d.getName().equals(name)).findAny();
     }
-
+    
 	public Collection<District> toList() {
 		return districts;
 	}

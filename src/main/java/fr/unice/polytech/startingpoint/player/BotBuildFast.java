@@ -25,7 +25,6 @@ public class BotBuildFast extends BotSmart{
     
     @Override
     public List<District> processWhatToBuild() {
-        //District tmp=this.whatToBuild(this.getGold());
         List<District> toConsider;
         if(city.getSizeOfCity()==7){//si on est sur le point de finir 
             //on peut construire des cartes de cout 1 puisque le condotierre

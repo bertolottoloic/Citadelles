@@ -123,7 +123,7 @@ public class CityTest {
         when(districtMock.getName()).thenReturn("Cour des Miracles");
         when(districtMock.primaryColor()).thenReturn(DistrictColor.Wonder);
         when(districtMock.getBuildDate()).thenReturn(2);
-        city.toList().add(districtMock);
+        city.add(districtMock);
 		
 		
         assertTrue(city.checkDateContainsAllColors());

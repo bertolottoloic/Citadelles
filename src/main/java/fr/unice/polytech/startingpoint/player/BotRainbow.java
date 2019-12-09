@@ -37,14 +37,14 @@ public class BotRainbow extends BotSmart{
     public List<District> processWhatToBuild() {
         int gold=this.getGold();
         ArrayList<District> newDistricts = new ArrayList<>(buildNewColors(gold));
-        hand.toList().forEach(d -> {
+        /*hand.toList().forEach(d -> {
         	if(d.getName().equals("Cimetiere") && gold >= 5 && !getCharacter().toString().equals("Warlord")
             		|| d.getName().equals("Cour des Miracles") && gold >= 2
             		|| d.getName().equals("Manufacture") && gold >= 8
             		|| d.getName().equals("Laboratoire") && gold >= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
             	newDistricts.add(d);
             }
-        });        
+        });*/        
         if(city.containsAllColors() || newDistricts.isEmpty()){
             return super.processWhatToBuild();
         }
@@ -83,6 +83,7 @@ public class BotRainbow extends BotSmart{
         }
         else{
             //chercher les districts dont j'ai déja la couleur
+            //dans ma main ou ma ville
             //vérifier
             Iterator<District> it=d.iterator();
             

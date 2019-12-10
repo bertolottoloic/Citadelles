@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.board;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,17 +20,17 @@ public class DistrictTest{
     
     @Test
     public void equalsTest(){
-        assertEquals(true, d1.equals(d2));
+        assertTrue(d1.equals(d2));
     }
     @Test
     public void notEqualsTest(){
-        assertEquals(false, d1.equals(d3));
+        assertFalse(d1.equals(d3));
     }
 
     @Test
     public void hasColorTest(){
-        assertEquals(true, d1.hasColor(DistrictColor.Religion));
-        assertEquals(false, d1.hasColor(DistrictColor.Commerce)); 
+        assertTrue( d1.hasColor(DistrictColor.Religion));
+        assertFalse(d1.hasColor(DistrictColor.Commerce)); 
     }
 
     @Test
@@ -37,9 +38,9 @@ public class DistrictTest{
         District d=new District(4,4,
             "merveille-religion-commerce","Polytech");
 
-        assertEquals(true, d.hasColor(DistrictColor.Religion));
-        assertEquals(true, d.hasColor(DistrictColor.Commerce));
-        assertEquals(true, d.hasColor(DistrictColor.Wonder));
-        assertEquals(false, d.hasColor(DistrictColor.Warlord));
+        assertTrue( d.hasColor(DistrictColor.Religion));
+        assertTrue( d.hasColor(DistrictColor.Commerce));
+        assertTrue( d.hasColor(DistrictColor.Wonder));
+        assertFalse( d.hasColor(DistrictColor.Warlord));
     }
 }

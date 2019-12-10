@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import fr.unice.polytech.startingpoint.role.Architect;
 import fr.unice.polytech.startingpoint.role.Bishop;
@@ -109,10 +108,4 @@ public class DealRoles{
         return hidden;
     }
 
-    public void setHidden(Role hidden) {
-        this.hidden = hidden;
-    }
-    public Optional<Role> roleKilled(){
-        return roles.stream().filter(r->r.isMurdered()).findFirst();
-    }
 }

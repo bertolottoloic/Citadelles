@@ -20,10 +20,6 @@ public class Deck{
         this.shuffle();//We shuffle the districts
     }
 
-   
-    public ArrayList<District> getList() {
-        return list;
-    }
 
     
     public void shuffle(){

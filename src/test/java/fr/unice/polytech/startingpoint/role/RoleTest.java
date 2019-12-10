@@ -53,7 +53,7 @@ public class RoleTest {
         assertEquals(player,murderer.getPlayer());
         assertEquals(1,murderer.getNumberDistrictBuildable());
         assertEquals(2,murderer.getNumberGold());
-        assertEquals(true, merchant.isMurdered());
+        assertTrue( merchant.isMurdered());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class RoleTest {
     void bishopTest(){
         Role bishop = new Bishop();
         assertEquals(5,bishop.getPosition());
-        assertEquals(null,bishop.getPlayer());
+        assertNull(bishop.getPlayer());
         assertEquals(1,bishop.getNumberDistrictBuildable());
         assertEquals(2,bishop.getNumberGold());
     }
@@ -104,7 +104,7 @@ public class RoleTest {
     void merchantTest(){
         Role merchant = new Merchant();
         assertEquals(6,merchant.getPosition());
-        assertEquals(null,merchant.getPlayer());
+        assertNull(merchant.getPlayer());
         assertEquals(1,merchant.getNumberDistrictBuildable());
         assertEquals(3,merchant.getNumberGold());
     }
@@ -113,7 +113,7 @@ public class RoleTest {
     void architectTest(){
         Role architect = new Architect();
         assertEquals(7,architect.getPosition());
-        assertEquals(null,architect.getPlayer());
+        assertNull(architect.getPlayer());
         assertEquals(3,architect.getNumberDistrictBuildable());
         assertEquals(2,architect.getNumberGold());
     }
@@ -122,7 +122,7 @@ public class RoleTest {
     void warlordTest(){
         Role warlord = new Warlord();
         assertEquals(8,warlord.getPosition());
-        assertEquals(null,warlord.getPlayer());
+        assertNull(warlord.getPlayer());
         assertEquals(1,warlord.getNumberDistrictBuildable());
         assertEquals(2,warlord.getNumberGold());
     }

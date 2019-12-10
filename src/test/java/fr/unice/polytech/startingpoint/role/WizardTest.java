@@ -1,7 +1,9 @@
 package fr.unice.polytech.startingpoint.role;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +64,8 @@ public class WizardTest {
         player.setTargetToExchangeHandWith(target);
         wizard.useSpecialPower();
         assertEquals(3,wizard.getPosition());
-        assertEquals(true, target.getHand().isEmpty());
-        assertEquals(false, player.getHand().isEmpty());
+        assertTrue(target.getHand().isEmpty());
+        assertFalse( player.getHand().isEmpty());
     }
 
     @Test
@@ -75,8 +77,8 @@ public class WizardTest {
         
         
         wizard.useSpecialPower();
-        assertEquals(true,player.getHand().toList().contains(hand.get(0)));
-        assertEquals(true,player.getHand().toList().contains(hand.get(1)));
+        assertTrue(player.getHand().toList().contains(hand.get(0)));
+        assertTrue(player.getHand().toList().contains(hand.get(1)));
         assertNotSame(hand.get(2),player.getHand().toList().get(2));
         assertNotSame(hand.get(3),player.getHand().toList().get(3));
     }

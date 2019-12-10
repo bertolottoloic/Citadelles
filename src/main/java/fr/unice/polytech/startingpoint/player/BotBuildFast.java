@@ -1,9 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import fr.unice.polytech.startingpoint.board.District;
@@ -68,17 +66,6 @@ public class BotBuildFast extends BotSmart{
     }
     
     
-    @Override
-    public Role processWhoToRob() {
-        Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
-        targets.remove(this.getCharacter().toString());//on exclut son propre role
-        /*Optional<Role> optKilled=dealRoles.roleKilled();
-        if(optKilled.isPresent()){
-            targets.remove(optKilled.get().toString());
-        }
-        */
-        return this.dealRoles.getRole(targets.stream().findFirst().get());
-    }
     
     @Override
     public Role processChooseRole(List<Role> toConsiderRoles) {
@@ -144,7 +131,7 @@ public class BotBuildFast extends BotSmart{
      */
     @Override
     public Optional<District> wantsToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
+        List<District> list = hand.cardsAboveGold(getGold());
        		if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
                    District dis = hand.highCostDistrict(getGold());
                    return Optional.of(dis);

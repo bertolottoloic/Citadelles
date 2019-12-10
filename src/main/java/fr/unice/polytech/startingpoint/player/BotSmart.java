@@ -217,7 +217,7 @@ public class BotSmart extends Player {
      */
     @Override
     public Optional<District> wantsToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
+        List<District> list = hand.cardsAboveGold(getGold());
         if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
             District dis = hand.highCostDistrict(getGold());
             return Optional.of(dis);
@@ -234,14 +234,13 @@ public class BotSmart extends Player {
      * des probabilités pour permettre au joueur 
      * de deviner le rôle qu'ont les autres joueurs
      *  Ex: Au cours de la distribution
-     *  si on a a choisir parmi des personnages (p1,p2,p3)
+     *  si on a à choisir parmi des personnages (p1,p2,p3)
      * Cela veut dire que tous les joueurs ayant choisi
      * avant n'ont pas pris (p1,p2,p3) d'où
      * la probabilité pour qu'ils aient (p1,p2 ou p3)
      * comme role est 0
      * 
      */
-
     public void attributeProbsToPlayer(){
         ArrayList<Player> pl=board.getPlayers();
         ArrayList<Role> toConsider=new ArrayList<>(this.dealRoles.getLeftRoles());

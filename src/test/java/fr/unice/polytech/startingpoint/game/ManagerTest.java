@@ -16,11 +16,14 @@ import fr.unice.polytech.startingpoint.role.Role;
 class ManagerTest {
 	
 	Manager manager = new Manager();
-	Player p1 ;
-    Player p2 ;
-    Player p3 ;
+	Player p1;
+    Player p2;
+    Player p3;
 	Player p4;
 	Player p5;
+	Player p6;
+	Player p7;
+	Player p8;
 
     
     ArrayList<Role> myRoles;
@@ -32,6 +35,9 @@ class ManagerTest {
 		p3 = new BotRnd(3);
 		p4 = new BotRnd(4);
 		p5 = new BotRnd(4);
+		p6 = new BotRnd(6);
+		p7 = new BotRnd(7);
+		p8 = new BotRnd(8);
 		
 	}
 	
@@ -53,6 +59,22 @@ class ManagerTest {
 	}
 
 	@Test
+	void testLetsPlayNbTest() {
+		Player[] players = {p1, p2};
+		assertThrows(IllegalArgumentException.class, ()->{
+			manager.letsPlay(players);
+		});
+	}
+
+	@Test
+	void testLetsPlayNb2Test() {
+		Player[] players = {p1, p2,p3,p4,p5,p6,p7,p8};
+		assertThrows(IllegalArgumentException.class, ()->{
+			manager.letsPlay(players);
+		});
+	}
+
+	@Test
 	void testEndGame() {
 		Player[] players = {p1, p2, p3, p4};
 		manager.endGame(players);
@@ -64,6 +86,6 @@ class ManagerTest {
 		when(p.points()).thenReturn(50);
 		Player[] players = {p,p1, p2, p3, p4};
 		manager.endGame(players);
-		assertEquals(true, manager.getWinner().contains(p));
+		assertTrue( manager.getWinner().contains(p));
 	}
 }

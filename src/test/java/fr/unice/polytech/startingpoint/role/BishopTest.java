@@ -19,7 +19,7 @@ public class BishopTest {
     void bishopTest(){
         Role bishop = new Bishop();
         assertEquals(5,bishop.getPosition());
-        assertEquals(null,bishop.getPlayer());
+        assertNull(bishop.getPlayer());
         assertEquals(1,bishop.getNumberDistrictBuildable());
         assertEquals(2,bishop.getNumberGold());
     }

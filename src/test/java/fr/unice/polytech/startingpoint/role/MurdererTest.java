@@ -48,6 +48,6 @@ public class MurdererTest {
         assertEquals(player,murderer.getPlayer());
         assertEquals(1,murderer.getNumberDistrictBuildable());
         assertEquals(2,murderer.getNumberGold());
-        assertEquals(true, merchant.isMurdered());
+        assertTrue( merchant.isMurdered());
     }
 }

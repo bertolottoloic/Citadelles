@@ -120,8 +120,8 @@ public class HandTest {
         hand.add(d2);
         hand.add(d3);
         List<District> resultat=hand.contentExceptStrict(List.of(d1));
-        assertEquals(false, resultat.contains(d1));
-        assertEquals(false, resultat.contains(d3));
+        assertFalse( resultat.contains(d1));
+        assertFalse( resultat.contains(d3));
         assertTrue( resultat.contains(d2));
         
     }

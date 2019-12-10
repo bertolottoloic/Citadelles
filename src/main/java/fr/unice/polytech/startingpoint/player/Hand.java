@@ -113,6 +113,7 @@ public class Hand {
 		return (int)districts.stream().filter(d -> d.getCost() <= limit).count();
 	}
 
+    
 	public District highCostDistrict(int gold) {
 		if (districts.isEmpty()) {
 			return null;
@@ -127,24 +128,24 @@ public class Hand {
 		}
 	}
 
-	public ArrayList<District> badCards(int gold) {
-		ArrayList<District> badCards = new ArrayList<>();
-        districts.forEach(d -> {
-            if(d.getCost()+3<gold||d.getCost()>gold){
-                badCards.add(d);
-            }
-        });
-        return badCards;
+	public List<District> badCards(int gold) {
+        return districts.stream()
+        .filter(d->d.getCost()+3<gold||d.getCost()>gold)
+        .collect(Collectors.toList());
+		
     }
     
+    /**
+     * 
+     * @param gold
+     * @return Une liste des cartes dont le cout==gold+1
+     */
 
-    
-    public ArrayList<District> cardsAboveGold(int gold){
-    	ArrayList<District> res = new ArrayList<>();
-    	districts.forEach(d -> {
-    		if(d.getCost() - gold == 1) res.add(d);
-    	});
-    	return res;
+    public List<District> cardsAboveGold(int gold){
+        return districts.stream()
+              .filter(d->d.getCost() - gold == 1)
+              .collect(Collectors.toList());
+    	
     }
 
     public HashMap<DistrictColor,Integer> countColors(){

@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -103,7 +104,7 @@ public class BoardTest{
         assertEquals(p1,board.existsGraveyardPlayer());
 
         when(p1.cityHasTheDistrict("Cimetiere")).thenReturn(false);
-        assertEquals(null,board.existsGraveyardPlayer());
+        assertNull(board.existsGraveyardPlayer());
 
     }
 

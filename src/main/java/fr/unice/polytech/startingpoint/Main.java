@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -35,13 +34,13 @@ public class Main {
         statistic = Logger.getLogger("Statistic");
     }
 
-    public static void main(String... args) throws IllegalArgumentException,FileNotFoundException,IOException {
+    public static void main(String... args) throws IllegalArgumentException, IOException {
         if(args.length>0){
             if(args[0].equals("verbose")){
-                resume.setLevel(Level.INFO);
+                resume.setLevel(Level.INFO);// afficher les détails de la partie
             }
             else{
-                resume.setLevel(Level.OFF); //informations de la partie
+                resume.setLevel(Level.OFF); //ne pas afficher : informations de la partie
             }
             
             if(args.length>1){

@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -46,8 +47,8 @@ public class BotSmartTest {
         botSmart.getCity().toList().add(
             new District(7,4,DistrictColor.Religion,"anotherthing"));
 
-        assertEquals(true, botSmart.missingColors().contains(DistrictColor.Noble));
-        assertEquals(true, botSmart.missingColors().contains(DistrictColor.Wonder));
+        assertTrue( botSmart.missingColors().contains(DistrictColor.Noble));
+        assertTrue( botSmart.missingColors().contains(DistrictColor.Wonder));
         
         
     }
@@ -103,7 +104,7 @@ public class BotSmartTest {
         districts.add(d4);
         botSmart.setHand(new Hand(districts));
         when(b.getPlayerMoney(botSmart)).thenReturn(5);
-        assertEquals(null, botSmart.processWhoToExchangeHandWith());
+        assertNull(botSmart.processWhoToExchangeHandWith());
     }
 
     @Test

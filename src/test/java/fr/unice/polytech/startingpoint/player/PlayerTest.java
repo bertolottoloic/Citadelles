@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,10 +67,10 @@ class PlayerTest {
 
     @Test
     void testAddToTheCity(){
-        assertEquals(false, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
+        assertFalse( player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
         bank.withdraw(3, player);
-        assertEquals(true, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
-        assertEquals(false, player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
+        assertTrue(player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
+        assertFalse( player.addToTheCity(new District(3,3,DistrictColor.Religion,"Eglise")));
     }
     
     @Test
@@ -162,7 +163,7 @@ class PlayerTest {
 
     @Test
     void testChooseRole(){   	
-    	assertEquals(null, player.getCharacter());
+    	assertNull( player.getCharacter());
     	dl.readyToDistribute(3);
     	player.chooseRole();
     	assertNotNull(player.getCharacter());
@@ -218,8 +219,8 @@ class PlayerTest {
 		board.setPlayers(p3,p2,p1);
 		p1.setBoard(board);
 		
-		assertEquals(true,p1.isFirstToFinish());
-		assertEquals(false,p1.checkFinishBuilding());
+		assertTrue(p1.isFirstToFinish());
+		assertFalse(p1.checkFinishBuilding());
 	}
 
 	@Test
@@ -233,7 +234,7 @@ class PlayerTest {
 		when(c.getSizeOfCity()).thenReturn(9);
 		p1.setCity(c);
 		
-		assertEquals(true,p1.checkFinishBuilding());
+		assertTrue(p1.checkFinishBuilding());
 	}
 
 	@Test
@@ -247,7 +248,7 @@ class PlayerTest {
 		when(c.getSizeOfCity()).thenReturn(7);
 		p1.setCity(c);
 		
-		assertEquals(false,p1.checkFinishBuilding());
+		assertFalse(p1.checkFinishBuilding());
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class MatchingProbTest {
 
         Set<String> possibleRoles=mprob.possibleRolesFor(3);
 
-        assertEquals(false, possibleRoles.contains("Thief"));
+        assertFalse( possibleRoles.contains("Thief"));
     }
 
 

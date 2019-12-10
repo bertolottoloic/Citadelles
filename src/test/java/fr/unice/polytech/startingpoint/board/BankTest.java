@@ -43,11 +43,11 @@ public class BankTest {
 
     @Test
    public void withdrawTest(){
-        assertEquals(true,b.withdraw(7,p));
+        assertTrue(b.withdraw(7,p));
 
         assertEquals(23,b.getCurrNbCoins());
 
-        assertEquals(false,b.withdraw(25,p));
+        assertFalse(b.withdraw(25,p));
 
         assertEquals(23,b.getCurrNbCoins());
 
@@ -55,11 +55,11 @@ public class BankTest {
 
     @Test
     public void depositTest(){
-        assertEquals(true, b.deposit(0,p));
+        assertTrue( b.deposit(0,p));
 
-        assertEquals(false, b.deposit(-1,p));
+        assertFalse( b.deposit(-1,p));
 
-        assertEquals(false, b.deposit(1,p));
+        assertFalse( b.deposit(1,p));
     }
 
     @Test

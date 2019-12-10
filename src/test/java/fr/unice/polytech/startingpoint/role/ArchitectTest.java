@@ -33,7 +33,7 @@ public class ArchitectTest {
         assertEquals(player,architect.getPlayer());
         assertEquals(3,architect.getNumberDistrictBuildable());
         assertEquals(2,architect.getNumberGold());
-        assertEquals(false, player.getHand().isEmpty());
+        assertFalse( player.getHand().isEmpty());
         assertEquals(2,player.getHand().size());
     }
 }

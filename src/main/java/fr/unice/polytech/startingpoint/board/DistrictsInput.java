@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.board;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ import org.json.JSONObject;
 class DistrictsInput{
     private final String srcData="/json/infos_districts.json";
 
-    private String readFile(String fichier) throws FileNotFoundException,IOException{
+    private String readFile(String fichier) throws IOException{
         return new String(getClass().getResourceAsStream(srcData).readAllBytes());
     }
 

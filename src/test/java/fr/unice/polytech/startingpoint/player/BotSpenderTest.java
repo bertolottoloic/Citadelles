@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -167,7 +168,7 @@ class BotSpenderTest {
         when(role.toString()).thenReturn("Warlord");
         assertEquals(d1,bot.whatToBuild(4));
 
-        assertEquals(null,bot.whatToBuild(2));
+        assertNull(bot.whatToBuild(2));
     }
 
     

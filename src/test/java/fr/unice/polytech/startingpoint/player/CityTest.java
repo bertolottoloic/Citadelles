@@ -141,7 +141,7 @@ public class CityTest {
     
     @Test
     void testMostPotentiallyPayingColor(){
-        assertEquals(null,city.mostPotentiallyPayingColor());
+        assertNull(city.mostPotentiallyPayingColor());
         city.add(new District(2, 2, DistrictColor.Wonder, "Poudlard"));
         city.add(new District(2, 2, DistrictColor.Warlord, "Caserne"));
         

@@ -28,26 +28,12 @@ public class BotSpender extends BotSmart {
         return bestRoleToChoose(toConsiderRoles,maxColor);
     }
 
- 
-    @Override
-    public Role processWhoToKill() {
-        return this.dealRoles.getRole("Thief");
-    }
-
-    @Override
-    public Role processWhoToRob() {
-        return this.dealRoles.getRole("Merchant");
-    }
 
     @Override
     public Player processWhoToExchangeHandWith() {
         return this.board.playerWithTheBiggestHand(this);
     }
 
-    @Override
-    public Player processWhoseDistrictToDestroy() {
-        return this.board.playerWithTheBiggestCity(this);
-    }
 
     @Override
     public List<District> processWhatToBuild() {

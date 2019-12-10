@@ -160,9 +160,6 @@ public abstract class Role {
         this.player = player;
     }
 
-    public void setNumberDistrictPickable(int numberDistrictPickable) {
-        this.numberDistrictPickable = numberDistrictPickable;
-    }
 
     void stolen(){
         this.isStolen = true;
@@ -184,11 +181,9 @@ public abstract class Role {
         return color;
     }
 
-    void setColor(String color) {
-        this.color = color;
-    }
 
-    void setColor(DistrictColor color) {
+    
+    protected void setColor(DistrictColor color) {
         this.color = color.toString();
     }
 
@@ -207,10 +202,4 @@ public abstract class Role {
         }
         
     }
-
-    public void setNumberDistrictKeepable(int numberDistrictKeepable) {
-        this.numberDistrictKeepable = numberDistrictKeepable;
-    }
-
-
 }

@@ -7,7 +7,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,12 +25,14 @@ import fr.unice.polytech.startingpoint.role.Bishop;
 import fr.unice.polytech.startingpoint.role.King;
 import fr.unice.polytech.startingpoint.role.Merchant;
 import fr.unice.polytech.startingpoint.role.Role;
+import fr.unice.polytech.startingpoint.role.Thief;
 import fr.unice.polytech.startingpoint.role.Warlord;
 
 public class BotSmartTest {
     BotSmart botSmart;
     Bank bank;
     DealRoles dealRoles;
+    MatchingProb matches;
     @BeforeEach
     void setUp(){
         botSmart=new BotSmart(7);
@@ -161,5 +165,39 @@ public class BotSmartTest {
 		assertEquals("Architect",botSmart.bestRoleToChoose(roles,"religion").toString());
 	}
 
+    @Test
+	void processWhoToKillTest() {
+		dealRoles = new DealRoles();
+		botSmart.setDealRoles(dealRoles);
+		botSmart.setCharacter(new Merchant());
+		Player p = mock(Player.class);
+		when(p.getId()).thenReturn(1);
+		Board board = mock(Board.class);
+		when(board.playerWithTheBiggestCity(botSmart)).thenReturn(p);
+		botSmart.setBoard(board);
+		Set<String> s = new HashSet<String>();
+		s.add("Thief");
+		matches = mock(MatchingProb.class);
+		when(matches.possibleRolesFor(1)).thenReturn(s);
+		botSmart.setMatches(matches);
+		assertEquals(dealRoles.getRole("Thief"), botSmart.processWhoToKill());
+	}
 
+	@Test
+	void processWhoToRobTest() {
+		dealRoles = new DealRoles();
+		botSmart.setDealRoles(dealRoles);
+		botSmart.setCharacter(new Thief());
+		Player p = mock(Player.class);
+		when(p.getId()).thenReturn(1);
+		Board board = mock(Board.class);
+		when(board.richestPlayer(botSmart)).thenReturn(p);
+		botSmart.setBoard(board);
+		Set<String> s = new HashSet<String>();
+		s.add("Merchant");
+		matches = mock(MatchingProb.class);
+		when(matches.possibleRolesFor(1)).thenReturn(s);
+		botSmart.setMatches(matches);
+		assertEquals(dealRoles.getRole("Merchant"), botSmart.processWhoToRob());
+	}
 }

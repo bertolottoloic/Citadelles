@@ -257,7 +257,7 @@ class BotBuildFastTest {
 	}
 
 	@Test
-	void targetToChooseForMurdererTest() {
+	void processWhoToKillTest() {
 		dealRoles = new DealRoles();
 		bot.setDealRoles(dealRoles);
 		bot.setCharacter(new Merchant());
@@ -275,7 +275,7 @@ class BotBuildFastTest {
 	}
 
 	@Test
-	void targetToChooseForThiefTest() {
+	void processWhoToRobTest() {
 		dealRoles = new DealRoles();
 		bot.setDealRoles(dealRoles);
 		bot.setCharacter(new Thief());

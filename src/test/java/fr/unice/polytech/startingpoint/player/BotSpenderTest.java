@@ -258,9 +258,9 @@ class BotSpenderTest {
 	@Test
 	void wantsToUseGraveyardTest(){	
 		anotherBot.setCharacter(new Warlord());
-		assertFalse(bot.deleteDistrictFromCity(d1));
-		anotherBot.setCity(new City());
-		anotherBot.setBank(new Bank());
+        assertFalse(bot.deleteDistrictFromCity(d1));
+        Bank bank2=new Bank();
+        bank2.setBourses(anotherBot);
 		anotherBot.getBank().setBourses(List.of(bot,anotherBot));
 		anotherBot.takeCoinsFromBank(7);
 		anotherBot.setCharacter(new Merchant());

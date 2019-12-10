@@ -51,7 +51,10 @@ public class DealRoles{
         this.roles.add(new Warlord());
     }
 
-
+    /**
+     * Prépare le paquet de rôles: des rôles sont définis hidden et un rôle est défini visible.
+     * @param nbplayers
+     */
     public void  readyToDistribute(int nbplayers){
         ArrayList<Role> al = new ArrayList<Role>(roles);
         Collections.shuffle(al);
@@ -71,6 +74,9 @@ public class DealRoles{
         leftRoles.addAll(al);
     }
 
+    /**
+     * Réinitialise les rôles pour la prochaine distribution.
+     */
     public void reInitializeRoles(){
         for(Role r:roles){
             r.reInitialize();
@@ -78,6 +84,7 @@ public class DealRoles{
         leftRoles.removeAll(leftRoles);
         visible.removeAll(visible);
     }
+    
     public ArrayList<Role> getRoles(){
         return this.roles;
     }

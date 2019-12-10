@@ -196,11 +196,15 @@ public class Player {
 		return toConsiderRoles.get(0);
 	}
 
-
     public boolean coinsOrDistrict(){
 		return false;
 	}
 
+	
+	/**
+	 * 
+	 * @return true si le joueur construit en premier, false si il utilise le pouvoir de rôle en premier.
+	 */
 	protected boolean isBuildingFirst() {
 		if(getCharacter().toString().equals("Architect")){ //pioche 2 cartes avant de jouer
 			return false;

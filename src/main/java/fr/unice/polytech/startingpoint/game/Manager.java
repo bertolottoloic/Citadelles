@@ -124,6 +124,10 @@ public class Manager implements PropertyChangeListener {
 
     }
 
+    /**
+     * Permet d'afficher les résultats d'une partie.
+     * @param players
+     */
     public void printResults(Player... players) {
         String res = "";
         for (Player p : players) {

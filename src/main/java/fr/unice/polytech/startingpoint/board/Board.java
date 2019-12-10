@@ -34,6 +34,11 @@ public class Board{
         return players;
     } 
 
+    /**
+     * 
+     * @param except 
+     * @return le joueur qui a la main contenant le plus de districts, utile pour établir les stratégies de jeu du magicien.
+     */
     public Player playerWithTheBiggestHand(Player except){
         return this.players.stream().filter(p->p!=except).max(
             (p1,p2)->Integer.compare(p1.sizeOfHand(),p1.sizeOfHand())
@@ -67,17 +72,27 @@ public class Board{
 
 
     /**
-     * @return un joueur aléatoire parmi tous les joueurs.
+     * @return un joueur aléatoirement parmi tous les joueurs.
      */
 
     public Player randomPlayer(){
         var random=new Random();
         return players.get(random.nextInt(players.size()));
     }
+
+    /**
+     * 
+     * @param except
+     * @return un joueur aléatoirement parmi tous les joueurs excepté le joueur en paramètre.
+     */
     public Player randomPlayer(Player except){
         return players.stream().filter(p->p!=except).findAny().get();
     }
 
+    /**
+     * 
+     * @return le joueur qui a le cimetière dans sa cité, null si aucun joueur ne l'a posé.
+     */
 	public Player existsGraveyardPlayer() {
 		for(Player p : players) {
 			if(p.cityHasTheDistrict("Cimetiere")) {

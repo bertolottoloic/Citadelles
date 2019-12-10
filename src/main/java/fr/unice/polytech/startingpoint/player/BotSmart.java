@@ -54,35 +54,41 @@ public class BotSmart extends Player {
         }
     }
 
-        Role bestRoleToChoose(List<Role> roles, String color){
-            Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
-            if(optWizard.isPresent()){
-                return optWizard.get();
+    /**
+     * 
+     * @param roles
+     * @param color
+     * @return détermine le rôle à choisir par le bot parmi la liste de rôles.
+     */
+    Role bestRoleToChoose(List<Role> roles, String color){
+        Optional<Role> optWizard=roles.stream().filter(r->r.toString().equals("Architect")).findAny();
+        if(optWizard.isPresent()){
+            return optWizard.get();
+        }
+        optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
+        if(optWizard.isPresent()){
+            return optWizard.get();
+        }
+        optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
+        if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
+            return optWizard.get();
+        }
+        int position;
+        switch (color){
+            case "religion": position=5;
+                break;
+            case "soldatesque": position =8;
+                break;
+            case "noblesse": position =4;
+                break;
+            default : position =6;
+        }
+        for(Role role : roles){
+            if(role.getPosition()==position){
+                return role;
             }
-            optWizard=roles.stream().filter(r->r.toString().equals("Thief")).findAny();
-            if(optWizard.isPresent()){
-                return optWizard.get();
-            }
-            optWizard=roles.stream().filter(r->r.toString().equals("Wizard")).findAny();
-            if(hand.badCards(getGold()).size()>hand.size()/2&& optWizard.isPresent()){
-                return optWizard.get();
-            }
-            int position;
-            switch (color){
-                case "religion": position=5;
-                    break;
-                case "soldatesque": position =8;
-                    break;
-                case "noblesse": position =4;
-                    break;
-                default : position =6;
-            }
-            for(Role role : roles){
-                if(role.getPosition()==position){
-                    return role;
-                }
-            }
-            return roles.get(0);
+        }
+        return roles.get(0);
         }
 
     
@@ -116,10 +122,17 @@ public class BotSmart extends Player {
 
     /* -------------OVERRIDING ------------------*/
 
+    /**
+     * Défini les districts de la main à échanger avec le pouvoir du magicien.
+     */
     @Override
     public List<District> processCardsToExchange() {
         return this.hand.badCards(this.getGold());
     }
+
+    /**
+     * Défini le joueur à cibler quand le bot joue la magicien.
+     */
     @Override
     public Player processWhoToExchangeHandWith() {
         if((this.hand.size()-this.hand.badCards(this.getGold()).size())<=(this.hand.size()/2)){
@@ -131,11 +144,17 @@ public class BotSmart extends Player {
         return null;
     }
 
+    /**
+     * Défini la cible quand le bot joue la condottière.
+     */
     @Override
     public Player processWhoseDistrictToDestroy() {
         return board.playerWithTheBiggestCity(this);
     }
 
+    /**
+     * Défini le district à détruire quand le bot joue le condottière.
+     */
     @Override
     public District processDistrictToDestroy(Player target) {
         Optional<District> tmp=target.city.cheapestDistrict();
@@ -147,11 +166,19 @@ public class BotSmart extends Player {
         }
     }
 
+    /**
+	 * 
+	 * @return true si le joueur prend l'argent, false si il pioche les districts.
+	 */
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 8;
     }
 
+    /**
+	 * 
+	 * @return le rôle a tué choisi par une stratégie.
+	 */
     @Override
     public Role processWhoToKill() {
         this.attributeProbsToPlayer();
@@ -160,6 +187,10 @@ public class BotSmart extends Player {
         return this.dealRoles.getRole(targets.stream().findFirst().get());
     }
 
+    /**
+	 * 
+	 * @return le rôle a volé choisi par une stratégie.
+	 */
     @Override
     public Role processWhoToRob() {
         Set<String> targets = matches.possibleRolesFor(board.richestPlayer(this).getId());
@@ -183,6 +214,9 @@ public class BotSmart extends Player {
         }
     }
 
+    /**
+     * Défini les districts à construire pour les stratégies.
+     */
     @Override
     public List<District> processWhatToBuild() {
         List<District> toConsider;
@@ -267,6 +301,10 @@ public class BotSmart extends Player {
         }
     }
 
+    /**
+     * 
+     * @return les couleurs manquantes dans la cité et la main du bot.
+     */
     public ArrayList<DistrictColor> missingColors(){
         Set <DistrictColor> tmpHand=hand.colorsOfHand();
         Set <DistrictColor> tmpCity=city.colorsOfCity();

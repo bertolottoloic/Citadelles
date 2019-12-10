@@ -21,11 +21,17 @@ public class Deck{
     }
 
 
-    
+    /**
+     * Mélange le deck.
+     */
     public void shuffle(){
         Collections.shuffle(list);
     }
 
+    /**
+     * 
+     * @return le district pioché.
+     */
     public District withdraw(){
         if(!list.isEmpty()){
             return list.remove(0);
@@ -118,6 +124,10 @@ public class Deck{
         return l;
     }
 
+    /**
+     * 
+     * @return le nombre de cartes dans le deck.
+     */
     public int numberOfCards(){
         return list.size();
     }

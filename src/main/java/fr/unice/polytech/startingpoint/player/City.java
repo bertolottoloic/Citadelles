@@ -50,6 +50,11 @@ public class City {
 
     }
 
+    /**
+     * 
+     * @param availableColors
+     * @return une liste de couleurs de districts qui peuvent rapporter le plus d'argent en fonction du rôle joué (Roi, Eveque, Condottière, Marchand).
+     */
     public String mostPotentiallyPayingColor(List<String> availableColors){
         if(districts.isEmpty() || availableColors.isEmpty()){
             return null;
@@ -64,9 +69,20 @@ public class City {
 
     }
 
+    /**
+     * 
+     * @param color
+     * @return le nombre d'occurences des districts de couleur color contenus dans la ville.
+     */
     public int nbOcurrencesOf(DistrictColor color) {
        return (int)districts.stream().filter(d -> d.hasColor(color)).count();
     }
+
+    /**
+     * 
+     * @param color
+     * @return le nombre d'occurences des districts de couleur color contenus dans la ville.
+     */
     public int nbOcurrencesOf(String color) {
         return (int)districts.stream().filter(d -> d.hasColor(color)).count();
     }
@@ -96,6 +112,10 @@ public class City {
         
     }
     
+    /**
+     * 
+     * @return true si la ville contient au moins un disrtrict de chaque couleur.
+     */
     public boolean containsAllColors(){
         var s=new HashSet<DistrictColor>();
 		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach((c)->{
@@ -158,6 +178,11 @@ public class City {
         }
     }
     
+    /**
+     * 
+     * @param aDistrict
+     * @return true si la ville contient déjà le district aDistrict.
+     */
     public boolean alreadyContains(District aDistrict) {
         return districts.contains(aDistrict);
     }
@@ -186,6 +211,10 @@ public class City {
 		return districts;
 	}
 
+    /**
+     * 
+     * @return le district de la ville le moins cher.
+     */
     public Optional<District> cheapestDistrict(){
 		return districts.stream().min(
                 (a,b)->Integer.compare(a.getCost(), b.getCost())
@@ -204,6 +233,10 @@ public class City {
         return null;
     }
     
+    /**
+     * 
+     * @return la liste des couleurs des districts contenus dans la ville et leurs occurences.
+     */
     public HashMap<DistrictColor,Integer> countColors(){
         HashMap<DistrictColor,Integer> countColors=new HashMap<>();
         countColors.put(DistrictColor.Religion,0);

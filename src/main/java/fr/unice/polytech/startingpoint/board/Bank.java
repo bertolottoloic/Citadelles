@@ -114,6 +114,11 @@ public class Bank{
         }
     }
 
+    /**
+     * Transfère l'argent de la bourse d'un joueur à la bourse d'un autre joueur
+     * @param from
+     * @param to
+     */
     public void transferFromTo(Player from,Player to){
         bourses.computeIfPresent(to, (k,v)->v+bourses.get(from));
         bourses.put(from, 0);

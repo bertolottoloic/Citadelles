@@ -31,6 +31,9 @@ public class Hand {
         this.districts=new ArrayList<>(liste);
     }
 
+    /**
+     * @return retourne le district le moins cher de la main.
+     */
 	public District lowCostDistrict() {
 		if (districts.isEmpty()) {
 			return null;
@@ -109,11 +112,20 @@ public class Hand {
 		return districts.size();
 	}
 
+    /**
+     * 
+     * @param limit
+     * @return les districts ayant un coup inférieur au paramètre limit.
+     */
     public int nbCardsCostingLessThan(int limit){
 		return (int)districts.stream().filter(d -> d.getCost() <= limit).count();
 	}
 
-    
+    /**
+     * 
+     * @param gold
+     * @return le district le plus cher contenu dans la main.
+     */
 	public District highCostDistrict(int gold) {
 		if (districts.isEmpty()) {
 			return null;
@@ -128,6 +140,11 @@ public class Hand {
 		}
 	}
 
+    /**
+     * 
+     * @param gold
+     * @return la liste des cartes considérées comme "mauvaises" de la main.
+     */
 	public List<District> badCards(int gold) {
         return districts.stream()
         .filter(d->d.getCost()+3<gold||d.getCost()>gold)
@@ -148,6 +165,10 @@ public class Hand {
     	
     }
 
+    /**
+     * 
+     * @return la liste des couleurs des districts contenus dans la ville et leurs occurences.
+     */
     public HashMap<DistrictColor,Integer> countColors(){
         HashMap<DistrictColor,Integer> countColors=new HashMap<>();
         countColors.put(DistrictColor.Religion,0);

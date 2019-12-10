@@ -38,15 +38,28 @@ public class District {
     }
 
     
-
+    /**
+     * 
+     * @param color
+     * @return true le district a pour couleur color, false sinon.
+     */
     public boolean hasColor(DistrictColor color) {
         return colorsList.stream().anyMatch(s -> s.equals(color.toString()));
     }
 
+    /**
+     * 
+     * @param color2
+     * @return true le district a pour couleur color2, false sinon.
+     */
     public boolean hasColor(String color2) {
         return colorsList.stream().anyMatch(s -> s.equals(color2));
     }
 
+    /**
+     * 
+     * @return la couleur primaire du district (pour les cartes merveilles ayant plusieurs couleurs, la méthode retourne couleur merveille).
+     */
     public DistrictColor primaryColor(){
         //seuls les merveilles ont plus de 1 couleur
         if (colorsList.size()>1){

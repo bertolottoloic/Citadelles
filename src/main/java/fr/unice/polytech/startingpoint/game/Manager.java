@@ -54,7 +54,6 @@ public class Manager implements PropertyChangeListener {
         }
 
         dealRoles.readyToDistribute(players.length);
-        //dealRoles.distributeRoles(crown);
         crown.getCrownOwner().chooseRole();
 
          /**
@@ -90,8 +89,8 @@ public class Manager implements PropertyChangeListener {
             throw new IllegalArgumentException("Il faut au moins trois joueurs et au max sept");
         }
         // On met les players en cercle
-        for (int i = 0; i < players.length - 1; i++) {
-            players[i].setNextPlayer(players[i + 1]);
+        for (int j = 0; j < players.length - 1; j++) {
+            players[j].setNextPlayer(players[j + 1]);
         }
         players[players.length - 1].setNextPlayer(players[0]);
 
@@ -142,10 +141,6 @@ public class Manager implements PropertyChangeListener {
         int max=List.of(players).stream().max((a,b)->Integer.compare(a.points(), b.points())).get().points();
         winner.addAll(
             List.of(players).stream().filter(p->p.points()==max).collect(Collectors.toList()));
-            if(winner.size()>1){
-            }
-
-        
     }
 
     @Override

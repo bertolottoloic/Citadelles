@@ -114,7 +114,7 @@ public class BotRnd extends Player{
         ArrayList<District> list = new ArrayList<>(hand.toList());
         ArrayList<District> cardsToExchange = new ArrayList<>();
         int i=0;
-        if(list.size()>0) i=random.nextInt(list.size());
+        if(!list.isEmpty()) i=random.nextInt(list.size());
         while(i>0){
             cardsToExchange.add(list.remove(random.nextInt(1)));
             i--;

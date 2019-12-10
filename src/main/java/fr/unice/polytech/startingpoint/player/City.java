@@ -118,7 +118,7 @@ public class City {
      */
     public boolean containsAllColors(){
         var s=new HashSet<DistrictColor>();
-		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach((c)->{
+		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach(c->{
             s.add(c.primaryColor());
         });
 
@@ -133,7 +133,7 @@ public class City {
 
     boolean checkDateContainsAllColors(){
         var s=new HashSet<DistrictColor>();
-		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach((c)->{
+		districts.stream().filter(d->!d.getName().equals("Cour des Miracles")).forEach(c->{
             s.add(c.primaryColor());
         });
 

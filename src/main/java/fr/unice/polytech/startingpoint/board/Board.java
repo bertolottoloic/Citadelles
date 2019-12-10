@@ -19,7 +19,7 @@ public class Board{
     private ArrayList<Player> players;
 
     public Board(){
-        
+        players = new ArrayList<>();
     }
 
     public void setPlayers(ArrayList<Player> players) {

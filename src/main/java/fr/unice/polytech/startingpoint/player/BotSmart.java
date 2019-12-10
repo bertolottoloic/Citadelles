@@ -293,11 +293,11 @@ public class BotSmart extends Player {
         Set <DistrictColor> tmpHand=hand.colorsOfHand();
         Set <DistrictColor> tmpCity=city.colorsOfCity();
         
-        Set<DistrictColor> tmp=new HashSet<DistrictColor>(Set.of(DistrictColor.values()));;
+        Set<DistrictColor> tmp=new HashSet<>(Set.of(DistrictColor.values()));
         tmp.removeAll(tmpHand);
         tmp.removeAll(tmpCity);
         
-        return new ArrayList<DistrictColor>(tmp);
+        return new ArrayList<>(tmp);
     }
 
 

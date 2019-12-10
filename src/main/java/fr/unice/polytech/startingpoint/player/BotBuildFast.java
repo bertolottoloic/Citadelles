@@ -105,12 +105,7 @@ public class BotBuildFast extends BotSmart{
         }
         else if(getCharacter().toString().equals("Wizard")){//si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
             int countBadCards=getHand().nbTooExpensiveDistricts(getGold());
-            if(countBadCards==getHand().size()){
-                return false;
-            }
-            else{
-                return true;
-            }
+            return countBadCards==getHand().size();
         }
         else {
             return true;

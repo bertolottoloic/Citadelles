@@ -17,10 +17,10 @@ import fr.unice.polytech.startingpoint.player.Player;
 public class Bank{
     private final int  NBCOINS=30;
     private int currNbCoins=NBCOINS;
-    private HashMap<Player,Integer> bourses=new HashMap<>();
+    private HashMap<Player,Integer> bourses;
 
     public Bank(){
-        
+    	bourses = new HashMap<>();
     }
 
     /**

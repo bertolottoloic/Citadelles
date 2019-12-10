@@ -114,7 +114,7 @@ public class Player {
 	 * @RoleInterface
 	 * @param toDelete
 	 */
-	final public boolean deleteDistrictFromCity(District toDelete){
+	public final boolean deleteDistrictFromCity(District toDelete){
 		if(character!=null){
 			if(!character.toString().equals("Bishop") && !toDelete.getName().equals("Donjon")){
 				 return deletion(toDelete);
@@ -178,7 +178,7 @@ public class Player {
 	 * pour le moment il choisit le premier Personnage
 	 *  puis appelle la méthode sur nextPlayer
 	 */
-	final public void chooseRole(){
+	public final void chooseRole(){
 		if(!alreadyChosenRole){
 			List<Role> toConsiderRoles=new ArrayList<>(this.dealRoles.getLeftRoles());
 			
@@ -222,12 +222,7 @@ public class Player {
 		}
 		else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
 			int countBadCards=getHand().badCards(getGold()).size();
-			if(countBadCards>getHand().size()/2){
-				return false;
-			} // si plus de la moitié des cartes sont "mauvaises" active son pouvoir
-			else{
-				return true;
-			}
+			return countBadCards>getHand().size()/2;// si plus de la moitié des cartes sont "mauvaises" active son pouvoir
 		}
 		else {
 			return true;
@@ -306,7 +301,7 @@ public class Player {
 	 * 
 	 * 
 	 * */
-	final public void playTurn(){
+	public final void playTurn(){
 		this.city.nextDay();
 		if(character.isMurdered()){
 			logger.log(Level.INFO,"Joueur "+id+" passe son tour car il a été tué");
@@ -376,7 +371,7 @@ public class Player {
 	 * Fonction appliquant l'utilisation du laboratoire
 	 * @PlayTurnInterface
 	 */
-	final public void isUsingLabo() {
+	public final void isUsingLabo() {
 		Optional<District> od=wantsToUseLabo();
 		if(city.containsWonder("Laboratoire")&& od.isPresent() && !hasUsedLabo) {
 			if(hand.remove(od.get())){
@@ -414,7 +409,7 @@ public class Player {
 	 * partie complète 
 	 *
 	 */
-	final public void reInitializeForNextTurn(){
+	public final void reInitializeForNextTurn(){
 		usingFabricPower=false;
 		hasUsedLabo=false;
 		alreadyChosenRole=false;
@@ -432,7 +427,7 @@ public class Player {
 	}
 	
 
-	final protected void building() {
+	protected final void building() {
 		if(!getHand().isEmpty()) {
 			var toBuild = this.processWhatToBuild();
 			int maxbuild=this.getCharacter().getNumberDistrictBuildable();
@@ -464,7 +459,7 @@ public class Player {
 	
 
 	
-	final public void specialMove() {
+	public final void specialMove() {
 		targetToKill=processWhoToKill();
         targetToRob=processWhoToRob();
         targetToExchangeHandWith=processWhoToExchangeHandWith();
@@ -625,7 +620,7 @@ public class Player {
 	}
 
 	public List<District> getCardsToExchange(){
-		return new ArrayList<District>(cardsToExchange);
+		return new ArrayList<>(cardsToExchange);
 	}
 	
 

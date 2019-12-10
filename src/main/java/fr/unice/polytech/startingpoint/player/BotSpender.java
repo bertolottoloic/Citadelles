@@ -70,7 +70,9 @@ public class BotSpender extends BotSmart {
 
 
     /**
-     * Strategy : get rid of the lowest valued district
+     * Souhait d'utilisation du laboratoire. Le quartier le moins cher sera privilégié
+     * @return un optional d'un district de la main s'il lui est avantageux,
+	 *  un optional empty sinon
      */
     @Override
     public Optional<District> wantsToUseLabo() {
@@ -83,6 +85,13 @@ public class BotSpender extends BotSmart {
         return Optional.empty();
     }
 
+    /**
+	 * Souhait d'utilisation du cimetiere. Le bot aura tendance a l'utiliser si le quartier
+	 * est abordable et de haute valeur
+	 * @param le district a recuperer
+	 * @return true s'il lui est avantageux et utile de l'utiliser,
+	 * false sinon
+	 */
 	@Override
 	protected boolean wantsToUseGraveyard(District dis) {
 		if (dis != null && !getCharacter().toString().equals("Warlord")) {
@@ -93,6 +102,12 @@ public class BotSpender extends BotSmart {
 		return false;
 	}
 
+    /**
+	 * Souhait d'utilisation de la manufacture. Le bot le souhaitera si a assez de golds pour
+	 * payer son cout, et s'il n'a pas de quartier de haute valeur
+	 * @return true s'il lui est avantageux et utile de l'utiliser,
+	 * false sinon
+	 */
     @Override
     public boolean wantsToUseFabric() {
         return getGold() >= 8

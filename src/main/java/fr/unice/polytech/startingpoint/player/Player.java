@@ -85,6 +85,12 @@ public class Player {
 		hand.add(d);
 	}
 	
+	/**
+	 * Ajout d'un district dans la city
+	 * @param le district
+	 * @return true si assez d'argent et s'il n'y a pas de district de même nom deja present, 
+	 * false sinon.
+	 */
 	public boolean addToTheCity(District theDistrict) {
 		if(city.alreadyContains(theDistrict)){
 			return false;
@@ -122,7 +128,12 @@ public class Player {
 		return false;
 	}
 
-	
+	/**
+	 * Destruction concrete du district d dans city,
+	 * verifiant aussi l'existence d'un joueur pouvant utiliser le cimetiere 
+	 * @param district visé
+	 * @return true si la suppression a ete effectuee, false sinon.
+	 */
 	boolean deletion(District d) {
 		Player p;
 		if(board!=null && board.existsGraveyardPlayer() != null) {
@@ -235,11 +246,10 @@ public class Player {
 	}
 
 	/**
-	 * A réécrire par les players pour déterminer dans quelles conditions
-	 * utiliser le Laboratoire pas besoin de vérifier si on l'a
-	 * C'est fait dans isUsingLabo
+	 * Souhait d'utilisation du laboratoire.
 	 * @ToOverride
-	 * @return
+	 * @return un optional d'un district de la main s'il a un homonyme dans la city,
+	 *  un optional empty sinon
 	 */
 	public Optional<District> wantsToUseLabo(){
 		for(District handDis : hand.toList()) {
@@ -268,11 +278,8 @@ public class Player {
 		return null;
 	}
 	/**
-	 * fonction à réécrire par les Bots pour déterminer si ils veuleunt utiliser 
-	 * la Manufacture ou pas
-	 * Pas besoin de vérifier si la carte Manufacture est vraiment disponible
-	 * c'est fait par isUsingFabric
-	 * @return un boolean
+	 * Souhait d'utilisation de la manufacture.
+	 * @return false
 	 * @ToOverride
 	 */
 	public boolean wantsToUseFabric() {
@@ -345,11 +352,11 @@ public class Player {
 	
 
 	/**
-	 * cette fonction renvoie un boolean utilisé par 
+	 * Cette fonction renvoie un boolean utilisé par 
 	 * Role pour déterminer le  nombre que renverra les 
 	 * méthodes getNumberDistrictPickable et getNumberDistrictKeepableus
 	 * @RoleInterface
-	 * @return 
+	 * @return true
 	 */
 	
 	public boolean isUsingFabric() {
@@ -366,6 +373,7 @@ public class Player {
 	}
  
 	/**
+	 * Fonction appliquant l'utilisation du laboratoire
 	 * @PlayTurnInterface
 	 */
 	final public void isUsingLabo() {
@@ -379,11 +387,19 @@ public class Player {
 			}
 	   }
 	}
-
+	/**
+	 * Souhait d'utilisation du cimetiere.
+	 * @return true
+	 * @ToOverride
+	 */
 	protected boolean wantsToUseGraveyard(District d) {
 		return true;
 	}
 	
+	/**
+	 * Fonction appliquant l'utilisation du cimetiere
+	 * @param Le district a recuperer
+	 */
 	protected void isUsingGraveyard(District d) {
 		if(wantsToUseGraveyard(d)) {
 			logger.log(Level.INFO,"Joueur " + getId() + " possède et peut utiliser le cimetière");

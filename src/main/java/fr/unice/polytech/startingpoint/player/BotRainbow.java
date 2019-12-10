@@ -105,11 +105,6 @@ public class BotRainbow extends BotSmart{
         }
     }
     
-	
-    /**
-     * Return true pour prendre des pieces,
-     * false pour piocher des quartiers.
-     */
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
@@ -118,10 +113,10 @@ public class BotRainbow extends BotSmart{
     }
 
     /**
-     * Le bot verifie s'il lui est pratique et utile d'utiliser le laboratoire
-     * en regardant le contenu de sa main
-     * Return un optional de district s'il decide que oui,
-     * return un optional empty sinon.
+     * Souhait d'utilisation du laboratoire. Le quartier le moins cher 
+     * dont la couleur est deja representee dans city sera privilégié
+     * @return un optional d'un district de la main s'il lui est avantageux,
+	 *  un optional empty sinon
      */
     @Override
     public Optional<District> wantsToUseLabo() {
@@ -140,11 +135,13 @@ public class BotRainbow extends BotSmart{
     }
     
     /**
-     * Le bot verifie s'il lui est pratique et utile d'utiliser le cimetiere
-     * en regardent son propre etat
-     * Return true s'il decide que oui,
-     * return false sinon.
-     */
+	 * Souhait d'utilisation du cimetiere. Le bot aura tendance a l'utiliser si le quartier
+	 * est abordable et de haute valeur, ou s'il n'as pas de district 
+	 * de la couleur du district en question.
+	 * @param le district a recuperer
+	 * @return true s'il lui est avantageux et utile de l'utiliser,
+	 * false sinon
+	 */
     @Override
 	protected boolean wantsToUseGraveyard(District dis) {
 		if (dis != null && !getCharacter().toString().equals("Warlord")) {
@@ -158,8 +155,7 @@ public class BotRainbow extends BotSmart{
     /**
      * Le bot verifie s'il lui est pratique et utile d'utiliser la manufacture
      * en regardant sa ville, sa main, ses golds.
-     * Return true s'il decide que oui,
-     * return false sinon.
+     * @return true s'il decide que oui, false sinon
      */
     @Override
     public boolean wantsToUseFabric() {

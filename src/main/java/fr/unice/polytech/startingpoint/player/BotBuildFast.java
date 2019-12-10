@@ -124,10 +124,9 @@ public class BotBuildFast extends BotSmart{
     }
     
     /**
-     *quand on a dans sa main une carte identique à une
-     * de celle de sa cité il est avantageux d'utiliser
-     * le labo pour gagner de l'argent avec 
-     * puisqu'on a pas le droit de le poser de toute facon
+     * Souhait d'utilisation du laboratoire. Le quartier le plus cher sera privilegié
+     * @return un optional d'un district de la main s'il lui est avantageux,
+	 *  un optional empty sinon
      */
     @Override
     public Optional<District> wantsToUseLabo() {
@@ -139,6 +138,13 @@ public class BotBuildFast extends BotSmart{
             return super.wantsToUseLabo();
     }
 
+    /**
+	 * Souhait d'utilisation du cimetiere. Le bot aura tendance a l'utiliser si le quartier
+	 * est abordable
+	 * @param le district a recuperer
+	 * @return true s'il lui est avantageux et utile de l'utiliser,
+	 * false sinon
+	 */
 	@Override
 	protected boolean wantsToUseGraveyard(District dis) {
 		if (dis != null && !getCharacter().toString().equals("Warlord")) {
@@ -156,7 +162,12 @@ public class BotBuildFast extends BotSmart{
 		}
 		return false;
 	}
-    
+    /**
+	 * Souhait d'utilisation de la manufacture. Le bot le souhaitera si a assez de golds pour
+	 * payer son cout, et s'il est sur le point de finir sa city
+	 * @return true s'il lui est avantageux et utile de l'utiliser,
+	 * false sinon
+	 */
 	@Override
     public boolean wantsToUseFabric() {
         return getGold() >= 5

@@ -21,7 +21,7 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
  * */
 
 public class Hand {
-    private ArrayList<District> districts=new ArrayList<>();
+    private ArrayList<District> districts;
 
     Hand(){
         this.districts=new ArrayList<>();
@@ -32,7 +32,7 @@ public class Hand {
     }
 
     /**
-     * @return retourne le district le moins cher de la main.
+     * @return retourne le district le moins cher de la main, null si la main est vide.
      */
 	public District lowCostDistrict() {
 		if (districts.isEmpty()) {
@@ -218,9 +218,10 @@ public class Hand {
         return copy;
     }
 
-    
-    
-    
+    /**
+     * 
+     * @return les quartiers dont la ou les couleur(s) est/sont deja presente(s) dans la main
+     */
     public List<District> discardDistrictsForMultiColors(){
     	List<District> res = new ArrayList<>();
     	HashMap<DistrictColor,Integer> countColors = countColors();
@@ -239,10 +240,20 @@ public class Hand {
     	return res;
     }
     
+    /**
+     * Principalement utilise pour les cartes "merveilles" : chercher un district par son nom
+     * @param nom du quartier recherché
+     * @return true si trouvé, false sinon
+     */
     public boolean containsWonder(String wonder) {
 		return districts.stream().anyMatch(d -> d.getName().equals(wonder));
 	}
     
+    /**
+     * Principalement utilise pour les cartes "merveilles" : chercher un district par son nom
+     * @param nom du quartier recherché
+     * @return le district si trouvé, null sinon
+     */
     public District findDistrictByName(String name) {
     	if(containsWonder(name)) {
     		for (District d : districts) {
@@ -253,6 +264,7 @@ public class Hand {
     	}
     	return null;
     }
+    
 	public void clearEverything() {
         districts.clear();
 	}

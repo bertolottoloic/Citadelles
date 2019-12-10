@@ -21,11 +21,11 @@ import fr.unice.polytech.startingpoint.board.DistrictColor;
  * */
 
 public class City {
-    private ArrayList<District> districts=new ArrayList<>();
+    private ArrayList<District> districts;
     private int presentDate=0;
     
     public City(){
-        
+    	districts=new ArrayList<>();
     }
 
     /**
@@ -199,6 +199,11 @@ public class City {
         return districts.toString();
     }
 
+    /**
+     * Principalement utilise pour les cartes "merveilles" : chercher un district par son nom
+     * @param nom du quartier recherché
+     * @return true si trouvé, false sinon
+     */
 	public boolean containsWonder(String wonder) {
 		return districts.stream().anyMatch(d -> d.getName().equals(wonder));
     }

@@ -243,22 +243,6 @@ public class BotSmart extends Player {
             .collect(Collectors.toList());
     }
 
-    /**
-     * quand on a dans sa main une carte identique à une
-     * de celle de sa cité il est avantageux d'utiliser
-     * le labo pour gagner de l'argent avec
-     * puisqu'on a pas le droit de le poser de toute facon
-     */
-    @Override
-    public Optional<District> wantsToUseLabo() {
-        List<District> list = hand.cardsAboveGold(getGold());
-        if(!list.isEmpty() && city.getSizeOfCity() >= 6) {
-            District dis = hand.highCostDistrict(getGold());
-            return Optional.of(dis);
-        }
-        return super.wantsToUseLabo();
-    }
-
     /* ---------------------------------------------*/
 
 

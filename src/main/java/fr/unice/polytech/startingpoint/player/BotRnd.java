@@ -101,7 +101,7 @@ public class BotRnd extends Player{
 
     @Override
     public Optional<District> wantsToUseLabo() {
-        ArrayList<District> list = hand.cardsAboveGold(getGold());
+        List<District> list = hand.cardsAboveGold(getGold());
         if(!list.isEmpty()) {
             District dis = list.get(random.nextInt(list.size()));
             return Optional.of(dis);

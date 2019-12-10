@@ -227,9 +227,8 @@ class BotRainbowTest {
 		setMultiPlayers();
 		anotherBot.setCharacter(new Warlord());
 		assertFalse(anotherBot.wantsToUseGraveyard(d1));
-		anotherBot.setCity(new City());
-		anotherBot.setBank(new Bank());
-		anotherBot.getBank().setBourses(List.of(bot,anotherBot));
+		Bank bank=new Bank();
+		bank.setBourses(anotherBot);
 		anotherBot.takeCoinsFromBank(5);
 		anotherBot.setCharacter(new Merchant());
 		

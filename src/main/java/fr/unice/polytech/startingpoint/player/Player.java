@@ -134,7 +134,7 @@ public class Player {
 	
 	/**
 	 * Avant d'appeler cette méthode il faut appeler 
-	 * Assets.TheBank.canWithdraw(nb) et vérifier la valeur retournée
+	 * bank.canWithdraw(nb) et vérifier la valeur retournée
 	 * par celle ci cela permet de savoir si l'argent voulue est disponible
 	 */
 	public void takeCoinsFromBank(int nb){
@@ -553,6 +553,7 @@ public class Player {
 		this.nextPlayer = nextPlayer;
 	}
 
+	
 	public void setHand(Hand liste) {
 		this.hand=liste;
 	}
@@ -574,6 +575,7 @@ public class Player {
 		return targetToRob;
 	}
 
+	
 	public void setTargetToRob(Role targetToRob) {
 		this.targetToRob = targetToRob;
 	}
@@ -605,10 +607,7 @@ public class Player {
 	public List<District> getCardsToExchange(){
 		return new ArrayList<District>(cardsToExchange);
 	}
-	@Deprecated
-	public void setCardsToExchange(ArrayList<District> cards){
-		this.cardsToExchange = new ArrayList<District>(cards);
-	}
+	
 
 	public Role getCharacter() {
 		return character;
@@ -649,6 +648,7 @@ public class Player {
 	 * utilisé ailleurs
 	 * @param city
 	 */
+	
 	public void setCity(City city) {
 		this.city = city;
 	}
@@ -665,14 +665,13 @@ public class Player {
 		this.deck=d;
 	}
 
-	public DealRoles getDealRoles() {
-		return dealRoles;
-	}
+	
 
 	public void setDealRoles(DealRoles dealRoles) {
 		this.dealRoles = dealRoles;
 	}
 
+	
 	public Deck getDeck() {
 		return deck;
 	}

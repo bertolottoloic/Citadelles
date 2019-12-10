@@ -40,7 +40,7 @@ class ManagerTest {
 		Player[] players = {p1, p2, p3, p4};
 		manager.letsPlay(players);
 		for(Player p : players) {
-			assertNotEquals(null , p.getNextPlayer());
+			assertNotNull(p.getNextPlayer());
 		}
 	}
 

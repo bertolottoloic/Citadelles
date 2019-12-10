@@ -37,14 +37,16 @@ public class BotRainbow extends BotSmart{
     public List<District> processWhatToBuild() {
         int gold=this.getGold();
         ArrayList<District> newDistricts = new ArrayList<>(buildNewColors(gold));
-        /*hand.toList().forEach(d -> {
-        	if(d.getName().equals("Cimetiere") && gold >= 5 && !getCharacter().toString().equals("Warlord")
-            		|| d.getName().equals("Cour des Miracles") && gold >= 2
-            		|| d.getName().equals("Manufacture") && gold >= 8
-            		|| d.getName().equals("Laboratoire") && gold >= 6 && !hand.discardDistrictsForMultiColors().isEmpty()) {
-            	newDistricts.add(d);
-            }
-        });*/        
+		hand.toList().forEach(d -> {
+			if (!newDistricts.contains(d)) {
+				if ((d.getName().equals("Cimetiere") && gold >= 5 && !getCharacter().toString().equals("Warlord"))
+						|| (d.getName().equals("Cour des Miracles") && gold >= 2)
+						|| (d.getName().equals("Manufacture") && gold >= 8) 
+						|| (d.getName().equals("Laboratoire") && gold >= 6 && !hand.discardDistrictsForMultiColors().isEmpty())) {
+					newDistricts.add(d);
+				}
+			}
+		});     
         if(city.containsAllColors() || newDistricts.isEmpty()){
             return super.processWhatToBuild();
         }
@@ -104,7 +106,10 @@ public class BotRainbow extends BotSmart{
     }
     
 	
-    
+    /**
+     * Return true pour prendre des pieces,
+     * false pour piocher des quartiers.
+     */
     @Override
     public boolean coinsOrDistrict() {
         return getGold() < 2
@@ -112,6 +117,12 @@ public class BotRainbow extends BotSmart{
                 || missingColors().size() > 2;
     }
 
+    /**
+     * Le bot verifie s'il lui est pratique et utile d'utiliser le laboratoire
+     * en regardant le contenu de sa main
+     * Return un optional de district s'il decide que oui,
+     * return un optional empty sinon.
+     */
     @Override
     public Optional<District> wantsToUseLabo() {
     	List<District> districts = hand.discardDistrictsForMultiColors();
@@ -128,6 +139,12 @@ public class BotRainbow extends BotSmart{
 		return Optional.empty();
     }
     
+    /**
+     * Le bot verifie s'il lui est pratique et utile d'utiliser le cimetiere
+     * en regardent son propre etat
+     * Return true s'il decide que oui,
+     * return false sinon.
+     */
     @Override
 	protected boolean wantsToUseGraveyard(District dis) {
 		if (dis != null && !getCharacter().toString().equals("Warlord")) {
@@ -138,6 +155,12 @@ public class BotRainbow extends BotSmart{
 		return false;
 	}
 
+    /**
+     * Le bot verifie s'il lui est pratique et utile d'utiliser la manufacture
+     * en regardant sa ville, sa main, ses golds.
+     * Return true s'il decide que oui,
+     * return false sinon.
+     */
     @Override
     public boolean wantsToUseFabric() {
         return !city.containsAllColors() ||
@@ -154,7 +177,7 @@ public class BotRainbow extends BotSmart{
         Set <DistrictColor> tmpCity=city.colorsOfCity();
         tmpHand.removeAll(tmpCity);
 
-        if(tmpHand.size()==0){
+        if(tmpHand.isEmpty()){
             //si il n'y a pas dans la main des couleurs non construites
             return List.of();
         }

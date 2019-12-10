@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import fr.unice.polytech.startingpoint.board.District;
@@ -66,31 +67,17 @@ public class BotRnd extends Player{
 
     @Override
     public boolean coinsOrDistrict() {
-        if(random.nextInt(2)==1){
-            return true;
-        }
-        else
-            {return false;}
+        return random.nextBoolean();
     }
 
     @Override
     protected boolean isBuildingFirst() {
-        if(random.nextInt(2)==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return random.nextBoolean();
     }
 
     @Override
     public boolean wantsToUseFabric() {
-        if(random.nextInt(2)==0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return random.nextBoolean();
     }
 
     @Override
@@ -107,4 +94,31 @@ public class BotRnd extends Player{
         return board.randomPlayer();
     }
 
+    @Override
+    public Role processChooseRole(List<Role> toConsiderRoles){
+        return toConsiderRoles.get(random.nextInt(toConsiderRoles.size()));
+    }
+
+    @Override
+    public Optional<District> wantsToUseLabo() {
+        ArrayList<District> list = hand.cardsAboveGold(getGold());
+        if(!list.isEmpty()) {
+            District dis = list.get(random.nextInt(list.size()));
+            return Optional.of(dis);
+        }
+        return super.wantsToUseLabo();
+    }
+
+    @Override
+    public List<District> processCardsToExchange(){
+        ArrayList<District> list = new ArrayList<>(hand.toList());
+        ArrayList<District> cardsToExchange = new ArrayList<>();
+        int i=0;
+        if(list.size()>0) i=random.nextInt(list.size());
+        while(i>0){
+            cardsToExchange.add(list.remove(random.nextInt(1)));
+            i--;
+        }
+		return cardsToExchange;
+	}
 }

@@ -274,5 +274,5 @@ class BotSpenderTest {
 		anotherBot.takeCoinsFromBank(3);
 
 		assertFalse(anotherBot.wantsToUseGraveyard(d1));
-	}
+    }
 }

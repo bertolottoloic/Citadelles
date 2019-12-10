@@ -4,7 +4,7 @@
 
     <groupId>main-class</groupId>
     <artifactId>citadelles</artifactId>
-    <version>3</version>
+    <version>final</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- CHANGE ME IF NEEDED, other : ISO-8859-1 -->

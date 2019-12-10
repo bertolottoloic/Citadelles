@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import fr.unice.polytech.startingpoint.game.Manager;
 import fr.unice.polytech.startingpoint.player.BotBuildFast;
 import fr.unice.polytech.startingpoint.player.BotRainbow;
+import fr.unice.polytech.startingpoint.player.BotRnd;
 import fr.unice.polytech.startingpoint.player.BotSpender;
 import fr.unice.polytech.startingpoint.player.Player;
 /**
@@ -68,7 +69,7 @@ public class Main {
         setScores();
         while (n < numberOfGames) {
             p1 = new BotRainbow(1);
-            p2 = new BotBuildFast(2);
+            p2 = new BotRnd(2);
             p3 = new BotSpender(3);
             p4 = new BotBuildFast(4);
             Manager manager = new Manager();

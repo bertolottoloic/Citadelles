@@ -222,7 +222,7 @@ public class Player {
 		}
 		else if(getCharacter().toString().equals("Wizard")){ //si la main du magicien est mauvaise active son pouvoir, sinon il construit avant
 			int countBadCards=getHand().badCards(getGold()).size();
-			return countBadCards>getHand().size()/2;// si plus de la moitié des cartes sont "mauvaises" active son pouvoir
+			return countBadCards<=getHand().size()/2;// si plus de la moitié des cartes sont "mauvaises" active son pouvoir
 		}
 		else {
 			return true;
